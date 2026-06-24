@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>MyStockLab</title>
+
+    <!-- PWA: 홈 화면 설치를 위한 매니페스트 + 테마 색상 -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#101820" />
+
+    <!-- iOS Safari는 표준 매니페스트 설치 흐름을 지원하지 않아 별도 메타 태그가 필요합니다. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MyStock Lab" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="icon" href="/icon-192.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // 서비스워커 등록 — 홈 화면 설치(PWA) 조건을 충족시키기 위해 필요합니다.
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch((error) => {
+            console.warn('서비스워커 등록 실패:', error)
+          })
+        })
+      }
+    </script>
+  </body>
+</html>

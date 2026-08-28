@@ -8,7 +8,7 @@ export default function Curriculum() {
       id="curriculum"
       eyebrow="Curriculum"
       title="처음부터, 순서대로"
-      lead="Pre과정에서 기초를 채우고 대수와 미적분1으로 넘어갑니다."
+      lead="Pre과정에서 기초를 채우고 대수와 미적분1으로 넘어갑니다.\n어느 튜터에게 배우든 이 순서와 이 교재로 진행합니다."
     >
       <div className="bento">
         {curriculum.map((course, index) => (

@@ -6,9 +6,9 @@ export default function Teachers() {
     <Section
       id="teachers"
       tone="dark"
-      eyebrow="About Us"
-      title={`${leads.length + tutors.length}명이 함께 만듭니다`}
-      lead="수업을 진행하는 대표 선생님과, 질문 답변과 교재 제작을 맡는 튜터진입니다."
+      eyebrow="Team"
+      title="교재를 만드는 사람과, 가르치는 사람"
+      lead={`공동대표 ${leads.length}인이 교재와 커리큘럼을 만들고 튜터를 교육합니다.\n수업은 튜터 ${tutors.length}인이 1:1로 진행합니다.`}
     >
       <div className="bento">
         {leads.map((lead) => (
@@ -30,7 +30,7 @@ export default function Teachers() {
         ))}
       </div>
 
-      <h3 className="tutors-title">튜터진</h3>
+      <h3 className="tutors-title">수업을 맡는 튜터진</h3>
       <div className="bento">
         {tutors.map((tutor) => (
           <article className="tile tile--tutor tile--hover s4" key={tutor.name}>

@@ -18,16 +18,18 @@ export const site = {
 }
 
 export const nav = [
-  { id: 'about', label: '소개' },
+  { id: 'why', label: '왜 우리인가' },
+  { id: 'material', label: '교재' },
   { id: 'curriculum', label: '커리큘럼' },
+  { id: 'proof', label: '성적·후기' },
   { id: 'teachers', label: '선생님' },
-  { id: 'faq', label: '자주 묻는 질문' },
 ]
 
 export const hero = {
-  badges: ['대수', '미적분1', '고등수학 Pre'],
+  badges: ['노베이스 전문', '자체 교재', '주 2회 정규수업'],
   headline: 'Zero to One,\nTogether',
-  sub: '고등수학을 처음부터 함께 시작합니다.\n노베이스를 위한 수능수학 수업, Teamlesson.',
+  lead: '수학, 어디서부터 막혔는지 모르겠다면',
+  sub: '고등수학을 처음부터 함께 시작합니다.\n노베이스를 위한 수능수학, Teamlesson.',
 }
 
 // 홍보 페이지 상단 지표. 선생님 수는 아래 명단에서 자동으로 계산됩니다.
@@ -39,12 +41,11 @@ export const stats = [
 ]
 
 export const story = {
-  eyebrow: 'Brand Story',
+  eyebrow: 'Our Story',
   title: '“최하위권을 위한 커리큘럼이 없다”는\n생각에서 시작했습니다.',
   paragraphs: [
     'Teamlesson은 서울대 재학생 세 명으로 시작해 지난 2년간 50여 명의 학생을 지도해왔습니다.',
     '그러던 중, 최하위권 학생들에게 적절한 커리큘럼이 전무하다는 생각이 들었습니다. 시중 교재는 이미 어느 정도 아는 학생을 전제로 쓰여 있었고, 진짜 처음부터 시작하는 학생이 붙잡을 만한 것이 없었습니다.',
-    '그래서 2025년 말부터 직접 교재를 집필하기 시작했습니다. 중등수학까지 거슬러 올라가 필요한 개념만 골라낸 「Checklist」 시리즈로, 지금도 수업과 함께 계속 다듬어가고 있습니다.',
   ],
 }
 
@@ -164,4 +165,84 @@ export const apply = {
   eyebrow: 'Apply',
   title: '지금 시작해도 늦지 않았습니다',
   sub: '수업 등록 상담과 진단 테스트 모두 신청 폼 하나로 접수됩니다.\n남겨주시면 순서대로 연락드립니다.',
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// 아래부터는 "증거" 영역입니다. 배열을 채우면 해당 섹션이 켜지고,
+// 비워두면 섹션 자체가 화면에서 사라집니다. (빈 채로 두어도 안전)
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * 첫 화면 아래를 흐르는 성적 변화 배지.
+ * 실제 기록만 적어주세요. 확인 안 된 숫자는 넣지 않습니다.
+ * 예) { from: '5등급', to: '3등급', label: '고2 · 대수' }
+ */
+export const scoreBadges: { from: string; to: string; label: string }[] = []
+
+/**
+ * 성적 변화 상세 사례. 인증 이미지가 있으면 image에 파일명을 적습니다.
+ * 이미지는 public/ 폴더에 넣고 '/proof-1.webp' 처럼 씁니다.
+ */
+export type ResultCase = {
+  who: string // 예) '고3 김OO'
+  course: string // 예) '대수 + 미적분1'
+  period: string // 예) '4개월'
+  before: string
+  after: string
+  note?: string
+  image?: string
+}
+
+export const resultCases: ResultCase[] = []
+
+/**
+ * 수강생·학부모 후기. 카톡 캡처가 있으면 image에 파일명을 적습니다.
+ * 캡처를 올릴 때는 이름·프로필 사진을 반드시 가려주세요.
+ */
+export type Review = {
+  quote: string
+  who: string // 예) '고2 학부모'
+  image?: string
+}
+
+export const reviews: Review[] = []
+
+// ── 차별화 선언 ──────────────────────────────────────────────
+
+export const positioning = {
+  eyebrow: 'Why Teamlesson',
+  title: '잘하는 학생을 더 잘하게 만드는 수업이 아닙니다',
+  lead: '공부법을 코칭해도, 지수와 로그를 모르면 문제는 안 풀립니다.\n우리는 그 지점을 직접 가르칩니다.',
+  rows: [
+    { point: '대상', others: '이미 어느 정도 하는 학생', ours: '수학을 손 놓은 학생' },
+    { point: '방식', others: '공부법·계획 관리', ours: '개념을 직접 가르침' },
+    { point: '교재', others: '시중 교재 (선행 지식 전제)', ours: '노베이스용 자체 교재' },
+    { point: '질문', others: '수업 시간에만', ours: '튜터 9명이 상시 답변' },
+  ],
+}
+
+// ── 교재 ─────────────────────────────────────────────────────
+
+export const material = {
+  eyebrow: 'Our Textbook',
+  title: '시중에 없어서, 직접 만들었습니다',
+  paragraphs: [
+    '노베이스 학생이 시중 교재를 펴면 첫 페이지부터 막힙니다. 이미 아는 것을 전제로 쓰여 있기 때문입니다.',
+    '그래서 2025년 말부터 「Checklist」 시리즈를 직접 집필했습니다. 중등수학까지 거슬러 올라가 정말 필요한 개념만 골라 담았고, 수업과 함께 지금도 계속 고쳐 쓰고 있습니다.',
+  ],
+  // public/ 폴더의 이미지. 깔끔한 교재 사진으로 교체하면 더 좋습니다.
+  images: [
+    { src: '/story-1.webp', alt: 'Checklist 교재를 만들게 된 이야기' },
+    { src: '/story-2.webp', alt: 'Checklist 교재 소개' },
+    { src: '/story-3.webp', alt: 'Teamlesson 수업 기록' },
+  ],
+}
+
+// ── 진단 테스트 안내 (첫 화면 미끼) ──────────────────────────
+
+export const diagnosticPromo = {
+  title: '3분이면 지금 어디서 막혔는지 알 수 있습니다',
+  sub: '12문항을 풀면 Pre부터 시작할지, 대수부터 시작할지 바로 알려드립니다.',
+  points: ['가입 없이 바로 응시', '연락처 없이 결과 확인', '결과에 맞는 시작점 추천'],
 }

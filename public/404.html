@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Teamlesson</title>
+    <script>
+      // GitHub Pages는 /diagnostic 같은 주소를 직접 열면 404를 냅니다.
+      // 원래 가려던 경로를 기억해두고 첫 페이지로 보낸 뒤, main.tsx에서 되돌립니다.
+      // (Vercel·Netlify는 vercel.json 의 rewrite로 처리되어 이 파일을 쓰지 않습니다.)
+      sessionStorage.setItem('teamlesson:redirect', location.pathname + location.search + location.hash)
+      location.replace(location.origin + '/')
+    </script>
+  </head>
+  <body></body>
+</html>

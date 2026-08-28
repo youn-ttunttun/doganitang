@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Check, Copy, Instagram, Loader2, Send } from 'lucide-react'
 import { apply as applyCopy, site } from '../content'
 import {
@@ -27,6 +27,16 @@ type Status = 'idle' | 'sending' | 'done' | 'error'
 
 export default function Apply() {
   const [form, setForm] = useState<ApplicationInput>(EMPTY)
+
+  // 진단 테스트를 풀고 넘어온 경우, 결과를 '현재 수학 상황'에 자동으로 채웁니다.
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem('teamlesson:diagnostic')
+      if (saved) setForm((prev) => ({ ...prev, kind: 'diagnostic', level: saved }))
+    } catch {
+      // 저장소 접근이 막혀 있으면 그냥 빈 폼으로 둡니다.
+    }
+  }, [])
   const [agreed, setAgreed] = useState(false)
   const [status, setStatus] = useState<Status>('idle')
   const [copied, setCopied] = useState(false)

@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
-import { nav, site } from '../content'
+import { Link } from 'react-router-dom'
+import { nav, resultCases, reviews, site } from '../content'
 import { useScrolled } from '../hooks'
 
 export default function Nav() {
   const scrolled = useScrolled()
   const [open, setOpen] = useState(false)
+
+  // 후기·성적 자료가 아직 없으면 해당 메뉴는 감춥니다.
+  const hasProof = resultCases.length > 0 || reviews.length > 0
+  const items = nav.filter((item) => item.id !== 'proof' || hasProof)
 
   // 메뉴가 열려 있는 동안에는 뒤 배경이 스크롤되지 않도록 잠급니다.
   useEffect(() => {
@@ -25,14 +30,14 @@ export default function Nav() {
         </a>
 
         <nav className={`nav-links ${open ? 'is-open' : ''}`}>
-          {nav.map((item) => (
+          {items.map((item) => (
             <a key={item.id} href={`#${item.id}`} onClick={() => setOpen(false)}>
               {item.label}
             </a>
           ))}
-          <a className="nav-cta" href="#apply" onClick={() => setOpen(false)}>
-            신청하기
-          </a>
+          <Link className="nav-cta" to="/diagnostic" onClick={() => setOpen(false)}>
+            무료 진단
+          </Link>
         </nav>
 
         <button

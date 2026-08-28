@@ -1,5 +1,6 @@
-import { ArrowRight, Instagram } from 'lucide-react'
-import { hero, site, stats } from '../content'
+import { ArrowRight, PencilRuler } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { hero, stats } from '../content'
 
 export default function Hero() {
   return (
@@ -16,6 +17,8 @@ export default function Hero() {
           ))}
         </div>
 
+        <p className="hero-lead">{hero.lead}</p>
+
         <h1 className="hero-title">
           {hero.headline.split('\n').map((line) => (
             <span key={line}>{line}</span>
@@ -29,13 +32,13 @@ export default function Hero() {
         </p>
 
         <div className="hero-actions">
-          <a className="btn btn-primary btn-lg" href="#apply">
-            수업 등록 · 진단 테스트 신청
+          <Link className="btn btn-primary btn-lg" to="/diagnostic">
+            <PencilRuler size={18} />
+            무료 진단 테스트 (3분)
+          </Link>
+          <a className="btn btn-ghost btn-lg" href="#apply">
+            수업 등록 상담
             <ArrowRight size={18} />
-          </a>
-          <a className="btn btn-ghost btn-lg" href={site.instagram} target="_blank" rel="noreferrer">
-            <Instagram size={18} />
-            {site.instagramHandle}
           </a>
         </div>
 

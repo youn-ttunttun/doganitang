@@ -8,7 +8,7 @@ import Login from './pages/app/Login'
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         {/* 공개 영역 */}
         <Route path="/" element={<Landing />} />

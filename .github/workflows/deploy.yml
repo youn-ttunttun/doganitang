@@ -1,0 +1,66 @@
+# GitHub Pages 배포
+#
+# 처음 한 번만 설정이 필요합니다:
+#   저장소 > Settings > Pages > Build and deployment > Source 를
+#   "GitHub Actions" 로 바꿔주세요.
+#
+# 그 뒤로는 아래 브랜치에 푸시할 때마다 자동으로 다시 배포됩니다.
+# 주소: https://youn-ttunttun.github.io/doganitang/
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - claude/website-development-hkhosu
+  workflow_dispatch: # Actions 탭에서 수동으로도 실행할 수 있습니다
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포가 겹치면 마지막 것만 살립니다
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          # 저장소 이름 하위 경로에 올라가므로 base를 맞춰줍니다.
+          # 나중에 커스텀 도메인을 붙이면 '/' 로 바꾸세요.
+          VITE_BASE: /doganitang/
+          # 링크 공유 미리보기 이미지에 쓰는 사이트 전체 주소
+          VITE_SITE_URL: https://youn-ttunttun.github.io/doganitang/
+          # Supabase를 연결하면 저장소 Settings > Secrets에 값을 넣어주세요.
+          # 값이 없으면 사이트는 백엔드 없이 그대로 동작합니다.
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

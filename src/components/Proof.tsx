@@ -1,5 +1,6 @@
 import { Quote, TrendingUp } from 'lucide-react'
 import { resultCases, reviews } from '../content'
+import { asset } from '../lib/asset'
 import Section from './Section'
 
 /** 성적 사례와 후기. content.ts의 두 배열이 모두 비어 있으면 섹션을 만들지 않습니다. */
@@ -35,7 +36,7 @@ export default function Proof() {
               {item.note && <p className="tile-body">{item.note}</p>}
 
               {item.image && (
-                <img className="result-image" src={item.image} alt="성적 인증" loading="lazy" />
+                <img className="result-image" src={asset(item.image)} alt="성적 인증" loading="lazy" />
               )}
             </article>
           ))}
@@ -52,7 +53,7 @@ export default function Proof() {
                 <p className="review-quote">{review.quote}</p>
                 <p className="review-who">{review.who}</p>
                 {review.image && (
-                  <img className="review-image" src={review.image} alt="후기 캡처" loading="lazy" />
+                  <img className="review-image" src={asset(review.image)} alt="후기 캡처" loading="lazy" />
                 )}
               </article>
             ))}

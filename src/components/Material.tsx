@@ -1,4 +1,5 @@
 import { material } from '../content'
+import { asset } from '../lib/asset'
 import Section from './Section'
 
 export default function Material() {
@@ -16,7 +17,7 @@ export default function Material() {
 
         {material.images.map((image) => (
           <figure className="tile tile--photo s4" key={image.src}>
-            <img src={image.src} alt={image.alt} loading="lazy" />
+            <img src={asset(image.src)} alt={image.alt} loading="lazy" />
           </figure>
         ))}
       </div>

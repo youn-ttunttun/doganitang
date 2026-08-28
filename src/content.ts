@@ -182,7 +182,7 @@ export const scoreBadges: { from: string; to: string; label: string }[] = []
 
 /**
  * 성적 변화 상세 사례. 인증 이미지가 있으면 image에 파일명을 적습니다.
- * 이미지는 public/ 폴더에 넣고 '/proof-1.webp' 처럼 씁니다.
+ * 이미지는 public/ 폴더에 넣고 파일명만 적으면 됩니다. 예) 'proof-1.webp'
  */
 export type ResultCase = {
   who: string // 예) '고3 김OO'
@@ -231,11 +231,12 @@ export const material = {
     '노베이스 학생이 시중 교재를 펴면 첫 페이지부터 막힙니다. 이미 아는 것을 전제로 쓰여 있기 때문입니다.',
     '그래서 2025년 말부터 「Checklist」 시리즈를 직접 집필했습니다. 중등수학까지 거슬러 올라가 정말 필요한 개념만 골라 담았고, 수업과 함께 지금도 계속 고쳐 쓰고 있습니다.',
   ],
-  // public/ 폴더의 이미지. 깔끔한 교재 사진으로 교체하면 더 좋습니다.
+  // public/ 폴더에 넣은 이미지의 파일명만 적으면 됩니다.
+  // 깔끔한 교재 사진으로 교체하면 더 좋습니다.
   images: [
-    { src: '/story-1.webp', alt: 'Checklist 교재를 만들게 된 이야기' },
-    { src: '/story-2.webp', alt: 'Checklist 교재 소개' },
-    { src: '/story-3.webp', alt: 'Teamlesson 수업 기록' },
+    { src: 'story-1.webp', alt: 'Checklist 교재를 만들게 된 이야기' },
+    { src: 'story-2.webp', alt: 'Checklist 교재 소개' },
+    { src: 'story-3.webp', alt: 'Teamlesson 수업 기록' },
   ],
 }
 

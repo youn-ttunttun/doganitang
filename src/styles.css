@@ -2035,3 +2035,522 @@ textarea {
 .quiz-cta .btn-ghost:hover {
   background: rgba(255, 255, 255, 0.08);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   로그인 후 화면 (/app)
+   홍보 페이지와 완전히 분리된 레이아웃입니다.
+   ═══════════════════════════════════════════════════════════ */
+
+.app-shell {
+  min-height: 100vh;
+  background: var(--bg-muted);
+}
+
+.app-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.app-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.app-top-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 60px;
+}
+
+.app-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.app-brand em {
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: var(--brand-soft);
+  font-style: normal;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.app-nav {
+  display: flex;
+  gap: 4px;
+  margin-right: auto;
+}
+
+.app-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+.app-nav a:hover {
+  background: var(--bg-muted);
+}
+
+.app-nav a.active {
+  background: var(--bg-muted);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.app-signout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  font-size: 13px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.app-signout:hover {
+  background: var(--bg-muted);
+}
+
+.app-main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 36px 24px 96px;
+}
+
+.app-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.app-head h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.app-head-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 13px;
+}
+
+.app-card {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 420px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+  box-shadow: var(--shadow-md);
+}
+
+.app-main .app-card {
+  max-width: none;
+  box-shadow: none;
+}
+
+.app-card h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.app-card h2 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.app-card p {
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--text-dim);
+}
+
+.app-card .field-label {
+  color: var(--text-dim);
+}
+
+.app-card input,
+.app-card select,
+.app-modal input,
+.app-modal select,
+.app-modal textarea,
+.app-row select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 14.5px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.app-card input:focus,
+.app-modal input:focus,
+.app-modal textarea:focus,
+.app-modal select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+}
+
+.app-modal textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.app-switch {
+  margin-top: 4px;
+  padding: 6px;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  color: var(--text-faint);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.app-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14.5px;
+  color: var(--text-dim);
+}
+
+.app-error {
+  padding: 11px 14px;
+  border: 1px solid rgba(220, 38, 38, 0.35);
+  border-radius: var(--radius);
+  background: rgba(220, 38, 38, 0.08);
+  font-size: 13.5px;
+  color: #b91c1c;
+}
+
+.app-hint {
+  margin-top: -6px;
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+.app-hint code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--bg-muted);
+  font-size: 12px;
+}
+
+.app-seed {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+/* 목록 */
+
+.app-list {
+  display: grid;
+  gap: 10px;
+}
+
+.app-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+}
+
+.app-row.is-off {
+  opacity: 0.55;
+}
+
+.app-row-main {
+  min-width: 0;
+}
+
+.app-row-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.app-row-top strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.app-kind {
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: var(--brand-soft);
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.app-off {
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: var(--bg-muted);
+  color: var(--text-faint);
+}
+
+.app-dim {
+  color: var(--text-faint);
+}
+
+.app-prompt {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.app-answer {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.app-contact {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.app-message {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: var(--bg-muted);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  white-space: pre-wrap;
+}
+
+.app-row select {
+  width: auto;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.app-row-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.app-row-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.app-row-actions button:hover:not(:disabled) {
+  background: var(--bg-muted);
+  color: var(--text);
+}
+
+.app-row-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.app-row-actions .is-danger:hover:not(:disabled) {
+  border-color: rgba(220, 38, 38, 0.4);
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+}
+
+/* 문항 편집 모달 */
+
+.app-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(6, 11, 18, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.app-modal-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 560px;
+  max-height: 88vh;
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.app-modal-head,
+.app-modal-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px;
+}
+
+.app-modal-head {
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-modal-head button {
+  display: flex;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.app-modal-body {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  overflow-y: auto;
+}
+
+.app-modal-body .field-label {
+  color: var(--text-dim);
+}
+
+.app-modal-foot {
+  justify-content: flex-end;
+  border-top: 1px solid var(--border);
+}
+
+.app-choice-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.app-pick {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  color: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.app-pick:hover {
+  color: var(--text-faint);
+}
+
+.app-pick.is-on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.app-choice-del {
+  display: flex;
+  flex-shrink: 0;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.app-choice-del:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.app-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.app-toggle input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--brand);
+}
+
+@media (max-width: 620px) {
+  .app-top-inner {
+    height: auto;
+    padding: 12px 20px;
+    flex-wrap: wrap;
+  }
+
+  .app-nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .app-row {
+    flex-direction: column;
+  }
+
+  .app-row-actions {
+    align-self: flex-end;
+  }
+}

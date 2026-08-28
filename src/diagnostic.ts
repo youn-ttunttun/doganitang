@@ -231,6 +231,11 @@ const VERDICTS: { min: number; verdict: Verdict }[] = [
   },
 ]
 
+/** 맞힌 비율(0~1)로 결과 문구를 고릅니다. */
+export function verdictFor(ratio: number): Verdict {
+  return (VERDICTS.find((v) => ratio >= v.min) ?? VERDICTS[VERDICTS.length - 1]).verdict
+}
+
 export function gradeDiagnostic(answers: Answer[]): {
   correct: number
   total: number
@@ -248,7 +253,6 @@ export function gradeDiagnostic(answers: Answer[]): {
   })
 
   const ratio = total === 0 ? 0 : correct / total
-  const verdict = (VERDICTS.find((v) => ratio >= v.min) ?? VERDICTS[VERDICTS.length - 1]).verdict
 
-  return { correct, total, ratio, verdict, weakConcepts }
+  return { correct, total, ratio, verdict: verdictFor(ratio), weakConcepts }
 }

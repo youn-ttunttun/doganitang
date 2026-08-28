@@ -1,21 +1,6 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { getClient, isBackendReady } from './supabase'
 
-// Supabase 접속 정보는 .env.local 에서 읽습니다. (.env.example 참고)
-// 아직 프로젝트를 만들지 않았다면 값이 비어 있고, 이때 신청 폼은
-// '인스타그램 DM으로 보내기' 방식으로 자동 전환됩니다.
-const url = import.meta.env.VITE_SUPABASE_URL
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
-export const isBackendReady = Boolean(url && anonKey)
-
-let client: SupabaseClient | null = null
-function getClient(): SupabaseClient {
-  if (!client) {
-    if (!isBackendReady) throw new Error('Supabase 환경 변수가 설정되지 않았습니다.')
-    client = createClient(url as string, anonKey as string)
-  }
-  return client
-}
+export { isBackendReady }
 
 export type ApplicationKind = 'consult' | 'diagnostic'
 

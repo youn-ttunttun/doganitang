@@ -7,6 +7,8 @@
   --brand: #185fa5;
   --brand-strong: #0f4880;
   --brand-soft: #e8f0f9;
+  /* 남색 섹션 위에서는 --brand가 묻히므로 밝은 파랑을 따로 씁니다 */
+  --brand-on-dark: #6aa9ec;
   --accent: #3f9a5c;
 
   --bg: #ffffff;
@@ -46,6 +48,7 @@
     --brand: #4d94e0;
     --brand-strong: #6aa9ec;
     --brand-soft: rgba(77, 148, 224, 0.14);
+    --brand-on-dark: #6aa9ec;
     --accent: #58b878;
 
     --bg: #0b1119;
@@ -396,7 +399,7 @@ textarea {
   font-family: var(--font-display);
   font-size: clamp(3.4rem, 11vw, 7rem);
   font-weight: 400;
-  line-height: 0.94;
+  line-height: 1.02;
   letter-spacing: 0.02em;
   background: linear-gradient(160deg, var(--brand) 10%, var(--accent) 95%);
   -webkit-background-clip: text;
@@ -423,46 +426,13 @@ textarea {
 }
 
 .hero-stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
   width: 100%;
   margin-top: 72px;
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  box-shadow: var(--shadow-md);
-}
-
-.hero-stat {
-  text-align: center;
-}
-
-.hero-stat dt {
-  font-family: var(--font-display);
-  font-size: clamp(1.7rem, 4.4vw, 2.4rem);
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  color: var(--text);
-}
-
-.hero-stat dd {
-  margin-top: 4px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--text-faint);
 }
 
 @media (max-width: 640px) {
   .hero {
     padding: 124px 0 64px;
-  }
-
-  .hero-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 12px;
-    margin-top: 52px;
   }
 
   .hero-actions .btn {
@@ -505,9 +475,12 @@ textarea {
   color: var(--text-on-dark);
 }
 
-.section--dark .section-lead,
-.section--dark .eyebrow {
+.section--dark .section-lead {
   color: var(--text-on-dark-dim);
+}
+
+.section--dark .eyebrow {
+  color: var(--brand-on-dark);
 }
 
 @media (max-width: 640px) {
@@ -546,45 +519,194 @@ textarea {
   white-space: pre-line;
 }
 
-/* ── 소개 ────────────────────────────────────────────────── */
+/* ── 벤토 그리드 ─────────────────────────────────────────
+   12칸 그리드 위에 크기가 다른 타일을 얹습니다.
+   .s4 = 4칸 차지, .r2 = 세로 2줄 차지
+   ───────────────────────────────────────────────────── */
 
-.about-grid {
+.bento {
   display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 48px;
-  align-items: start;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(0, auto);
+  gap: 14px;
 }
 
-.about-story p {
-  color: var(--text-dim);
-  line-height: 1.95;
+.bento + .bento {
+  margin-top: 14px;
 }
 
-.about-story p + p {
-  margin-top: 18px;
-}
-
-.about-audience {
+.tile {
+  display: flex;
+  flex-direction: column;
   padding: 28px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
-.about-audience h3 {
-  margin-bottom: 18px;
-  font-size: 15px;
+.tile--link:hover,
+.tile--hover:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--brand) 38%, transparent);
+  box-shadow: var(--shadow-md);
+}
+
+/* 강조 타일 — 브랜드 그라데이션 */
+.tile--feature {
+  border-color: transparent;
+  background: linear-gradient(150deg, var(--brand) 0%, var(--brand-strong) 55%, var(--accent) 155%);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.tile--feature .tile-label,
+.tile--feature .tile-body,
+.tile--feature .course-body,
+.tile--feature .course-material {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.tile--feature .course-summary {
+  color: #fff;
+  border-bottom-color: rgba(255, 255, 255, 0.28);
+}
+
+.tile--feature .course-topics li {
+  background: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.tile--quiet {
+  background: transparent;
+  box-shadow: none;
+}
+
+.section--dark .tile {
+  border-color: var(--border-dark);
+  background: var(--surface-dark);
+  box-shadow: none;
+}
+
+.section--dark .tile--hover:hover {
+  border-color: color-mix(in srgb, var(--brand-on-dark) 55%, transparent);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.s3 { grid-column: span 3; }
+.s4 { grid-column: span 4; }
+.s5 { grid-column: span 5; }
+.s6 { grid-column: span 6; }
+.s7 { grid-column: span 7; }
+.s8 { grid-column: span 8; }
+.s12 { grid-column: span 12; }
+.r2 { grid-row: span 2; }
+
+@media (max-width: 980px) {
+  .s3, .s4, .s5 { grid-column: span 6; }
+  .s7, .s8 { grid-column: span 12; }
+  .r2 { grid-row: auto; }
+}
+
+@media (max-width: 620px) {
+  .bento {
+    gap: 10px;
+  }
+
+  /* 지표 타일은 모바일에서도 2×2로 유지합니다 */
+  .hero-stats .s3 {
+    grid-column: span 6;
+  }
+
+  .s3, .s4, .s5, .s6, .s7, .s8 {
+    grid-column: span 12;
+  }
+
+  .tile {
+    padding: 22px 20px;
+  }
+}
+
+/* 타일 안쪽 공통 요소 */
+
+.tile-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-faint);
+}
+
+.tile-title {
+  margin-top: 6px;
+  font-size: 18px;
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-.about-audience ul {
+.tile-body {
+  margin-top: 10px;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--text-dim);
+}
+
+.tile-body + .tile-body {
+  margin-top: 14px;
+}
+
+.tile-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: 0.06em;
+  color: var(--brand);
+}
+
+/* 지표 타일 */
+
+.tile--stat {
+  gap: 2px;
+  justify-content: center;
+  align-items: center;
+  padding: 22px 16px;
+  text-align: center;
+}
+
+.tile--stat .stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  background: linear-gradient(160deg, var(--brand), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tile--stat .stat-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+/* 소개 — 스토리 타일 */
+
+.story-quote {
+  margin-bottom: 18px;
+  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: -0.03em;
+}
+
+.audience-list {
   list-style: none;
   display: grid;
   gap: 12px;
+  margin-top: 16px;
 }
 
-.about-audience li {
+.audience-list li {
   display: flex;
   gap: 10px;
   font-size: 14.5px;
@@ -592,84 +714,39 @@ textarea {
   color: var(--text-dim);
 }
 
-.about-audience svg {
+.audience-list svg {
   flex-shrink: 0;
   margin-top: 4px;
   color: var(--brand);
 }
 
-.principles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  margin-top: 56px;
-}
-
-.principle {
-  padding: 28px 26px;
-  border-top: 2px solid var(--brand);
-  background: var(--surface);
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
-
-.principle-num {
-  font-family: var(--font-display);
-  font-size: 26px;
-  letter-spacing: 0.06em;
-  color: var(--brand);
-}
-
-.principle h3 {
-  margin: 8px 0 10px;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.principle p {
-  font-size: 14.5px;
-  line-height: 1.8;
-  color: var(--text-dim);
-}
-
-@media (max-width: 860px) {
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-}
-
-/* ── 커리큘럼 ────────────────────────────────────────────── */
-
-.courses {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.course {
+.tile-cta {
   display: flex;
-  flex-direction: column;
-  padding: 30px 28px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 22px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--brand);
+  transition: gap 0.15s ease;
 }
 
-.course:hover {
-  transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--brand) 40%, transparent);
-  box-shadow: var(--shadow-md);
+.tile-cta:hover {
+  gap: 10px;
 }
+
+/* 커리큘럼 타일 */
 
 .course-step {
   font-family: var(--font-display);
   font-size: 13px;
   letter-spacing: 0.14em;
   color: var(--text-faint);
+}
+
+.tile--feature .course-step {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .course-name {
@@ -686,6 +763,10 @@ textarea {
   font-size: 13px;
   font-weight: 500;
   color: var(--text-faint);
+}
+
+.tile--feature .course-name small {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .course-summary {
@@ -730,20 +811,36 @@ textarea {
   color: var(--text-faint);
 }
 
-/* ── 선생님 ──────────────────────────────────────────────── */
+/* 교재 배너 타일 */
 
-.leads {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-  gap: 20px;
+.tile--material {
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  padding: 26px 28px;
 }
 
-.lead-card {
-  padding: 30px 28px;
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius-lg);
-  background: var(--surface-dark);
+.tile--material .material-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius);
+  background: var(--brand-soft);
+  color: var(--brand);
 }
+
+@media (max-width: 620px) {
+  .tile--material {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}
+
+/* 선생님 타일 */
 
 .lead-initial {
   display: flex;
@@ -775,7 +872,7 @@ textarea {
   margin-top: 4px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--brand-strong);
+  color: var(--brand-on-dark);
 }
 
 .lead-school {
@@ -800,23 +897,15 @@ textarea {
 }
 
 .tutors-title {
-  margin: 56px 0 20px;
+  margin: 44px 0 16px;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
-.tutors {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 10px;
-}
-
-.tutor-card {
-  padding: 16px 18px;
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.03);
+.tile--tutor {
+  gap: 4px;
+  padding: 18px 20px;
 }
 
 .tutor-top {
@@ -837,7 +926,6 @@ textarea {
 }
 
 .tutor-note {
-  margin-top: 4px;
   font-size: 12.5px;
   line-height: 1.6;
   color: var(--text-on-dark-dim);
@@ -924,7 +1012,7 @@ textarea {
   font-style: normal;
   font-size: 11px;
   font-weight: 600;
-  color: var(--brand-strong);
+  color: var(--brand-on-dark);
 }
 
 .apply-form input[type='text'],
@@ -954,7 +1042,7 @@ textarea {
 .apply-form input:focus,
 .apply-form select:focus,
 .apply-form textarea:focus {
-  border-color: var(--brand-strong);
+  border-color: var(--brand-on-dark);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent);
 }
 
@@ -999,7 +1087,7 @@ textarea {
 }
 
 .kind-option.is-active {
-  border-color: var(--brand-strong);
+  border-color: var(--brand-on-dark);
   background: color-mix(in srgb, var(--brand) 18%, transparent);
 }
 
@@ -1131,7 +1219,7 @@ textarea {
   font-family: var(--font-display);
   font-size: 16px;
   letter-spacing: 0.08em;
-  color: var(--brand-strong);
+  color: var(--brand-on-dark);
 }
 
 .footer-tagline {

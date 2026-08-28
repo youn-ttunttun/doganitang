@@ -10,9 +10,9 @@ export default function Teachers() {
       title={`${leads.length + tutors.length}명이 함께 만듭니다`}
       lead="수업을 진행하는 대표 선생님과, 질문 답변과 교재 제작을 맡는 튜터진입니다."
     >
-      <div className="leads">
+      <div className="bento">
         {leads.map((lead) => (
-          <article className="lead-card" key={lead.name}>
+          <article className="tile tile--hover s4" key={lead.name}>
             <div className="lead-initial" aria-hidden="true">
               {lead.name.slice(0, 1)}
             </div>
@@ -31,9 +31,9 @@ export default function Teachers() {
       </div>
 
       <h3 className="tutors-title">튜터진</h3>
-      <div className="tutors">
+      <div className="bento">
         {tutors.map((tutor) => (
-          <article className="tutor-card" key={tutor.name}>
+          <article className="tile tile--tutor tile--hover s4" key={tutor.name}>
             <div className="tutor-top">
               <span className="tutor-name">{tutor.name} T</span>
               <span className="tutor-role">{tutor.role}</span>

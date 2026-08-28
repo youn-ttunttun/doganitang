@@ -39,14 +39,14 @@ export default function Hero() {
           </a>
         </div>
 
-        <dl className="hero-stats">
+        <div className="bento hero-stats">
           {stats.map((stat) => (
-            <div className="hero-stat" key={stat.label}>
-              <dt>{stat.value}</dt>
-              <dd>{stat.label}</dd>
+            <div className="tile tile--stat tile--hover s3" key={stat.label}>
+              <span className="stat-value">{stat.value}</span>
+              <span className="stat-label">{stat.label}</span>
             </div>
           ))}
-        </dl>
+        </div>
       </div>
     </div>
   )

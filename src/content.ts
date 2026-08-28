@@ -18,9 +18,9 @@ export const site = {
 }
 
 export const nav = [
-  { id: 'why', label: '왜 우리인가' },
   { id: 'material', label: '교재' },
   { id: 'curriculum', label: '커리큘럼' },
+  { id: 'why', label: '왜 우리인가' },
   { id: 'proof', label: '성적·후기' },
   { id: 'teachers', label: '선생님' },
 ]
@@ -39,15 +39,6 @@ export const stats = [
   { value: '주 2회', label: '1:1 과외' },
   { value: '12명', label: '개발진 · 튜터' },
 ]
-
-export const story = {
-  eyebrow: 'Our Story',
-  title: '“최하위권을 위한 커리큘럼이 없다”는\n생각에서 시작했습니다.',
-  paragraphs: [
-    'Teamlesson은 서울대 재학생 세 명으로 시작해 지난 2년간 50여 명의 학생을 지도해왔습니다.',
-    '그러던 중, 최하위권 학생들에게 적절한 커리큘럼이 전무하다는 생각이 들었습니다. 시중 교재는 이미 어느 정도 아는 학생을 전제로 쓰여 있었고, 진짜 처음부터 시작하는 학생이 붙잡을 만한 것이 없었습니다.',
-  ],
-}
 
 export const principles = [
   {
@@ -130,6 +121,11 @@ export const tutors = [
   { name: '서도연', role: '튜터', note: '2025 6월·9월 미적분 1등급' },
   { name: '홍정민', role: '튜터', note: '2026 6월·9월 확률과 통계 1등급' },
 ]
+
+export const audienceSection = {
+  eyebrow: 'For Whom',
+  title: '이런 학생을 위한 과외입니다',
+}
 
 export const audience = [
   '수학을 어디서부터 손대야 할지 모르겠는 학생',
@@ -232,22 +228,34 @@ export const material = {
   eyebrow: 'Our Textbook',
   title: '시중에 없어서, 직접 만들었습니다',
   paragraphs: [
+    'Teamlesson은 서울대 재학생 세 명으로 시작해 지난 2년간 50여 명의 학생을 지도해왔습니다. 그러던 중, 최하위권 학생들에게 적절한 커리큘럼이 전무하다는 생각이 들었습니다.',
     '노베이스 학생이 시중 교재를 펴면 첫 페이지부터 막힙니다. 이미 아는 것을 전제로 쓰여 있기 때문입니다.',
     '그래서 2025년 말부터 「Checklist」 시리즈를 직접 집필했습니다. 중등수학까지 거슬러 올라가 정말 필요한 개념만 골라 담았고, 수업과 함께 지금도 계속 고쳐 쓰고 있습니다.',
   ],
-  // public/ 폴더에 넣은 이미지의 파일명만 적으면 됩니다.
-  // 깔끔한 교재 사진으로 교체하면 더 좋습니다.
-  images: [
-    { src: 'story-1.webp', alt: 'Checklist 교재를 만들게 된 이야기' },
-    { src: 'story-2.webp', alt: 'Checklist 교재 소개' },
-    { src: 'story-3.webp', alt: 'Teamlesson 수업 기록' },
+  // 교재를 글자로 표현한 카드. 실제 교재 구성에 맞게 고치면 됩니다.
+  books: [
+    {
+      title: 'Checklist pre',
+      subject: '고등수학 Pre과정',
+      desc: '중등수학까지 거슬러 올라가 정말 필요한 개념만 골라 담았습니다.',
+    },
+    {
+      title: 'Checklist 대수',
+      subject: '대수 (구 수학1)',
+      desc: '지수·로그함수, 삼각함수, 수열을 노베이스 기준으로 다시 썼습니다.',
+    },
   ],
+
+  /**
+   * 교재 실물 사진.
+   * public/ 폴더에 넣고 파일명만 적으면 아래에 나란히 표시됩니다.
+   * 비워두면 이 영역은 나오지 않습니다.
+   *
+   * ⚠️ 인스타그램 카드 이미지 말고, 교재만 찍은 사진을 넣어주세요.
+   *    카드 이미지는 글자가 박혀 있어 옆 문장과 내용이 겹칩니다.
+   */
+  images: [] as { src: string; alt: string }[],
 }
 
 // ── 진단 테스트 안내 (첫 화면 미끼) ──────────────────────────
 
-export const diagnosticPromo = {
-  title: '3분이면 지금 어디서 막혔는지 알 수 있습니다',
-  sub: '12문항을 풀면 Pre부터 시작할지, 대수부터 시작할지 바로 알려드립니다.',
-  points: ['가입 없이 바로 응시', '연락처 없이 결과 확인', '결과에 맞는 시작점 추천'],
-}

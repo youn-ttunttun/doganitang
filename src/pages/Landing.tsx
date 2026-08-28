@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import About from '../components/About'
 import Apply from '../components/Apply'
+import Audience from '../components/Audience'
 import Curriculum from '../components/Curriculum'
-import DiagnosticPromo from '../components/DiagnosticPromo'
 import Faq from '../components/Faq'
 import Footer from '../components/Footer'
 import Hero from '../components/Hero'
@@ -29,15 +28,15 @@ export default function Landing() {
     <>
       <Nav />
       <main>
+        {/* 누구를 위한 무엇인가 → 그래서 뭘 만들었나 → 어떤 순서로 → 뭐가 다른가 → 누가 → 신청 */}
         <Hero />
         <Marquee />
-        <Positioning />
+        <Audience />
         <Material />
         <Curriculum />
-        <DiagnosticPromo />
-        <Proof />
-        <About />
+        <Positioning />
         <Teachers />
+        <Proof />
         <Faq />
         <Apply />
       </main>

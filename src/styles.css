@@ -2680,3 +2680,47 @@ textarea {
     grid-column: span 12;
   }
 }
+
+/* ── 관리자 설정 안내 ────────────────────────────────────── */
+
+.app-setup {
+  max-width: 520px;
+}
+
+.app-steps {
+  display: grid;
+  gap: 12px;
+  margin: 4px 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+.app-steps li::marker {
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.app-steps b {
+  color: var(--text);
+}
+
+.app-steps em {
+  font-style: normal;
+  color: var(--text-faint);
+}
+
+.app-steps a {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+.app-steps code,
+.app-hint code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--bg-muted);
+  font-size: 12.5px;
+  word-break: break-all;
+}

@@ -172,7 +172,7 @@ create policy "관리자만 문항 관리"
 
 -- 학생에게 내려가는 view — 정답 칸(answer, accept)이 없습니다.
 create or replace view public.diagnostic_public
-with (security_invoker = off) as
+with (security_invoker = false) as
   select id, position, type, concept, stage, prompt, choices, placeholder
   from public.diagnostic_questions
   where active
@@ -190,7 +190,7 @@ language sql
 immutable
 as $$
   select regexp_replace(
-    translate(lower(trim(value)), '−–—（），', '--- (),'),
+    translate(lower(trim(value)), '−–—（），', '---(),'),
     '\s', '', 'g'
   );
 $$;
@@ -258,7 +258,26 @@ grant execute on function public.grade_diagnostic(jsonb) to anon, authenticated;
 
 
 -- ═════════════════════════════════════════════════════════════
--- 4. 첫 관리자 지정
+-- 4. 접근 권한
+--
+--   아래는 "테이블에 손을 댈 수 있는가"이고, 실제로 어떤 행을 보고
+--   고칠 수 있는지는 위의 RLS 정책이 결정합니다. 둘 다 있어야 합니다.
+-- ═════════════════════════════════════════════════════════════
+
+-- 신청서: 누구나 넣을 수 있고, 읽고 고치는 건 로그인한 사람만 (그중 관리자만 통과)
+grant insert         on public.applications         to anon, authenticated;
+grant select, update on public.applications         to authenticated;
+
+-- 진단 문항 원본: 로그인한 사람만 (그중 관리자만 통과). anon에게는 권한을 주지 않습니다.
+grant select, insert, update, delete
+                     on public.diagnostic_questions to authenticated;
+
+-- 프로필
+grant select, update on public.profiles             to authenticated;
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 5. 첫 관리자 지정
 --
 --   ① 사이트의 /app/login 에서 회원가입을 먼저 합니다.
 --   ② 아래 이메일을 본인 것으로 바꾸고 이 문장만 다시 실행하세요.

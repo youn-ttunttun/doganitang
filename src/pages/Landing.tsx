@@ -29,15 +29,21 @@ export default function Landing() {
     <>
       <Nav />
       <main>
-        {/* 누구를 위한 무엇인가 → 그래서 뭘 만들었나 → 어떤 순서로 → 뭐가 다른가 → 누가 → 신청 */}
+        {/*
+          내 얘기다 → 그래서 뭘 만들었나 → 어떤 순서로 → 뭐가 다른가
+          → 정말 그런가(증거) → 누가 하나 → 얼마인가 → 남은 의문 → 신청
+
+          증거는 주장 바로 뒤에 와야 합니다. 사이에 다른 섹션이 끼면
+          '정말?' 하고 생긴 의심이 답을 못 만나고 식습니다.
+        */}
         <Hero />
         <Marquee />
         <Audience />
         <Material />
         <Curriculum />
         <Positioning />
-        <Teachers />
         <Proof />
+        <Teachers />
         <Pricing />
         <Faq />
         <Apply />

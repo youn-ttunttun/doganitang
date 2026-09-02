@@ -263,6 +263,14 @@ export const contentSpec: SectionSpec[] = [
       },
       { key: 'cta', label: '카드 버튼 문구', kind: 'text' },
       {
+        key: 'fallbackTitle',
+        label: '망설이는 사람용 — 제목',
+        kind: 'text',
+        hint: '비우면 이 안내가 나오지 않습니다',
+      },
+      { key: 'fallbackText', label: '망설이는 사람용 — 설명', kind: 'multiline' },
+      { key: 'fallbackCta', label: '망설이는 사람용 — 버튼', kind: 'text' },
+      {
         key: 'notes',
         label: '안내 문구',
         kind: 'strings',

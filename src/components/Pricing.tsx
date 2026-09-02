@@ -1,4 +1,5 @@
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight, Check, PencilRuler } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
@@ -54,6 +55,21 @@ export default function Pricing() {
           </article>
         ))}
       </div>
+
+      {/* 가격을 보고 망설이는 사람이 그냥 나가지 않도록, 돈 들지 않는 다음 걸음을 둡니다 */}
+      {pricing.fallbackTitle && (
+        <div className="plan-fallback">
+          <div>
+            <strong>{pricing.fallbackTitle}</strong>
+            <p>{pricing.fallbackText}</p>
+          </div>
+          <Link className="btn btn-primary" to="/diagnostic">
+            <PencilRuler size={16} />
+            {pricing.fallbackCta}
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+      )}
 
       {pricing.notes.length > 0 && (
         <ul className="plan-notes">

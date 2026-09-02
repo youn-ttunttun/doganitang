@@ -3048,3 +3048,35 @@ textarea {
   position: absolute;
   left: 4px;
 }
+
+/* 가격을 보고 망설이는 사람에게 주는 다음 걸음 */
+.plan-fallback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 14px;
+  padding: 22px 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.plan-fallback strong {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.plan-fallback p {
+  margin-top: 5px;
+  max-width: 52ch;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+.plan-fallback .btn {
+  flex-shrink: 0;
+}

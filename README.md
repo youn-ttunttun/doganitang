@@ -116,6 +116,26 @@ where id = (select id from auth.users where email = 'your@email.com');
 > anon key는 브라우저에 노출되는 공개 키입니다. 신청서 **작성만** 허용되고
 > 조회·수정·삭제는 RLS 정책으로 막혀 있어, 다른 사람의 신청 내용을 볼 수 없습니다.
 
+## 배포
+
+**Vercel** (기본) — `main` 브랜치에 푸시하면 자동으로 다시 배포됩니다.
+저장소를 Import 할 때 Environment Variables에 아래를 넣어주세요.
+
+```
+VITE_SUPABASE_URL        https://…supabase.co
+VITE_SUPABASE_ANON_KEY   sb_publishable_…
+```
+
+도메인을 사서 연결하면 `vite.config.ts` 의 `SITE_URL` 기본값을 새 주소로
+바꿔주세요. 링크 공유 미리보기 이미지에 쓰입니다.
+
+**GitHub Pages** — `.github/workflows/deploy.yml` 로도 같이 배포됩니다.
+하위 경로에 올라가므로 워크플로에서 `VITE_BASE` 를 넘겨줍니다. 쓰지 않게
+되면 이 워크플로를 지워도 됩니다.
+
+> 어느 쪽을 쓰든 **Supabase의 Authentication → URL Configuration** 에
+> 그 주소를 Site URL 로 넣어야 로그인 메일의 링크가 제대로 돌아옵니다.
+
 ## 앞으로의 단계
 
 - **완료** 홍보 페이지 + 무료 온라인 진단 테스트 + 신청 폼

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { nav, resultCases, reviews, site } from '../content'
 import { useScrolled } from '../hooks'
+import { useContent } from '../lib/siteContent'
 
 export default function Nav() {
+  const { nav, resultCases, reviews, site } = useContent()
   const scrolled = useScrolled()
   const [open, setOpen] = useState(false)
 

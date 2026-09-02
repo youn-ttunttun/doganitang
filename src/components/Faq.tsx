@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { faqs } from '../content'
+import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
 export default function Faq() {
+  const { faqs } = useContent()
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (

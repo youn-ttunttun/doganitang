@@ -1,7 +1,8 @@
-import { curriculum, principles } from '../content'
+import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
 export default function Curriculum() {
+  const { curriculum, principles } = useContent()
   return (
     <Section
       id="curriculum"

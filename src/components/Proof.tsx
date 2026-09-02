@@ -1,10 +1,11 @@
 import { Quote, TrendingUp } from 'lucide-react'
-import { resultCases, reviews } from '../content'
 import { asset } from '../lib/asset'
+import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
 /** 성적 사례와 후기. content.ts의 두 배열이 모두 비어 있으면 섹션을 만들지 않습니다. */
 export default function Proof() {
+  const { resultCases, reviews } = useContent()
   if (resultCases.length === 0 && reviews.length === 0) return null
 
   return (

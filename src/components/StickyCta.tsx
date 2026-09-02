@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Instagram, PencilRuler } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { site } from '../content'
+import { useContent } from '../lib/siteContent'
 
 /**
  * 아래에 붙는 CTA 바.
@@ -9,6 +9,7 @@ import { site } from '../content'
  * (바로 앞에 신청 폼이 있는데 버튼이 계속 따라다닐 이유가 없습니다)
  */
 export default function StickyCta() {
+  const { site } = useContent()
   const [shown, setShown] = useState(false)
 
   useEffect(() => {

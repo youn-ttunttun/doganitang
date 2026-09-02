@@ -1,5 +1,5 @@
 import { Navigate, NavLink, Outlet } from 'react-router-dom'
-import { FileText, ListChecks, LogOut } from 'lucide-react'
+import { FileText, ListChecks, LogOut, Type } from 'lucide-react'
 import { site } from '../../content'
 import { signOut, useAuth } from '../../lib/auth'
 
@@ -34,6 +34,10 @@ export default function AppShell() {
           <nav className="app-nav">
             {role === 'admin' && (
               <>
+                <NavLink to="/app/content">
+                  <Type size={15} />
+                  사이트 문구
+                </NavLink>
                 <NavLink to="/app/questions">
                   <ListChecks size={15} />
                   진단 문항

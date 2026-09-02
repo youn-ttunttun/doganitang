@@ -1,8 +1,9 @@
 import { X, Check } from 'lucide-react'
-import { positioning } from '../content'
+import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
 export default function Positioning() {
+  const { positioning } = useContent()
   return (
     <Section
       id="why"

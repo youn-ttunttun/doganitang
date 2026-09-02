@@ -1,11 +1,12 @@
 import { Check } from 'lucide-react'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { audience, audienceSection } from '../content'
+import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
 /** 첫 화면 바로 다음 — "내 얘기네" 하고 걸리는 자리입니다. */
 export default function Audience() {
+  const { audience, audienceSection } = useContent()
   return (
     <Section id="audience" tone="muted" eyebrow={audienceSection.eyebrow} title={audienceSection.title}>
       <ul className="audience-grid">

@@ -1,7 +1,8 @@
-import { leads, tutors } from '../content'
+import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
 export default function Teachers() {
+  const { leads, tutors } = useContent()
   return (
     <Section
       id="teachers"

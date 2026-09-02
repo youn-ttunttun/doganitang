@@ -2746,3 +2746,139 @@ textarea {
   color: var(--text);
 }
 
+
+/* ── 사이트 문구 편집 화면 ───────────────────────────────── */
+
+.content-editor {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.content-nav {
+  display: grid;
+  gap: 2px;
+  position: sticky;
+  top: 76px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+}
+
+.content-nav button {
+  padding: 9px 12px;
+  border: none;
+  border-radius: var(--radius);
+  background: transparent;
+  font-size: 13.5px;
+  text-align: left;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.content-nav button:hover {
+  background: var(--bg-muted);
+  color: var(--text);
+}
+
+.content-nav button.is-active {
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.content-panel {
+  display: grid;
+  gap: 20px;
+  padding: 26px 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+}
+
+.content-panel-head h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.content-panel-head p {
+  margin-top: 6px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+.content-panel .field-label em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+.content-panel .app-hint {
+  display: block;
+  margin: 0 0 8px;
+}
+
+.content-panel textarea,
+.content-panel input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 14.5px;
+  line-height: 1.6;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.content-panel textarea:focus,
+.content-panel input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+}
+
+/* 목록형 항목 카드 */
+.content-row {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 10px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-muted);
+}
+
+.content-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.content-row-head strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .content-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .content-nav {
+    position: static;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    overflow-x: auto;
+  }
+
+  .content-panel {
+    padding: 20px;
+  }
+}

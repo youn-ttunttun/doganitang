@@ -1,7 +1,9 @@
-import { scoreBadges } from '../content'
+import { useContent } from '../lib/siteContent'
 
-/** 성적 변화 배지가 흐르는 띠. content.ts의 scoreBadges가 비어 있으면 렌더링하지 않습니다. */
+/** 성적 변화 배지가 흐르는 띠. 등록된 기록이 없으면 렌더링하지 않습니다. */
 export default function Marquee() {
+  const { scoreBadges } = useContent()
+
   if (scoreBadges.length === 0) return null
 
   // 끊김 없이 이어지도록 같은 목록을 두 번 이어 붙입니다.

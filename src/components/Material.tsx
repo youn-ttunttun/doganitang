@@ -1,9 +1,10 @@
 import { BookOpen } from 'lucide-react'
-import { material } from '../content'
 import { asset } from '../lib/asset'
+import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
 export default function Material() {
+  const { material } = useContent()
   return (
     <Section id="material" tone="muted" eyebrow={material.eyebrow} title={material.title}>
       <div className="bento">

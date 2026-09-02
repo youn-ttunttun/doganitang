@@ -259,3 +259,34 @@ export const material = {
 
 // ── 진단 테스트 안내 (첫 화면 미끼) ──────────────────────────
 
+
+
+// ─────────────────────────────────────────────────────────────
+// 위의 모든 문구를 한 덩어리로 묶은 것.
+//
+// 관리자 화면에서 고친 문구가 있으면 그것이 이 기본값 위에 덮여
+// 쓰입니다. 고친 적이 없는 항목은 여기 적힌 값이 그대로 나옵니다.
+// (src/lib/siteContent.ts 참고)
+// ─────────────────────────────────────────────────────────────
+
+export const defaultContent = {
+  site,
+  nav,
+  hero,
+  stats,
+  principles,
+  curriculum,
+  leads,
+  tutors,
+  audienceSection,
+  audience,
+  faqs,
+  apply,
+  scoreBadges,
+  resultCases,
+  reviews,
+  positioning,
+  material,
+}
+
+export type SiteContent = typeof defaultContent

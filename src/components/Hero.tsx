@@ -1,8 +1,10 @@
 import { ArrowRight, PencilRuler } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { hero, stats } from '../content'
+import { useContent } from '../lib/siteContent'
 
 export default function Hero() {
+  const { hero, stats } = useContent()
+
   return (
     <div className="hero" id="top">
       <div className="hero-grid" aria-hidden="true" />

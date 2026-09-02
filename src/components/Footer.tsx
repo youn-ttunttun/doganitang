@@ -1,7 +1,8 @@
 import { Instagram, Mail } from 'lucide-react'
-import { site } from '../content'
+import { useContent } from '../lib/siteContent'
 
 export default function Footer() {
+  const { site } = useContent()
   return (
     <footer className="footer">
       <div className="container footer-inner">

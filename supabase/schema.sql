@@ -285,3 +285,39 @@ grant select, update on public.profiles             to authenticated;
 
 -- update public.profiles set role = 'admin'
 -- where id = (select id from auth.users where email = 'your@email.com');
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 6. 사이트 문구
+--
+--   홍보 페이지의 모든 문구를 문서 하나에 담습니다.
+--   관리자 화면(/app/content)에서 고치면 이 행이 갱신됩니다.
+--   비어 있으면 코드에 있는 기본 문구가 그대로 쓰입니다.
+-- ═════════════════════════════════════════════════════════════
+
+create table if not exists public.site_content (
+  id         text primary key default 'main',
+  updated_at timestamptz not null default now(),
+  updated_by uuid references auth.users on delete set null,
+  data       jsonb not null default '{}'::jsonb
+);
+
+alter table public.site_content enable row level security;
+
+-- 방문자는 읽을 수 있어야 합니다 (홍보 페이지에 그대로 쓰이는 문구입니다)
+drop policy if exists "누구나 문구 조회" on public.site_content;
+create policy "누구나 문구 조회"
+  on public.site_content for select
+  to anon, authenticated
+  using (true);
+
+-- 고치는 건 관리자만
+drop policy if exists "관리자만 문구 수정" on public.site_content;
+create policy "관리자만 문구 수정"
+  on public.site_content for all
+  to authenticated
+  using (public.is_admin())
+  with check (public.is_admin());
+
+grant select                 on public.site_content to anon, authenticated;
+grant insert, update, delete on public.site_content to authenticated;

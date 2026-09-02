@@ -164,6 +164,18 @@ function FieldEditor({
     )
   }
 
+  if (field.kind === 'toggle') {
+    return (
+      <label className="app-toggle">
+        <input type="checkbox" checked={value === true} onChange={(e) => onChange(e.target.checked)} />
+        <span>
+          {field.label}
+          {field.hint && <em> — {field.hint}</em>}
+        </span>
+      </label>
+    )
+  }
+
   if (field.kind === 'strings') {
     const items = Array.isArray(value) ? (value as string[]) : []
     return (
@@ -264,7 +276,9 @@ function FieldEditor({
         className="btn btn-ghost btn-sm"
         onClick={() => {
           const blank: Row = {}
-          for (const sub of field.fields) blank[sub.key] = sub.kind === 'strings' ? [] : ''
+          for (const sub of field.fields) {
+            blank[sub.key] = sub.kind === 'strings' ? [] : sub.kind === 'toggle' ? true : ''
+          }
           onChange([...rows, blank])
         }}
       >

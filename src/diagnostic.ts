@@ -187,15 +187,15 @@ export function isCorrect(question: Question, answer: Answer): boolean {
 }
 
 // ── 결과 판정 ────────────────────────────────────────────────
-// min 은 맞힌 비율(0~1)의 하한입니다. 문항 수를 바꿔도 그대로 동작합니다.
-// 구간이나 문구를 조정하고 싶으면 아래 VERDICTS 를 고치면 됩니다.
+// 판정 문구와 기준선은 관리자 화면(사이트 문구 → 진단 결과 판정)에서
+// 고칩니다. 여기에는 고르는 규칙만 둡니다.
 
 export type Verdict = {
-  code: string
+  /** 이 판정이 적용되는 최소 정답률. 100점 만점 기준으로 적습니다 (예: 75) */
+  min: number
   title: string
   body: string
   course: string
-  tone: 'start' | 'mid' | 'ready'
   /**
    * Pre과정 대상인지.
    * false 면 Pre를 들을 필요가 없을 만큼 기초가 잡힌 경우로,
@@ -204,52 +204,35 @@ export type Verdict = {
   eligible: boolean
 }
 
-const VERDICTS: { min: number; verdict: Verdict }[] = [
-  {
-    min: 0.75,
-    verdict: {
-      code: 'READY',
-      title: 'Pre과정을 듣기에는 이미 기초가 잡혀 있습니다',
-      body: '중등수학과 고1 개념이 대체로 자리 잡혀 있습니다. Pre과정은 수학을 처음부터 다시 세워야 하는 학생을 위한 과정이라, 지금 상태에서는 시간이 아깝습니다. 대수나 미적분1부터 바로 들어가는 편이 맞습니다.',
-      course: '대수 · 미적분1',
-      tone: 'ready',
-      eligible: false,
-    },
-  },
-  {
-    min: 0.45,
-    verdict: {
-      code: 'MID',
-      title: 'Pre과정 일부를 채우고 대수로 넘어가면 됩니다',
-      body: '기초가 아주 없지는 않지만, 고1 개념에서 빈틈이 보입니다. 이 상태로 대수에 들어가면 중간부터 다시 막힙니다. 중등수학 전체를 다시 볼 필요는 없고, 무너진 단원만 Pre과정으로 짧게 채운 뒤 넘어가는 편이 결과적으로 빠릅니다.',
-      course: 'Pre (일부) → 대수',
-      tone: 'mid',
-      eligible: true,
-    },
-  },
-  {
-    min: 0,
-    verdict: {
-      code: 'START',
-      title: 'Pre과정부터 시작하는 것을 권합니다',
-      body: '지금 대수나 미적분1을 바로 들어가면 첫 주부터 막힙니다. 중등수학의 핵심 개념을 먼저 채우는 Pre과정부터 시작하는 편이 결과적으로 훨씬 빠릅니다. 여기서 시작한 학생이 가장 많고, 그러라고 만든 과정입니다.',
-      course: 'Pre과정',
-      tone: 'start',
-      eligible: true,
-    },
-  },
-]
+/** 결과 화면의 점수 색을 정합니다. 데이터로 관리할 필요는 없어 여기서 정합니다. */
+export type Tone = 'start' | 'mid' | 'ready'
 
-/** 맞힌 비율(0~1)로 결과 문구를 고릅니다. */
-export function verdictFor(ratio: number): Verdict {
-  return (VERDICTS.find((v) => ratio >= v.min) ?? VERDICTS[VERDICTS.length - 1]).verdict
+export function toneOf(verdict: Verdict, index: number, total: number): Tone {
+  if (!verdict.eligible) return 'ready'
+  return index === total - 1 ? 'start' : 'mid'
+}
+
+/**
+ * 맞힌 비율(0~1)에 해당하는 판정을 고릅니다.
+ * 기준이 높은 것부터 확인하므로 목록은 내림차순으로 둡니다.
+ */
+export function pickVerdict(
+  verdicts: Verdict[],
+  ratio: number,
+): { verdict: Verdict; index: number } | null {
+  if (verdicts.length === 0) return null
+
+  const sorted = [...verdicts].sort((a, b) => Number(b.min) - Number(a.min))
+  const index = sorted.findIndex((v) => ratio * 100 >= Number(v.min))
+  const found = index === -1 ? sorted.length - 1 : index
+
+  return { verdict: sorted[found], index: found }
 }
 
 export function gradeDiagnostic(answers: Answer[]): {
   correct: number
   total: number
   ratio: number
-  verdict: Verdict
   weakConcepts: string[]
 } {
   const total = questions.length
@@ -263,5 +246,5 @@ export function gradeDiagnostic(answers: Answer[]): {
 
   const ratio = total === 0 ? 0 : correct / total
 
-  return { correct, total, ratio, verdict: verdictFor(ratio), weakConcepts }
+  return { correct, total, ratio, weakConcepts }
 }

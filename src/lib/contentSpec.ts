@@ -9,6 +9,7 @@ export type Field =
   | { key: string; label: string; kind: 'text'; hint?: string }
   | { key: string; label: string; kind: 'multiline'; hint?: string }
   | { key: string; label: string; kind: 'strings'; hint?: string }
+  | { key: string; label: string; kind: 'toggle'; hint?: string }
   | { key: string; label: string; kind: 'rows'; titleKey: string; fields: Field[]; hint?: string }
 
 export type SectionSpec = {
@@ -290,6 +291,36 @@ export const contentSpec: SectionSpec[] = [
         fields: [
           { key: 'q', label: '질문', kind: 'text' },
           { key: 'a', label: '답변', kind: 'multiline' },
+        ],
+      },
+    ],
+  },
+  {
+    key: 'verdicts',
+    label: '진단 결과 판정',
+    desc: '진단 점수에 따라 어떤 결과를 보여줄지 정합니다. 기준이 높은 것부터 위에 두세요.',
+    fields: [
+      {
+        key: '',
+        label: '판정',
+        kind: 'rows',
+        titleKey: 'title',
+        fields: [
+          {
+            key: 'min',
+            label: '기준 점수',
+            kind: 'text',
+            hint: '100점 만점 기준. 이 점수 이상이면 이 판정이 나옵니다 (예: 75)',
+          },
+          { key: 'title', label: '결과 제목', kind: 'text' },
+          { key: 'body', label: '결과 설명', kind: 'multiline' },
+          { key: 'course', label: '추천 시작점', kind: 'text', hint: '예) Pre과정' },
+          {
+            key: 'eligible',
+            label: 'Pre과정 대상',
+            kind: 'toggle',
+            hint: '끄면 정밀 상담 대신 대수·미적분1 상담으로 안내합니다',
+          },
         ],
       },
     ],

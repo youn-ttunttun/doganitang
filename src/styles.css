@@ -3181,3 +3181,8 @@ textarea {
 .quiz-cta-actions--plain {
   margin-top: 20px;
 }
+
+.app-toggle em {
+  font-style: normal;
+  color: var(--text-faint);
+}

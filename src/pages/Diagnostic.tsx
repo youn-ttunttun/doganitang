@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, Clock, FileText, Loader2, RotateCcw } from 'lucide-react'
 import { consulting, diagnosticInfo, site } from '../content'
-import { stageLabel, verdictFor } from '../diagnostic'
+import { useContent } from '../lib/siteContent'
+import { pickVerdict, stageLabel, toneOf } from '../diagnostic'
 import { gradeAnswers, loadQuestions, type GradeResult, type LoadedQuestions } from '../lib/diagnosticStore'
 
 type Phase = 'intro' | 'quiz' | 'result'
 
 export default function Diagnostic() {
+  const { verdicts } = useContent()
   const [loaded, setLoaded] = useState<LoadedQuestions | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -27,7 +29,12 @@ export default function Diagnostic() {
 
   const question = questions[index]
   const answeredCount = questions.filter((q) => (answers[q.id] ?? '') !== '').length
-  const verdict = useMemo(() => (result ? verdictFor(result.ratio) : null), [result])
+  const picked = useMemo(
+    () => (result ? pickVerdict(verdicts, result.ratio) : null),
+    [result, verdicts],
+  )
+  const verdict = picked?.verdict ?? null
+  const tone = picked ? toneOf(picked.verdict, picked.index, verdicts.length) : 'start'
   const weakConcepts = useMemo(
     () => (result ? result.details.filter((d) => d.state !== 'correct').map((d) => d.concept) : []),
     [result],
@@ -48,7 +55,9 @@ export default function Diagnostic() {
       try {
         sessionStorage.setItem(
           'teamlesson:diagnostic',
-          `진단 결과 ${graded.correct}/${graded.total} · 추천 시작점: ${verdictFor(graded.ratio).course}`,
+          `진단 결과 ${graded.correct}/${graded.total} · 추천 시작점: ${
+            pickVerdict(verdicts, graded.ratio)?.verdict.course ?? '상담 시 안내'
+          }`,
         )
       } catch {
         // 시크릿 모드 등에서 저장이 막힐 수 있습니다. 결과 화면은 그대로 보입니다.
@@ -210,7 +219,7 @@ export default function Diagnostic() {
           {phase === 'result' && result && verdict && (
             <main className="quiz-inner quiz-result">
               <p className="eyebrow">Result</p>
-              <div className={`quiz-score quiz-score--${verdict.tone}`}>
+              <div className={`quiz-score quiz-score--${tone}`}>
                 <strong>
                   {result.correct}
                   <small>/ {result.total}</small>

@@ -1,5 +1,4 @@
 import { questions as builtInQuestions, isCorrect, type Question, type Stage } from '../diagnostic'
-import { asset } from './asset'
 import { getClient, isBackendReady } from './supabase'
 
 /** 학생 화면에 내려가는 문항 (정답 없음) */
@@ -33,12 +32,11 @@ export type GradeResult = {
 /**
  * 문항을 어디서 가져왔는지.
  *  db   — Supabase. 정답이 브라우저로 내려오지 않고 서버에서 채점합니다.
- *  json — public/questions.json. 편집기에서 내보낸 파일입니다.
- *  code — src/diagnostic.ts 의 기본 문항.
+ *  code — src/diagnostic.ts 의 기본 문항. DB에 문항이 없을 때만 쓰입니다.
  */
-export type Source = 'db' | 'json' | 'code'
+export type Source = 'db' | 'code'
 
-/** json·code 출처일 때만 채워집니다. 이때는 브라우저에서 채점합니다. */
+/** code 출처일 때만 채워집니다. 이때는 브라우저에서 채점합니다. */
 type Secrets = Map<string, { type: 'choice' | 'short'; answer: number | null; accept: string[] }>
 
 export type LoadedQuestions = {
@@ -92,41 +90,12 @@ function splitEditable(rows: EditableQuestion[]): LoadedQuestions {
   }
 }
 
-/** 편집기가 내보내는 JSON이 우리가 아는 모양인지 확인합니다. */
-export function parseQuestionFile(raw: unknown): EditableQuestion[] | null {
-  const rows = Array.isArray(raw) ? raw : (raw as { questions?: unknown })?.questions
-  if (!Array.isArray(rows)) return null
-
-  const parsed: EditableQuestion[] = []
-  for (const [index, item] of rows.entries()) {
-    const row = item as Partial<EditableQuestion>
-    if (typeof row?.prompt !== 'string' || (row.type !== 'choice' && row.type !== 'short')) {
-      return null
-    }
-    parsed.push({
-      id: typeof row.id === 'string' ? row.id : `q-${index}`,
-      position: typeof row.position === 'number' ? row.position : index,
-      active: row.active !== false,
-      type: row.type,
-      concept: typeof row.concept === 'string' ? row.concept : '',
-      stage: (row.stage ?? 'middle') as Stage,
-      prompt: row.prompt,
-      choices: Array.isArray(row.choices) ? row.choices.map(String) : [],
-      placeholder: typeof row.placeholder === 'string' ? row.placeholder : '',
-      answer: typeof row.answer === 'number' ? row.answer : null,
-      accept: Array.isArray(row.accept) ? row.accept.map(String) : [],
-    })
-  }
-  return parsed
-}
-
 // ── 불러오기 ─────────────────────────────────────────────────
 
 /**
- * 출제할 문항을 가져옵니다. 우선순위는 아래와 같습니다.
- *   1) Supabase에 등록된 문항  (연결돼 있고 문항이 있을 때)
- *   2) public/questions.json   (편집기에서 내보내 올린 파일)
- *   3) src/diagnostic.ts       (기본 문항)
+ * 출제할 문항을 가져옵니다.
+ * Supabase에 등록된 문항을 쓰고, 아직 없거나 연결이 안 되면
+ * src/diagnostic.ts 의 기본 문항으로 진행합니다.
  */
 export async function loadQuestions(): Promise<LoadedQuestions> {
   if (isBackendReady) {
@@ -154,24 +123,7 @@ export async function loadQuestions(): Promise<LoadedQuestions> {
     }
   }
 
-  const fromFile = await loadQuestionFile()
-  if (fromFile) return { ...splitEditable(fromFile), source: 'json' }
-
   return splitEditable(builtInAsEditable())
-}
-
-/** public/questions.json 을 읽습니다. 파일이 없으면 null. */
-export async function loadQuestionFile(): Promise<EditableQuestion[] | null> {
-  try {
-    const response = await fetch(asset('questions.json'), { cache: 'no-store' })
-    if (!response.ok) return null
-    const parsed = parseQuestionFile(await response.json())
-    if (!parsed || parsed.length === 0) return null
-    return parsed
-  } catch {
-    // 파일이 없는 게 정상입니다. 기본 문항으로 넘어갑니다.
-    return null
-  }
 }
 
 // ── 채점 ─────────────────────────────────────────────────────

@@ -2725,7 +2725,7 @@ textarea {
   word-break: break-all;
 }
 
-/* ── 간이 편집기 ─────────────────────────────────────────── */
+/* ── 관리자 화면 보조 ────────────────────────────────────── */
 
 .app-guide {
   margin-bottom: 20px;
@@ -2746,15 +2746,3 @@ textarea {
   color: var(--text);
 }
 
-/* 푸터의 눈에 띄지 않는 편집기 진입점 */
-.footer-admin {
-  float: right;
-  padding: 0 10px;
-  color: var(--text-faint);
-  opacity: 0.35;
-  transition: opacity 0.15s ease;
-}
-
-.footer-admin:hover {
-  opacity: 1;
-}

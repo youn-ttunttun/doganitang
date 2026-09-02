@@ -1,5 +1,4 @@
 import { Instagram, Mail } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import { site } from '../content'
 
 export default function Footer() {
@@ -29,10 +28,6 @@ export default function Footer() {
 
       <div className="container footer-bottom">
         <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
-        {/* 운영자용 문항 편집기 — 눈에 띄지 않게 두었습니다 */}
-        <Link className="footer-admin" to="/edit" title="문항 편집기">
-          ·
-        </Link>
       </div>
     </footer>
   )

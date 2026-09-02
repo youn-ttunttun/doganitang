@@ -46,10 +46,16 @@ jobs:
           VITE_BASE: /doganitang/
           # 링크 공유 미리보기 이미지에 쓰는 사이트 전체 주소
           VITE_SITE_URL: https://youn-ttunttun.github.io/doganitang/
-          # Supabase를 연결하면 저장소 Settings > Secrets에 값을 넣어주세요.
-          # 값이 없으면 사이트는 백엔드 없이 그대로 동작합니다.
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          # Supabase 접속 정보.
+          #
+          # publishable 키는 원래 브라우저에 노출되는 공개 키입니다. 빌드 결과물
+          # 안에 어차피 들어가므로 여기 적어도 위험이 늘지 않습니다. 실제 보호는
+          # DB의 RLS 정책이 합니다. (supabase/schema.sql 참고)
+          #
+          # 나중에 값을 바꾸고 싶으면 저장소 Settings > Secrets에 같은 이름으로
+          # 넣으면 그쪽이 우선 적용됩니다.
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://isnjjgnmfphxngcyfpjk.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'sb_publishable_WlMA3lO9wFBAUAM1xzs-aQ_3aqAM-cb' }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

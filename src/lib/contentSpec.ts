@@ -234,6 +234,35 @@ export const contentSpec: SectionSpec[] = [
     ],
   },
   {
+    key: 'pricing',
+    label: '수강료',
+    desc: '비워두면 이 섹션이 나오지 않습니다. 금액을 적으면 그때 켜집니다.',
+    fields: [
+      { key: 'eyebrow', label: '라벨', kind: 'text' },
+      { key: 'title', label: '제목', kind: 'text' },
+      { key: 'lead', label: '설명', kind: 'multiline' },
+      {
+        key: 'plans',
+        label: '수강 상품',
+        kind: 'rows',
+        titleKey: 'name',
+        fields: [
+          { key: 'name', label: '이름', kind: 'text', hint: '예) 1:1 정규반' },
+          { key: 'price', label: '금액', kind: 'text', hint: '예) 45만원 · 문의' },
+          { key: 'unit', label: '단위', kind: 'text', hint: '예) 월 · 주 2회 기준' },
+          { key: 'desc', label: '한 줄 설명', kind: 'text' },
+          { key: 'features', label: '포함 내용', kind: 'strings' },
+        ],
+      },
+      {
+        key: 'notes',
+        label: '안내 문구',
+        kind: 'strings',
+        hint: '표 아래 작은 글씨. 교재비, 결제 방식, 환불 규정 등',
+      },
+    ],
+  },
+  {
     key: 'faqs',
     label: '자주 묻는 질문',
     fields: [

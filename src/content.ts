@@ -23,6 +23,7 @@ export const nav = [
   { id: 'why', label: '왜 우리인가' },
   { id: 'proof', label: '성적·후기' },
   { id: 'teachers', label: '선생님' },
+  { id: 'pricing', label: '수강료' },
 ]
 
 export const hero = {
@@ -161,6 +162,28 @@ export const faqs = [
   },
 ]
 
+// ── 수강료 ───────────────────────────────────────────────────
+// plans 가 비어 있으면 이 섹션은 화면에 나오지 않습니다.
+// 관리자 화면(사이트 문구 → 수강료)에서 채우면 그때 켜집니다.
+
+export type Plan = {
+  name: string // 예) 1:1 정규반
+  price: string // 예) 45만원
+  unit: string // 예) 월 · 주 2회 기준
+  desc: string
+  features: string[]
+  highlight?: boolean // 가장 추천하는 것 하나에 표시
+}
+
+export const pricing = {
+  eyebrow: 'Tuition',
+  title: '수강료',
+  lead: '',
+  plans: [] as Plan[],
+  /** 표 아래 작은 글씨 — 교재비, 결제 방식, 환불 규정 등 */
+  notes: [] as string[],
+}
+
 export const apply = {
   eyebrow: 'Apply',
   title: '지금 시작해도 늦지 않았습니다',
@@ -281,6 +304,7 @@ export const defaultContent = {
   audienceSection,
   audience,
   faqs,
+  pricing,
   apply,
   scoreBadges,
   resultCases,

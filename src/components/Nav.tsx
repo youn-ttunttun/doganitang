@@ -5,13 +5,17 @@ import { useScrolled } from '../hooks'
 import { useContent } from '../lib/siteContent'
 
 export default function Nav() {
-  const { nav, resultCases, reviews, site } = useContent()
+  const { nav, resultCases, reviews, site, pricing } = useContent()
   const scrolled = useScrolled()
   const [open, setOpen] = useState(false)
 
-  // 후기·성적 자료가 아직 없으면 해당 메뉴는 감춥니다.
+  // 아직 채우지 않은 섹션은 메뉴에서도 감춥니다.
   const hasProof = resultCases.length > 0 || reviews.length > 0
-  const items = nav.filter((item) => item.id !== 'proof' || hasProof)
+  const items = nav.filter((item) => {
+    if (item.id === 'proof') return hasProof
+    if (item.id === 'pricing') return pricing.plans.length > 0
+    return true
+  })
 
   // 메뉴가 열려 있는 동안에는 뒤 배경이 스크롤되지 않도록 잠급니다.
   useEffect(() => {

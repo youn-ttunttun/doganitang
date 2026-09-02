@@ -2891,3 +2891,97 @@ textarea {
     padding: 20px;
   }
 }
+
+/* ── 수강료 ──────────────────────────────────────────────── */
+
+.plan-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.plan-desc {
+  margin-top: 6px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+}
+
+.tile--feature .plan-desc {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.plan-price {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 18px 0;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+
+.plan-price small {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--text-faint);
+}
+
+.tile--feature .plan-price {
+  border-bottom-color: rgba(255, 255, 255, 0.28);
+}
+
+.tile--feature .plan-price small {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.plan-features {
+  list-style: none;
+  display: grid;
+  gap: 9px;
+  margin-top: auto;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.plan-features svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--brand);
+}
+
+.tile--feature .plan-features li,
+.tile--feature .plan-features svg {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.plan-notes {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  margin-top: 22px;
+}
+
+.plan-notes li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-faint);
+}
+
+.plan-notes li::before {
+  content: '·';
+  position: absolute;
+  left: 4px;
+}

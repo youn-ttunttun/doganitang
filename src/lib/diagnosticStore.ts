@@ -1,9 +1,5 @@
-import {
-  gradeDiagnostic as gradeLocally,
-  questions as localQuestions,
-  isCorrect,
-  type Stage,
-} from '../diagnostic'
+import { questions as builtInQuestions, isCorrect, type Question, type Stage } from '../diagnostic'
+import { asset } from './asset'
 import { getClient, isBackendReady } from './supabase'
 
 /** 학생 화면에 내려가는 문항 (정답 없음) */
@@ -17,8 +13,8 @@ export type PublicQuestion = {
   placeholder: string
 }
 
-/** 관리자 화면에서 다루는 문항 (정답 포함) */
-export type AdminQuestion = PublicQuestion & {
+/** 편집 화면에서 다루는 문항 (정답 포함) */
+export type EditableQuestion = PublicQuestion & {
   position: number
   active: boolean
   answer: number | null
@@ -34,60 +30,158 @@ export type GradeResult = {
   details: { id: string; concept: string; state: GradeState }[]
 }
 
-/** DB에 문항이 없을 때 쓰는 기본 문항 (src/diagnostic.ts) */
-function localAsPublic(): PublicQuestion[] {
-  return localQuestions.map((q, i) => ({
-    id: `local-${i}`,
-    type: q.type,
-    concept: q.concept,
-    stage: q.stage,
-    prompt: q.prompt,
-    choices: q.type === 'choice' ? q.choices : [],
-    placeholder: q.type === 'short' ? (q.placeholder ?? '') : '',
-  }))
+/**
+ * 문항을 어디서 가져왔는지.
+ *  db   — Supabase. 정답이 브라우저로 내려오지 않고 서버에서 채점합니다.
+ *  json — public/questions.json. 편집기에서 내보낸 파일입니다.
+ *  code — src/diagnostic.ts 의 기본 문항.
+ */
+export type Source = 'db' | 'json' | 'code'
+
+/** json·code 출처일 때만 채워집니다. 이때는 브라우저에서 채점합니다. */
+type Secrets = Map<string, { type: 'choice' | 'short'; answer: number | null; accept: string[] }>
+
+export type LoadedQuestions = {
+  questions: PublicQuestion[]
+  source: Source
+  secrets: Secrets | null
 }
 
-/**
- * 출제할 문항을 가져옵니다.
- * Supabase가 연결돼 있고 등록된 문항이 있으면 그걸 쓰고,
- * 아니면 코드에 들어 있는 기본 문항으로 진행합니다.
- */
-export async function loadQuestions(): Promise<{ questions: PublicQuestion[]; source: 'db' | 'local' }> {
-  if (!isBackendReady) return { questions: localAsPublic(), source: 'local' }
+// ── 변환 ─────────────────────────────────────────────────────
 
-  const { data, error } = await getClient()
-    .from('diagnostic_public')
-    .select('id, type, concept, stage, prompt, choices, placeholder')
-
-  if (error || !data || data.length === 0) {
-    if (error) console.warn('[diagnostic] 문항을 불러오지 못해 기본 문항으로 진행합니다:', error.message)
-    return { questions: localAsPublic(), source: 'local' }
+export function toEditable(question: Question, index: number): EditableQuestion {
+  return {
+    id: `q-${index}`,
+    position: index,
+    active: true,
+    type: question.type,
+    concept: question.concept,
+    stage: question.stage,
+    prompt: question.prompt,
+    choices: question.type === 'choice' ? question.choices : ['', '', '', ''],
+    placeholder: question.type === 'short' ? (question.placeholder ?? '') : '',
+    answer: question.type === 'choice' ? question.answer : null,
+    accept: question.type === 'short' ? question.accept : [],
   }
+}
+
+export function builtInAsEditable(): EditableQuestion[] {
+  return builtInQuestions.map(toEditable)
+}
+
+function splitEditable(rows: EditableQuestion[]): LoadedQuestions {
+  const active = rows.filter((row) => row.active).sort((a, b) => a.position - b.position)
+  const secrets: Secrets = new Map()
+
+  active.forEach((row) => {
+    secrets.set(row.id, { type: row.type, answer: row.answer, accept: row.accept })
+  })
 
   return {
-    questions: data.map((row) => ({
-      id: String(row.id),
-      type: row.type as PublicQuestion['type'],
-      concept: row.concept ?? '',
-      stage: (row.stage ?? 'middle') as Stage,
+    source: 'code',
+    secrets,
+    questions: active.map((row) => ({
+      id: row.id,
+      type: row.type,
+      concept: row.concept,
+      stage: row.stage,
       prompt: row.prompt,
-      choices: Array.isArray(row.choices) ? (row.choices as string[]) : [],
-      placeholder: row.placeholder ?? '',
+      choices: row.type === 'choice' ? row.choices : [],
+      placeholder: row.type === 'short' ? row.placeholder : '',
     })),
-    source: 'db',
   }
 }
 
+/** 편집기가 내보내는 JSON이 우리가 아는 모양인지 확인합니다. */
+export function parseQuestionFile(raw: unknown): EditableQuestion[] | null {
+  const rows = Array.isArray(raw) ? raw : (raw as { questions?: unknown })?.questions
+  if (!Array.isArray(rows)) return null
+
+  const parsed: EditableQuestion[] = []
+  for (const [index, item] of rows.entries()) {
+    const row = item as Partial<EditableQuestion>
+    if (typeof row?.prompt !== 'string' || (row.type !== 'choice' && row.type !== 'short')) {
+      return null
+    }
+    parsed.push({
+      id: typeof row.id === 'string' ? row.id : `q-${index}`,
+      position: typeof row.position === 'number' ? row.position : index,
+      active: row.active !== false,
+      type: row.type,
+      concept: typeof row.concept === 'string' ? row.concept : '',
+      stage: (row.stage ?? 'middle') as Stage,
+      prompt: row.prompt,
+      choices: Array.isArray(row.choices) ? row.choices.map(String) : [],
+      placeholder: typeof row.placeholder === 'string' ? row.placeholder : '',
+      answer: typeof row.answer === 'number' ? row.answer : null,
+      accept: Array.isArray(row.accept) ? row.accept.map(String) : [],
+    })
+  }
+  return parsed
+}
+
+// ── 불러오기 ─────────────────────────────────────────────────
+
 /**
- * 채점합니다.
- * DB 문항이면 정답을 브라우저로 내려받지 않고 DB 안에서 채점합니다.
- * 기본 문항이면 브라우저에서 채점합니다.
+ * 출제할 문항을 가져옵니다. 우선순위는 아래와 같습니다.
+ *   1) Supabase에 등록된 문항  (연결돼 있고 문항이 있을 때)
+ *   2) public/questions.json   (편집기에서 내보내 올린 파일)
+ *   3) src/diagnostic.ts       (기본 문항)
  */
+export async function loadQuestions(): Promise<LoadedQuestions> {
+  if (isBackendReady) {
+    const { data, error } = await getClient()
+      .from('diagnostic_public')
+      .select('id, type, concept, stage, prompt, choices, placeholder')
+
+    if (!error && data && data.length > 0) {
+      return {
+        source: 'db',
+        secrets: null,
+        questions: data.map((row) => ({
+          id: String(row.id),
+          type: row.type as PublicQuestion['type'],
+          concept: row.concept ?? '',
+          stage: (row.stage ?? 'middle') as Stage,
+          prompt: row.prompt,
+          choices: Array.isArray(row.choices) ? (row.choices as string[]) : [],
+          placeholder: row.placeholder ?? '',
+        })),
+      }
+    }
+    if (error) {
+      console.warn('[diagnostic] DB 문항을 불러오지 못했습니다:', error.message)
+    }
+  }
+
+  const fromFile = await loadQuestionFile()
+  if (fromFile) return { ...splitEditable(fromFile), source: 'json' }
+
+  return splitEditable(builtInAsEditable())
+}
+
+/** public/questions.json 을 읽습니다. 파일이 없으면 null. */
+export async function loadQuestionFile(): Promise<EditableQuestion[] | null> {
+  try {
+    const response = await fetch(asset('questions.json'), { cache: 'no-store' })
+    if (!response.ok) return null
+    const parsed = parseQuestionFile(await response.json())
+    if (!parsed || parsed.length === 0) return null
+    return parsed
+  } catch {
+    // 파일이 없는 게 정상입니다. 기본 문항으로 넘어갑니다.
+    return null
+  }
+}
+
+// ── 채점 ─────────────────────────────────────────────────────
+
 export async function gradeAnswers(
-  questions: PublicQuestion[],
+  loaded: LoadedQuestions,
   answers: Record<string, string>,
-  source: 'db' | 'local',
 ): Promise<GradeResult> {
+  const { questions, source, secrets } = loaded
+
   if (source === 'db') {
     const submission = questions.map((q) => ({ id: q.id, value: answers[q.id] ?? '' }))
     const { data, error } = await getClient().rpc('grade_diagnostic', { submission })
@@ -101,43 +195,41 @@ export async function gradeAnswers(
         details: raw.details ?? [],
       }
     }
-    console.warn('[diagnostic] 서버 채점에 실패해 기본 채점으로 넘어갑니다:', error?.message)
+    console.warn('[diagnostic] 서버 채점에 실패했습니다:', error?.message)
   }
 
-  // 기본 문항 채점 — id가 'local-N' 이므로 순서를 그대로 복원할 수 있습니다.
-  const ordered = questions.map((q) => {
-    const index = Number(q.id.replace('local-', ''))
-    const question = localQuestions[index]
-    const given = answers[q.id] ?? ''
-    if (!question) return { question: null, given }
-    return { question, given }
+  // 브라우저 채점 — 정답이 이미 이 화면에 있는 경우에만 씁니다.
+  const details = questions.map((question) => {
+    const given = answers[question.id] ?? ''
+    const secret = secrets?.get(question.id)
+
+    if (given === '') {
+      return { id: question.id, concept: question.concept, state: 'skipped' as const }
+    }
+    if (!secret) {
+      return { id: question.id, concept: question.concept, state: 'wrong' as const }
+    }
+
+    const asQuestion = {
+      ...question,
+      ...(secret.type === 'choice'
+        ? { type: 'choice' as const, choices: question.choices, answer: secret.answer ?? -1 }
+        : { type: 'short' as const, accept: secret.accept }),
+    }
+    const value = secret.type === 'choice' ? Number(given) : given
+    const ok = isCorrect(asQuestion as Question, value)
+    return { id: question.id, concept: question.concept, state: ok ? ('correct' as const) : ('wrong' as const) }
   })
 
-  const local = gradeLocally(
-    ordered.map(({ question, given }) => {
-      if (!question) return null
-      return question.type === 'choice' ? (given === '' ? null : Number(given)) : given
-    }),
-  )
+  const correct = details.filter((d) => d.state === 'correct').length
+  const total = questions.length
 
-  return {
-    total: local.total,
-    correct: local.correct,
-    ratio: local.ratio,
-    details: ordered.map(({ question, given }, i) => {
-      const publicQuestion = questions[i]
-      if (!question) return { id: publicQuestion.id, concept: publicQuestion.concept, state: 'skipped' as const }
-      const value = question.type === 'choice' ? (given === '' ? null : Number(given)) : given
-      const state: GradeState =
-        given === '' ? 'skipped' : isCorrect(question, value) ? 'correct' : 'wrong'
-      return { id: publicQuestion.id, concept: question.concept, state }
-    }),
-  }
+  return { total, correct, ratio: total === 0 ? 0 : correct / total, details }
 }
 
-// ── 관리자용 ─────────────────────────────────────────────────
+// ── 관리자(Supabase) 전용 ────────────────────────────────────
 
-export async function listQuestionsForAdmin(): Promise<AdminQuestion[]> {
+export async function listQuestionsForAdmin(): Promise<EditableQuestion[]> {
   const { data, error } = await getClient()
     .from('diagnostic_questions')
     .select('*')
@@ -161,7 +253,7 @@ export async function listQuestionsForAdmin(): Promise<AdminQuestion[]> {
   }))
 }
 
-export type QuestionDraft = Omit<AdminQuestion, 'id'> & { id?: string }
+export type QuestionDraft = Omit<EditableQuestion, 'id'> & { id?: string }
 
 export async function saveQuestion(draft: QuestionDraft): Promise<void> {
   const payload = {
@@ -192,19 +284,7 @@ export async function deleteQuestion(id: string): Promise<void> {
 
 /** 코드에 들어 있는 기본 문항을 DB로 한 번에 복사합니다. */
 export async function seedFromLocal(): Promise<number> {
-  const rows = localQuestions.map((q, i) => ({
-    position: i,
-    active: true,
-    type: q.type,
-    concept: q.concept,
-    stage: q.stage,
-    prompt: q.prompt,
-    choices: q.type === 'choice' ? q.choices : [],
-    answer: q.type === 'choice' ? q.answer : null,
-    placeholder: q.type === 'short' ? (q.placeholder ?? '') : '',
-    accept: q.type === 'short' ? q.accept : [],
-  }))
-
+  const rows = builtInAsEditable().map(({ id: _id, ...row }) => row)
   const { error } = await getClient().from('diagnostic_questions').insert(rows)
   if (error) throw new Error(error.message)
   return rows.length

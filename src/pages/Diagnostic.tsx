@@ -3,18 +3,12 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, Clock, FileText, Loader2, RotateCcw } from 'lucide-react'
 import { site } from '../content'
 import { stageLabel, verdictFor } from '../diagnostic'
-import {
-  gradeAnswers,
-  loadQuestions,
-  type GradeResult,
-  type PublicQuestion,
-} from '../lib/diagnosticStore'
+import { gradeAnswers, loadQuestions, type GradeResult, type LoadedQuestions } from '../lib/diagnosticStore'
 
 type Phase = 'intro' | 'quiz' | 'result'
 
 export default function Diagnostic() {
-  const [questions, setQuestions] = useState<PublicQuestion[]>([])
-  const [source, setSource] = useState<'db' | 'local'>('local')
+  const [loaded, setLoaded] = useState<LoadedQuestions | null>(null)
   const [loading, setLoading] = useState(true)
 
   const [phase, setPhase] = useState<Phase>('intro')
@@ -25,12 +19,11 @@ export default function Diagnostic() {
 
   useEffect(() => {
     loadQuestions()
-      .then(({ questions, source }) => {
-        setQuestions(questions)
-        setSource(source)
-      })
+      .then(setLoaded)
       .finally(() => setLoading(false))
   }, [])
+
+  const questions = loaded?.questions ?? []
 
   const question = questions[index]
   const answeredCount = questions.filter((q) => (answers[q.id] ?? '') !== '').length
@@ -48,7 +41,7 @@ export default function Diagnostic() {
   async function finish() {
     setGrading(true)
     try {
-      const graded = await gradeAnswers(questions, answers, source)
+      const graded = await gradeAnswers(loaded!, answers)
       setResult(graded)
 
       // 상담 신청 폼에 결과를 자동으로 채워 넣기 위해 잠시 저장해둡니다.

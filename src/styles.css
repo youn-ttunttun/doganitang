@@ -2724,3 +2724,37 @@ textarea {
   font-size: 12.5px;
   word-break: break-all;
 }
+
+/* ── 간이 편집기 ─────────────────────────────────────────── */
+
+.app-guide {
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+.app-guide h2 {
+  font-size: 15px;
+}
+
+.app-note--ok {
+  padding: 11px 14px;
+  margin-bottom: 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+/* 푸터의 눈에 띄지 않는 편집기 진입점 */
+.footer-admin {
+  float: right;
+  padding: 0 10px;
+  color: var(--text-faint);
+  opacity: 0.35;
+  transition: opacity 0.15s ease;
+}
+
+.footer-admin:hover {
+  opacity: 1;
+}

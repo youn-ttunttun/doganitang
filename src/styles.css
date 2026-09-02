@@ -3186,3 +3186,16 @@ textarea {
   font-style: normal;
   color: var(--text-faint);
 }
+
+/* 문구 편집 화면의 입력칸은 폭이 100%인데, 체크박스까지 늘어나면 안 됩니다 */
+.content-panel .app-toggle {
+  align-items: center;
+  padding: 4px 0;
+}
+
+.content-panel .app-toggle input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  padding: 0;
+}

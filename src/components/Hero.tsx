@@ -36,7 +36,7 @@ export default function Hero() {
         <div className="hero-actions">
           <Link className="btn btn-primary btn-lg" to="/diagnostic">
             <PencilRuler size={18} />
-            무료 진단 테스트 (3분)
+            무료 진단 테스트
           </Link>
           <a className="btn btn-ghost btn-lg" href="#apply">
             수업 등록 상담

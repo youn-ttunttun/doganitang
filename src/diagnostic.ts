@@ -196,6 +196,12 @@ export type Verdict = {
   body: string
   course: string
   tone: 'start' | 'mid' | 'ready'
+  /**
+   * Pre과정 대상인지.
+   * false 면 Pre를 들을 필요가 없을 만큼 기초가 잡힌 경우로,
+   * 결과 화면에서 정밀 상담 대신 다른 안내를 보여줍니다.
+   */
+  eligible: boolean
 }
 
 const VERDICTS: { min: number; verdict: Verdict }[] = [
@@ -203,10 +209,11 @@ const VERDICTS: { min: number; verdict: Verdict }[] = [
     min: 0.75,
     verdict: {
       code: 'READY',
-      title: '대수·미적분1을 바로 시작할 수 있습니다',
-      body: '기초 개념은 충분히 잡혀 있습니다. Pre과정 없이 대수 또는 미적분1부터 들어가도 무리가 없습니다. 다만 어느 단원에서 흔들리는지는 문항별 결과를 함께 봐야 정확합니다.',
+      title: 'Pre과정을 듣기에는 이미 기초가 잡혀 있습니다',
+      body: '중등수학과 고1 개념이 대체로 자리 잡혀 있습니다. Pre과정은 수학을 처음부터 다시 세워야 하는 학생을 위한 과정이라, 지금 상태에서는 시간이 아깝습니다. 대수나 미적분1부터 바로 들어가는 편이 맞습니다.',
       course: '대수 · 미적분1',
       tone: 'ready',
+      eligible: false,
     },
   },
   {
@@ -214,9 +221,10 @@ const VERDICTS: { min: number; verdict: Verdict }[] = [
     verdict: {
       code: 'MID',
       title: 'Pre과정 일부를 채우고 대수로 넘어가면 됩니다',
-      body: '고1 개념에서 빈틈이 보입니다. 중등수학 전체를 다시 볼 필요는 없고, 막히는 단원만 Pre과정으로 짧게 채운 뒤 대수로 넘어가는 편이 빠릅니다.',
+      body: '기초가 아주 없지는 않지만, 고1 개념에서 빈틈이 보입니다. 이 상태로 대수에 들어가면 중간부터 다시 막힙니다. 중등수학 전체를 다시 볼 필요는 없고, 무너진 단원만 Pre과정으로 짧게 채운 뒤 넘어가는 편이 결과적으로 빠릅니다.',
       course: 'Pre (일부) → 대수',
       tone: 'mid',
+      eligible: true,
     },
   },
   {
@@ -224,9 +232,10 @@ const VERDICTS: { min: number; verdict: Verdict }[] = [
     verdict: {
       code: 'START',
       title: 'Pre과정부터 시작하는 것을 권합니다',
-      body: '지금 대수나 미적분1을 바로 들어가면 첫 주부터 막힙니다. 중등수학의 핵심 개념을 먼저 채우는 Pre과정부터 시작하는 편이 결과적으로 훨씬 빠릅니다. 여기서 시작한 학생이 가장 많습니다.',
+      body: '지금 대수나 미적분1을 바로 들어가면 첫 주부터 막힙니다. 중등수학의 핵심 개념을 먼저 채우는 Pre과정부터 시작하는 편이 결과적으로 훨씬 빠릅니다. 여기서 시작한 학생이 가장 많고, 그러라고 만든 과정입니다.',
       course: 'Pre과정',
       tone: 'start',
+      eligible: true,
     },
   },
 ]

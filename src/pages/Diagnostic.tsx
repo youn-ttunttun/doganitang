@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, Clock, FileText, Loader2, RotateCcw } from 'lucide-react'
-import { consulting, site } from '../content'
+import { consulting, diagnosticInfo, site } from '../content'
 import { stageLabel, verdictFor } from '../diagnostic'
 import { gradeAnswers, loadQuestions, type GradeResult, type LoadedQuestions } from '../lib/diagnosticStore'
 
@@ -104,12 +104,8 @@ export default function Diagnostic() {
           {phase === 'intro' && (
             <main className="quiz-inner quiz-intro">
               <p className="eyebrow">Free Diagnostic</p>
-              <h1 className="quiz-title">지금 어디서 막혔는지, 3분이면 알 수 있습니다</h1>
-              <p className="quiz-lead">
-                중등 기초부터 수능 과목까지 {questions.length}문항을 풀면, Pre과정부터 시작할지
-                대수부터 시작할지 알려드립니다. 점수를 매겨 자르는 시험이 아니라 시작점을 정하기
-                위한 테스트입니다.
-              </p>
+              <h1 className="quiz-title">{diagnosticInfo.title}</h1>
+              <p className="quiz-lead">{diagnosticInfo.lead}</p>
 
               <ul className="quiz-facts">
                 <li>
@@ -117,21 +113,22 @@ export default function Diagnostic() {
                   객관식 · 단답형 {questions.length}문항
                 </li>
                 <li>
-                  <Clock size={16} aria-hidden="true" />약 3분 소요
+                  <Clock size={16} aria-hidden="true" />
+                  {diagnosticInfo.duration} 소요
                 </li>
-                <li>
-                  <Check size={16} aria-hidden="true" />
-                  가입도, 연락처도 없이 결과 확인
-                </li>
+                {diagnosticInfo.facts.map((fact) => (
+                  <li key={fact}>
+                    <Check size={16} aria-hidden="true" />
+                    {fact}
+                  </li>
+                ))}
               </ul>
 
               <button className="btn btn-primary btn-lg" onClick={() => setPhase('quiz')}>
                 진단 시작하기
                 <ArrowRight size={18} />
               </button>
-              <p className="quiz-note">
-                모르는 문항은 건너뛰어도 됩니다. 찍지 말고 넘어가야 정확합니다.
-              </p>
+              <p className="quiz-note">{diagnosticInfo.note}</p>
             </main>
           )}
 
@@ -263,12 +260,21 @@ export default function Diagnostic() {
                 </ol>
               </div>
 
-              <p className="quiz-scope">
-                여기까지가 무료로 확인할 수 있는 결과입니다. 어디서 막혔는지는 알 수 있지만,
-                왜 막혔고 무엇부터 채워야 하는지는 문항을 하나씩 들여다봐야 알 수 있습니다.
-              </p>
+              {verdict.eligible ? (
+                <p className="quiz-scope">
+                  여기까지가 무료로 확인할 수 있는 결과입니다. 지금 어느 수준인지는 알 수
+                  있지만, 무엇이 왜 무너졌고 어디부터 손대야 하는지는 답안을 하나씩 들여다봐야
+                  알 수 있습니다.
+                </p>
+              ) : (
+                <p className="quiz-scope">
+                  Pre과정은 수학을 처음부터 다시 세워야 하는 학생을 위한 과정이라, 지금
+                  상태에서는 권해드리지 않습니다. 대수나 미적분1부터 시작하는 쪽이 맞고, 그
+                  부분은 상담으로 함께 정하면 됩니다.
+                </p>
+              )}
 
-              {consulting.title && (
+              {verdict.eligible && consulting.title && (
                 <div className="quiz-upsell">
                   <span className="quiz-upsell-badge">{consulting.badge}</span>
                   <h2>{consulting.title}</h2>
@@ -317,7 +323,7 @@ export default function Diagnostic() {
 
               <div className="quiz-cta-actions quiz-cta-actions--plain">
                 <Link
-                  className="btn btn-ghost"
+                  className={`btn ${verdict.eligible ? 'btn-ghost' : 'btn-primary btn-lg'}`}
                   to="/#apply"
                   onClick={() => {
                     try {
@@ -327,7 +333,7 @@ export default function Diagnostic() {
                     }
                   }}
                 >
-                  수업 등록만 상담하기
+                  {verdict.eligible ? '수업 등록만 상담하기' : '대수·미적분1 수업 상담받기'}
                 </Link>
                 <button className="btn btn-ghost" onClick={restart}>
                   <RotateCcw size={16} />

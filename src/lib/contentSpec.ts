@@ -295,6 +295,18 @@ export const contentSpec: SectionSpec[] = [
     ],
   },
   {
+    key: 'diagnosticInfo',
+    label: '진단 테스트 안내',
+    desc: '진단 테스트 시작 화면에 나오는 문구입니다.',
+    fields: [
+      { key: 'duration', label: '소요 시간', kind: 'text', hint: '예) 약 20분' },
+      { key: 'title', label: '제목', kind: 'text' },
+      { key: 'lead', label: '설명', kind: 'multiline' },
+      { key: 'facts', label: '안내 항목', kind: 'strings' },
+      { key: 'note', label: '시작 버튼 아래 문구', kind: 'text' },
+    ],
+  },
+  {
     key: 'consulting',
     label: '상세 상담 (유료)',
     desc: '진단 결과 화면 아래에 나옵니다. 제목을 비우면 이 안내가 나오지 않습니다.',

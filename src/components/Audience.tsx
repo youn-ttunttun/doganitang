@@ -19,7 +19,7 @@ export default function Audience() {
       </ul>
 
       <Link className="audience-cta" to="/diagnostic">
-        어디서 막혔는지 모르겠다면, 3분 진단 테스트로 확인해보세요
+        지금 어느 수준인지 모르겠다면, 무료 진단 테스트로 확인해보세요
         <ArrowRight size={16} aria-hidden="true" />
       </Link>
     </Section>

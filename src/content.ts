@@ -167,45 +167,58 @@ export const faqs = [
 // 관리자 화면(사이트 문구 → 수강료)에서 채우면 그때 켜집니다.
 
 export type Plan = {
-  name: string // 예) 1:1 정규반
-  price: string // 예) 45만원
-  unit: string // 예) 월 · 주 2회 기준
+  name: string // 예) 대면 수업
+  price: string // 예) 48만원
+  unit: string // 금액의 기준. 예) 4주 · 주 2회 · 회당 2시간
+  hourly: string // 시간당 얼마인지. 비싸 보이는 총액을 판단할 기준이 됩니다
   desc: string
   features: string[]
-  highlight?: boolean // 가장 추천하는 것 하나에 표시
+  badge: string // 카드 위 작은 라벨. 예) 추천
+  highlight: boolean // 하나만 켜면 그 카드가 눈에 띕니다
 }
 
 export const pricing = {
   eyebrow: 'Tuition',
   title: '수강료',
-  lead: '주 2회, 회당 2시간. 아래는 4주 기준 금액입니다.',
+  lead: '서울대·연세대 재학생이 1:1로 진행합니다. 주 2회, 회당 2시간 기준입니다.',
   plans: [
-    {
-      name: '대면 수업',
-      price: '48만원',
-      unit: '4주 · 주 2회 · 회당 2시간',
-      desc: '직접 만나서 진행합니다',
-      features: [
-        '1:1 수업 주 2회 (회당 2시간)',
-        '자체 교재 「Checklist」로 진행',
-        '진단 결과에 맞춘 시작점 배정',
-      ],
-    },
     {
       name: '화상 수업',
       price: '38만원',
-      unit: '4주 · 주 2회 · 회당 2시간',
+      unit: '4주 · 주 2회 · 회당 2시간 (총 16시간)',
+      hourly: '시간당 약 2만 4천원',
       desc: '지역에 관계없이, 이동 시간 없이',
+      badge: '',
+      highlight: true,
       features: [
         '1:1 화상 수업 주 2회 (회당 2시간)',
         '자체 교재 「Checklist」로 진행',
         '진단 결과에 맞춘 시작점 배정',
+        '교육받은 튜터가 같은 커리큘럼으로 진행',
+      ],
+    },
+    {
+      name: '대면 수업',
+      price: '48만원',
+      unit: '4주 · 주 2회 · 회당 2시간 (총 16시간)',
+      hourly: '시간당 3만원',
+      desc: '직접 만나서 진행합니다',
+      badge: '',
+      highlight: false,
+      features: [
+        '1:1 대면 수업 주 2회 (회당 2시간)',
+        '자체 교재 「Checklist」로 진행',
+        '진단 결과에 맞춘 시작점 배정',
+        '교육받은 튜터가 같은 커리큘럼으로 진행',
       ],
     },
   ] as Plan[],
+  /** 각 카드 아래 버튼 문구 */
+  cta: '이 수업으로 상담 신청',
   /** 표 아래 작은 글씨 — 교재비, 결제 방식, 환불 규정 등 */
   notes: [
     '진단 테스트와 상담은 무료입니다. 결과를 보고 시작점을 정한 뒤 등록합니다.',
+    '수강료는 계좌이체로 받습니다.',
   ] as string[],
 }
 

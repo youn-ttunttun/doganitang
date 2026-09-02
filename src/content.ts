@@ -178,10 +178,35 @@ export type Plan = {
 export const pricing = {
   eyebrow: 'Tuition',
   title: '수강료',
-  lead: '',
-  plans: [] as Plan[],
+  lead: '주 2회, 회당 2시간. 아래는 4주 기준 금액입니다.',
+  plans: [
+    {
+      name: '대면 수업',
+      price: '48만원',
+      unit: '4주 · 주 2회 · 회당 2시간',
+      desc: '직접 만나서 진행합니다',
+      features: [
+        '1:1 수업 주 2회 (회당 2시간)',
+        '자체 교재 「Checklist」로 진행',
+        '진단 결과에 맞춘 시작점 배정',
+      ],
+    },
+    {
+      name: '화상 수업',
+      price: '38만원',
+      unit: '4주 · 주 2회 · 회당 2시간',
+      desc: '지역에 관계없이, 이동 시간 없이',
+      features: [
+        '1:1 화상 수업 주 2회 (회당 2시간)',
+        '자체 교재 「Checklist」로 진행',
+        '진단 결과에 맞춘 시작점 배정',
+      ],
+    },
+  ] as Plan[],
   /** 표 아래 작은 글씨 — 교재비, 결제 방식, 환불 규정 등 */
-  notes: [] as string[],
+  notes: [
+    '진단 테스트와 상담은 무료입니다. 결과를 보고 시작점을 정한 뒤 등록합니다.',
+  ] as string[],
 }
 
 export const apply = {

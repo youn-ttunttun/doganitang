@@ -180,7 +180,7 @@ export type Plan = {
 export const pricing = {
   eyebrow: 'Tuition',
   title: '수강료',
-  lead: '엄선한 튜터가 자체 교재와 커리큘럼으로 1:1 진행합니다.\n주 2회, 회당 2시간 기준입니다.',
+  lead: '수학 1등급 튜터가 자체 교재와 커리큘럼으로 1:1 진행합니다.\n주 2회, 회당 2시간 기준입니다.',
   plans: [
     {
       name: '화상 수업',

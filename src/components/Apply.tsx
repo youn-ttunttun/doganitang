@@ -33,7 +33,14 @@ export default function Apply() {
   useEffect(() => {
     try {
       const saved = sessionStorage.getItem('teamlesson:diagnostic')
-      if (saved) setForm((prev) => ({ ...prev, kind: 'diagnostic', level: saved }))
+      const kind = sessionStorage.getItem('teamlesson:applyKind') as ApplicationKind | null
+      if (saved || kind) {
+        setForm((prev) => ({
+          ...prev,
+          kind: kind ?? 'diagnostic',
+          level: saved ?? prev.level,
+        }))
+      }
     } catch {
       // 저장소 접근이 막혀 있으면 그냥 빈 폼으로 둡니다.
     }
@@ -148,6 +155,7 @@ export default function Apply() {
               [
                 { value: 'consult', label: '수업 등록 상담', desc: '수업 일정과 시작점을 함께 정합니다' },
                 { value: 'diagnostic', label: '진단 테스트', desc: '지금 어디서 막히는지 먼저 확인합니다' },
+                { value: 'detail', label: '상세 상담 (유료)', desc: '진단 결과를 문항별로 풀어드립니다' },
               ] as { value: ApplicationKind; label: string; desc: string }[]
             ).map((option) => (
               <label

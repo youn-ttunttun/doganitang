@@ -321,3 +321,15 @@ create policy "관리자만 문구 수정"
 
 grant select                 on public.site_content to anon, authenticated;
 grant insert, update, delete on public.site_content to authenticated;
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 7. 신청 유형에 '상세 상담' 추가
+--
+--   무료 진단 → 유료 상세 상담 → 수업 등록 순서가 생기면서
+--   신청서에 유형이 하나 늘었습니다. 이미 실행했더라도 안전합니다.
+-- ═════════════════════════════════════════════════════════════
+
+alter table public.applications drop constraint if exists applications_kind_check;
+alter table public.applications add constraint applications_kind_check
+  check (kind in ('consult', 'diagnostic', 'detail'));

@@ -2,7 +2,7 @@ import { getClient, isBackendReady } from './supabase'
 
 export { isBackendReady }
 
-export type ApplicationKind = 'consult' | 'diagnostic'
+export type ApplicationKind = 'consult' | 'diagnostic' | 'detail'
 
 export type ApplicationInput = {
   kind: ApplicationKind
@@ -17,6 +17,7 @@ export type ApplicationInput = {
 export const applicationKindLabel: Record<ApplicationKind, string> = {
   consult: '수업 등록 상담',
   diagnostic: '진단 테스트',
+  detail: '상세 상담 (유료)',
 }
 
 export async function submitApplication(input: ApplicationInput): Promise<void> {

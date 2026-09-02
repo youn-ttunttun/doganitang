@@ -232,6 +232,25 @@ export const pricing = {
   ] as string[],
 }
 
+// ── 상세 상담 (유료) ─────────────────────────────────────────
+// 무료 진단 결과를 본 뒤 더 깊이 보고 싶은 사람에게 제안합니다.
+// title 을 비우면 진단 결과 화면에 이 안내가 나오지 않습니다.
+
+export const consulting = {
+  badge: '유료',
+  title: '진단 결과를 자세히 풀어드립니다',
+  desc: '위 결과는 어디서 막혔는지 대략 짚어주는 수준입니다. 상세 상담에서는 문항별로 무엇이 무너졌는지, 어느 단원부터 어떤 속도로 채워야 하는지 학습 계획까지 함께 정리해 드립니다.',
+  price: '', // 예) 3만원. 비워두면 '신청 후 안내'로 표시됩니다
+  unit: '', // 예) 1회 · 40분
+  features: [
+    '문항별 오답 원인 분석',
+    '지금 상태에 맞는 시작 단원 확정',
+    '4주 단위 학습 계획 제안',
+  ],
+  cta: '자세한 상담 신청하기',
+  note: '수업 등록 여부와 관계없이 신청할 수 있습니다. 결제는 계좌이체로 진행됩니다.',
+}
+
 export const apply = {
   eyebrow: 'Apply',
   title: '지금 시작해도 늦지 않았습니다',
@@ -353,6 +372,7 @@ export const defaultContent = {
   audience,
   faqs,
   pricing,
+  consulting,
   apply,
   scoreBadges,
   resultCases,

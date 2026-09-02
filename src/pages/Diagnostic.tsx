@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, Clock, FileText, Loader2, RotateCcw } from 'lucide-react'
-import { site } from '../content'
+import { consulting, site } from '../content'
 import { stageLabel, verdictFor } from '../diagnostic'
 import { gradeAnswers, loadQuestions, type GradeResult, type LoadedQuestions } from '../lib/diagnosticStore'
 
@@ -263,22 +263,76 @@ export default function Diagnostic() {
                 </ol>
               </div>
 
-              <div className="quiz-cta">
-                <h2>이 결과로 상담받고 싶다면</h2>
-                <p>
-                  결과를 바탕으로 어떤 단원부터, 어떤 속도로 채워야 하는지 자세히 알려드립니다.
-                  신청 폼에 진단 결과가 자동으로 담깁니다.
-                </p>
-                <div className="quiz-cta-actions">
-                  <Link className="btn btn-primary btn-lg" to="/#apply">
-                    진단 결과로 상담 신청
+              <p className="quiz-scope">
+                여기까지가 무료로 확인할 수 있는 결과입니다. 어디서 막혔는지는 알 수 있지만,
+                왜 막혔고 무엇부터 채워야 하는지는 문항을 하나씩 들여다봐야 알 수 있습니다.
+              </p>
+
+              {consulting.title && (
+                <div className="quiz-upsell">
+                  <span className="quiz-upsell-badge">{consulting.badge}</span>
+                  <h2>{consulting.title}</h2>
+                  <p>{consulting.desc}</p>
+
+                  {consulting.features.length > 0 && (
+                    <ul className="quiz-upsell-list">
+                      {consulting.features.map((feature) => (
+                        <li key={feature}>
+                          <Check size={15} aria-hidden="true" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <p className="quiz-upsell-price">
+                    {consulting.price ? (
+                      <>
+                        <strong>{consulting.price}</strong>
+                        {consulting.unit && <span>{consulting.unit}</span>}
+                      </>
+                    ) : (
+                      <span>금액은 신청 후 안내드립니다</span>
+                    )}
+                  </p>
+
+                  <Link
+                    className="btn btn-primary btn-lg btn-block"
+                    to="/#apply"
+                    onClick={() => {
+                      try {
+                        sessionStorage.setItem('teamlesson:applyKind', 'detail')
+                      } catch {
+                        // 저장이 막혀도 신청 폼에서 직접 고를 수 있습니다.
+                      }
+                    }}
+                  >
+                    {consulting.cta}
                     <ArrowRight size={18} />
                   </Link>
-                  <button className="btn btn-ghost" onClick={restart}>
-                    <RotateCcw size={16} />
-                    다시 풀기
-                  </button>
+
+                  {consulting.note && <p className="quiz-upsell-note">{consulting.note}</p>}
                 </div>
+              )}
+
+              <div className="quiz-cta-actions quiz-cta-actions--plain">
+                <Link
+                  className="btn btn-ghost"
+                  to="/#apply"
+                  onClick={() => {
+                    try {
+                      sessionStorage.setItem('teamlesson:applyKind', 'consult')
+                    } catch {
+                      // 무시해도 됩니다.
+                    }
+                  }}
+                >
+                  수업 등록만 상담하기
+                </Link>
+                <button className="btn btn-ghost" onClick={restart}>
+                  <RotateCcw size={16} />
+                  다시 풀기
+                </button>
               </div>
             </main>
           )}

@@ -295,6 +295,21 @@ export const contentSpec: SectionSpec[] = [
     ],
   },
   {
+    key: 'consulting',
+    label: '상세 상담 (유료)',
+    desc: '진단 결과 화면 아래에 나옵니다. 제목을 비우면 이 안내가 나오지 않습니다.',
+    fields: [
+      { key: 'badge', label: '라벨', kind: 'text', hint: '예) 유료' },
+      { key: 'title', label: '제목', kind: 'text' },
+      { key: 'desc', label: '설명', kind: 'multiline' },
+      { key: 'features', label: '포함 내용', kind: 'strings' },
+      { key: 'price', label: '금액', kind: 'text', hint: "비우면 '신청 후 안내'로 표시됩니다" },
+      { key: 'unit', label: '금액 기준', kind: 'text', hint: '예) 1회 · 40분' },
+      { key: 'cta', label: '버튼 문구', kind: 'text' },
+      { key: 'note', label: '안내 문구', kind: 'multiline' },
+    ],
+  },
+  {
     key: 'apply',
     label: '신청 섹션',
     fields: [

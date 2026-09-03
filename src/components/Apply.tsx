@@ -17,6 +17,7 @@ const EMPTY: ApplicationInput = {
   kind: 'consult',
   name: '',
   contact: '',
+  guardianContact: '',
   grade: '',
   course: '',
   level: '',
@@ -26,7 +27,7 @@ const EMPTY: ApplicationInput = {
 type Status = 'idle' | 'sending' | 'done' | 'error'
 
 export default function Apply() {
-  const { apply: applyCopy, site } = useContent()
+  const { apply: applyCopy, site, consulting } = useContent()
   const [form, setForm] = useState<ApplicationInput>(EMPTY)
 
   // 진단 테스트를 풀고 넘어온 경우, 결과를 '현재 수학 상황'에 자동으로 채웁니다.
@@ -153,9 +154,21 @@ export default function Apply() {
           <div className="kind-options">
             {(
               [
-                { value: 'consult', label: '수업 등록 상담', desc: '수업 일정과 시작점을 함께 정합니다' },
-                { value: 'diagnostic', label: '진단 테스트', desc: '지금 어디서 막히는지 먼저 확인합니다' },
-                { value: 'detail', label: '상세 상담 (유료)', desc: '진단 결과를 문항별로 풀어드립니다' },
+                {
+                  value: 'consult',
+                  label: '수업 등록 상담',
+                  desc: '무료 · 수업 일정과 시작점을 함께 정합니다',
+                },
+                {
+                  value: 'diagnostic',
+                  label: '진단 결과 상담',
+                  desc: '무료 · 진단 테스트를 푼 뒤 결과를 함께 봅니다',
+                },
+                {
+                  value: 'detail',
+                  label: '정밀 상담',
+                  desc: `${consulting.price || '유료'} · 화상으로 문항별로 짚어드립니다`,
+                },
               ] as { value: ApplicationKind; label: string; desc: string }[]
             ).map((option) => (
               <label
@@ -193,7 +206,7 @@ export default function Apply() {
 
           <label className="field">
             <span className="field-label">
-              연락처 <em>필수</em>
+              학생 연락처 <em>필수</em>
             </span>
             <input
               type="text"
@@ -205,6 +218,17 @@ export default function Apply() {
             />
           </label>
         </div>
+
+        <label className="field">
+          <span className="field-label">학부모 연락처 (선택)</span>
+          <input
+            type="text"
+            value={form.guardianContact}
+            onChange={(e) => set('guardianContact', e.target.value)}
+            placeholder="상담을 학부모님과 진행하실 경우 남겨주세요"
+            maxLength={120}
+          />
+        </label>
 
         <div className="field-row">
           <label className="field">

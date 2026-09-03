@@ -234,6 +234,35 @@ export const pricing = {
   ] as string[],
 }
 
+// ── 섹션 제목 ────────────────────────────────────────────────
+// 각 섹션의 라벨·제목·설명. 비우면 그 줄이 화면에서 사라집니다.
+
+export const sections = {
+  curriculum: {
+    eyebrow: 'Curriculum',
+    title: '처음부터, 순서대로',
+    lead: 'Pre과정에서 기초를 채우고 대수와 미적분1으로 넘어갑니다.\n어느 튜터에게 배우든 이 순서와 이 교재로 진행합니다.',
+    principlesTitle: '수업은 이렇게 진행합니다',
+  },
+  teachers: {
+    eyebrow: 'Team',
+    title: '교재를 만드는 사람과, 가르치는 사람',
+    lead: '공동대표가 교재와 커리큘럼을 만들고 튜터를 교육합니다.\n수업은 튜터가 1:1로 진행합니다.',
+    tutorsTitle: '수업을 맡는 튜터진',
+  },
+  proof: {
+    eyebrow: 'Records',
+    title: '숫자로 남은 변화',
+    lead: '수업을 들은 학생들의 실제 기록입니다.',
+    reviewsTitle: '수강생·학부모 후기',
+  },
+  faq: {
+    eyebrow: 'FAQ',
+    title: '자주 묻는 질문',
+    lead: '',
+  },
+}
+
 // ── 진단 결과 판정 ───────────────────────────────────────────
 // 기준선(min)은 100점 만점 기준 정답률입니다. 높은 것부터 확인합니다.
 // 'Pre 대상' 을 끄면 그 판정을 받은 사람에게는 정밀 상담을 권하지 않고
@@ -422,6 +451,7 @@ export const defaultContent = {
   reviews,
   positioning,
   material,
+  sections,
 }
 
 export type SiteContent = typeof defaultContent

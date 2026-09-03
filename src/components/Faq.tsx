@@ -4,11 +4,18 @@ import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
 export default function Faq() {
-  const { faqs } = useContent()
+  const { faqs, sections } = useContent()
+  const copy = sections.faq
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
-    <Section id="faq" tone="muted" eyebrow="FAQ" title="자주 묻는 질문">
+    <Section
+      id="faq"
+      tone="muted"
+      eyebrow={copy.eyebrow || undefined}
+      title={copy.title || undefined}
+      lead={copy.lead || undefined}
+    >
       <div className="faq-list">
         {faqs.map((faq, index) => {
           const open = openIndex === index

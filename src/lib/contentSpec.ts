@@ -10,6 +10,7 @@ export type Field =
   | { key: string; label: string; kind: 'multiline'; hint?: string }
   | { key: string; label: string; kind: 'strings'; hint?: string }
   | { key: string; label: string; kind: 'toggle'; hint?: string }
+  | { key: string; label: string; kind: 'group'; fields: Field[]; hint?: string }
   | { key: string; label: string; kind: 'rows'; titleKey: string; fields: Field[]; hint?: string }
 
 export type SectionSpec = {
@@ -361,6 +362,35 @@ export const contentSpec: SectionSpec[] = [
       { key: 'sub', label: '설명', kind: 'multiline' },
     ],
   },
+  {
+    key: 'sections',
+    label: '섹션 제목',
+    desc: '각 섹션의 라벨·제목·설명입니다. 비우면 그 줄이 화면에서 사라집니다.',
+    fields: [
+      { key: 'curriculum', label: '커리큘럼', kind: 'group', fields: [
+        { key: 'eyebrow', label: '라벨', kind: 'text' },
+        { key: 'title', label: '제목', kind: 'text' },
+        { key: 'lead', label: '설명', kind: 'multiline' },
+        { key: 'principlesTitle', label: '수업 원칙 제목', kind: 'text' },
+      ] },
+      { key: 'teachers', label: '선생님', kind: 'group', fields: [
+        { key: 'eyebrow', label: '라벨', kind: 'text' },
+        { key: 'title', label: '제목', kind: 'text' },
+        { key: 'lead', label: '설명', kind: 'multiline' },
+        { key: 'tutorsTitle', label: '튜터 목록 제목', kind: 'text' },
+      ] },
+      { key: 'proof', label: '성적·후기', kind: 'group', fields: [
+        { key: 'eyebrow', label: '라벨', kind: 'text' },
+        { key: 'title', label: '제목', kind: 'text' },
+        { key: 'lead', label: '설명', kind: 'multiline' },
+        { key: 'reviewsTitle', label: '후기 목록 제목', kind: 'text' },
+      ] },
+      { key: 'faq', label: '자주 묻는 질문', kind: 'group', fields: [
+        { key: 'eyebrow', label: '라벨', kind: 'text' },
+        { key: 'title', label: '제목', kind: 'text' },
+        { key: 'lead', label: '설명', kind: 'multiline' },
+      ] },
+    ] },
   {
     key: 'site',
     label: '기본 정보',

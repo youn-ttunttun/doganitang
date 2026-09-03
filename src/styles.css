@@ -3199,3 +3199,20 @@ textarea {
   flex-shrink: 0;
   padding: 0;
 }
+
+/* 섹션 제목처럼 묶어서 보여줄 항목들 */
+.content-group {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-muted);
+}
+
+.content-group legend {
+  padding: 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand);
+}

@@ -8,6 +8,7 @@ export type ApplicationInput = {
   kind: ApplicationKind
   name: string
   contact: string
+  guardianContact: string
   grade: string
   course: string
   level: string
@@ -16,8 +17,8 @@ export type ApplicationInput = {
 
 export const applicationKindLabel: Record<ApplicationKind, string> = {
   consult: '수업 등록 상담',
-  diagnostic: '진단 테스트',
-  detail: '상세 상담 (유료)',
+  diagnostic: '진단 결과 상담',
+  detail: '정밀 상담 (유료)',
 }
 
 export async function submitApplication(input: ApplicationInput): Promise<void> {
@@ -25,6 +26,7 @@ export async function submitApplication(input: ApplicationInput): Promise<void> 
     kind: input.kind,
     name: input.name,
     contact: input.contact,
+    guardian_contact: input.guardianContact,
     grade: input.grade,
     course: input.course,
     level: input.level,
@@ -45,6 +47,7 @@ export function buildDmText(input: ApplicationInput): string {
     `[${applicationKindLabel[input.kind]} 신청]`,
     `이름: ${input.name}`,
     `연락처: ${input.contact}`,
+    input.guardianContact && `학부모 연락처: ${input.guardianContact}`,
     `학년: ${input.grade}`,
     `희망 과목: ${input.course}`,
     input.level && `현재 상황: ${input.level}`,

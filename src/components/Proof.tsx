@@ -5,16 +5,17 @@ import Section from './Section'
 
 /** 성적 사례와 후기. content.ts의 두 배열이 모두 비어 있으면 섹션을 만들지 않습니다. */
 export default function Proof() {
-  const { resultCases, reviews } = useContent()
+  const { resultCases, reviews, sections } = useContent()
+  const copy = sections.proof
   if (resultCases.length === 0 && reviews.length === 0) return null
 
   return (
     <Section
       id="proof"
       tone="muted"
-      eyebrow="Records"
-      title="숫자로 남은 변화"
-      lead="수업을 들은 학생들의 실제 기록입니다."
+      eyebrow={copy.eyebrow || undefined}
+      title={copy.title || undefined}
+      lead={copy.lead || undefined}
     >
       {resultCases.length > 0 && (
         <div className="bento">
@@ -46,7 +47,7 @@ export default function Proof() {
 
       {reviews.length > 0 && (
         <>
-          <h3 className="tutors-title">수강생·학부모 후기</h3>
+          {copy.reviewsTitle && <h3 className="tutors-title">{copy.reviewsTitle}</h3>}
           <div className="bento">
             {reviews.map((review) => (
               <article className="tile s4" key={review.quote}>

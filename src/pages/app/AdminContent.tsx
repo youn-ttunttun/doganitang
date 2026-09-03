@@ -164,6 +164,23 @@ function FieldEditor({
     )
   }
 
+  if (field.kind === 'group') {
+    const group = (value ?? {}) as Record<string, unknown>
+    return (
+      <fieldset className="content-group">
+        <legend>{field.label}</legend>
+        {field.fields.map((sub) => (
+          <FieldEditor
+            key={sub.key}
+            field={sub}
+            value={group[sub.key]}
+            onChange={(next) => onChange({ ...group, [sub.key]: next })}
+          />
+        ))}
+      </fieldset>
+    )
+  }
+
   if (field.kind === 'toggle') {
     return (
       <label className="app-toggle">

@@ -333,3 +333,12 @@ grant insert, update, delete on public.site_content to authenticated;
 alter table public.applications drop constraint if exists applications_kind_check;
 alter table public.applications add constraint applications_kind_check
   check (kind in ('consult', 'diagnostic', 'detail'));
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 8. 신청서에 학부모 연락처 추가
+--    학생 연락처만으로는 상담 연결이 어려운 경우가 많습니다.
+-- ═════════════════════════════════════════════════════════════
+
+alter table public.applications
+  add column if not exists guardian_contact text default '';

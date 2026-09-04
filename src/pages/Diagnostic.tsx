@@ -5,6 +5,7 @@ import { consulting, diagnosticInfo, site } from '../content'
 import { useContent } from '../lib/siteContent'
 import { pickVerdict, stageLabel, toneOf } from '../diagnostic'
 import { gradeAnswers, loadQuestions, type GradeResult, type LoadedQuestions } from '../lib/diagnosticStore'
+import MathText from '../components/MathText'
 
 type Phase = 'intro' | 'quiz' | 'result'
 
@@ -159,7 +160,9 @@ export default function Diagnostic() {
                   <span className="quiz-concept">{question.concept}</span>
                 </div>
 
-                <p className="quiz-prompt">{question.prompt}</p>
+                <p className="quiz-prompt">
+                  <MathText>{question.prompt}</MathText>
+                </p>
 
                 {question.type === 'choice' ? (
                   <div className="quiz-choices">
@@ -170,7 +173,7 @@ export default function Diagnostic() {
                         onClick={() => setAnswer(String(i))}
                       >
                         <span className="quiz-choice-num">{i + 1}</span>
-                        {choice}
+                        <MathText>{choice}</MathText>
                       </button>
                     ))}
                   </div>

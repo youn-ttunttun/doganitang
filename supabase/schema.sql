@@ -342,3 +342,38 @@ alter table public.applications add constraint applications_kind_check
 
 alter table public.applications
   add column if not exists guardian_contact text default '';
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 9. 사진 저장소 (성적 인증 · 후기 캡처 · 교재 사진)
+--
+--   관리자 화면(사이트 문구)에서 사진을 바로 올릴 수 있게 합니다.
+--   - 보는 건 누구나 (사이트에 그대로 나와야 하니까)
+--   - 올리고 지우는 건 관리자만
+-- ═════════════════════════════════════════════════════════════
+
+insert into storage.buckets (id, name, public)
+values ('site-media', 'site-media', true)
+on conflict (id) do update set public = true;
+
+drop policy if exists "site-media 는 누구나 볼 수 있습니다"   on storage.objects;
+drop policy if exists "site-media 는 관리자만 올립니다"        on storage.objects;
+drop policy if exists "site-media 는 관리자만 바꿉니다"        on storage.objects;
+drop policy if exists "site-media 는 관리자만 지웁니다"        on storage.objects;
+
+create policy "site-media 는 누구나 볼 수 있습니다"
+  on storage.objects for select
+  using (bucket_id = 'site-media');
+
+create policy "site-media 는 관리자만 올립니다"
+  on storage.objects for insert to authenticated
+  with check (bucket_id = 'site-media' and public.is_admin());
+
+create policy "site-media 는 관리자만 바꿉니다"
+  on storage.objects for update to authenticated
+  using (bucket_id = 'site-media' and public.is_admin())
+  with check (bucket_id = 'site-media' and public.is_admin());
+
+create policy "site-media 는 관리자만 지웁니다"
+  on storage.objects for delete to authenticated
+  using (bucket_id = 'site-media' and public.is_admin());

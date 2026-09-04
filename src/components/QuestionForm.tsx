@@ -1,6 +1,21 @@
 import { Check, Loader2, Plus, X } from 'lucide-react'
 import type { Stage } from '../diagnostic'
 import type { QuestionDraft } from '../lib/diagnosticStore'
+import MathText from './MathText'
+
+/** 수식 입력이 처음인 분을 위한 예시. 누르면 문제칸 끝에 붙습니다. */
+const MATH_SNIPPETS: { label: string; tex: string }[] = [
+  { label: '분수', tex: '\\frac{1}{2}' },
+  { label: '루트', tex: '\\sqrt{2}' },
+  { label: '제곱', tex: 'x^2' },
+  { label: '아래첨자', tex: 'a_1' },
+  { label: '적분', tex: '\\int_0^1 x\\,dx' },
+  { label: '시그마', tex: '\\sum_{k=1}^{n} k' },
+  { label: '극한', tex: '\\lim_{x \\to 0}' },
+  { label: '곱하기', tex: '\\times' },
+  { label: '≤', tex: '\\leq' },
+  { label: '≠', tex: '\\neq' },
+]
 
 export const EMPTY_DRAFT: QuestionDraft = {
   position: 0,
@@ -34,6 +49,8 @@ type Props = {
 export default function QuestionForm({ draft, busy = false, onChange, onCancel, onSave }: Props) {
   const set = <K extends keyof QuestionDraft>(key: K, value: QuestionDraft[K]) =>
     onChange({ ...draft, [key]: value })
+
+  const hasMath = [draft.prompt, ...draft.choices].some((text) => text.includes('$'))
 
   return (
     <div className="app-modal" onClick={(e) => e.target === e.currentTarget && onCancel()}>
@@ -83,9 +100,29 @@ export default function QuestionForm({ draft, busy = false, onChange, onCancel, 
               rows={3}
               value={draft.prompt}
               onChange={(e) => set('prompt', e.target.value)}
-              placeholder="x² − 5x + 6 을 인수분해하면?"
+              placeholder="$x^2 - 5x + 6$ 을 인수분해하면?"
             />
           </label>
+
+          <div className="app-math-help">
+            <p className="app-hint">
+              수식은 <code>$</code> 와 <code>$</code> 사이에 적습니다. 예)
+              <code>$\frac{'{'}1{'}'}{'{'}2{'}'}$ 보다 큰 수는?</code> — 아래 버튼을 누르면 문제칸
+              끝에 붙습니다.
+            </p>
+            <div className="app-math-keys">
+              {MATH_SNIPPETS.map((snippet) => (
+                <button
+                  type="button"
+                  key={snippet.label}
+                  onClick={() => set('prompt', `${draft.prompt}$${snippet.tex}$`)}
+                  title={snippet.tex}
+                >
+                  {snippet.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
           {draft.type === 'choice' ? (
             <div className="field">
@@ -163,6 +200,24 @@ export default function QuestionForm({ draft, busy = false, onChange, onCancel, 
                 />
               </label>
             </>
+          )}
+
+          {hasMath && (
+            <div className="app-preview">
+              <span className="field-label">미리보기 — 학생에게는 이렇게 보입니다</span>
+              <p className="app-preview-prompt">
+                <MathText>{draft.prompt}</MathText>
+              </p>
+              {draft.type === 'choice' && (
+                <ol className="app-preview-choices">
+                  {draft.choices.map((choice, i) => (
+                    <li key={i}>
+                      <MathText>{choice}</MathText>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
           )}
 
           <label className="app-toggle">

@@ -28,6 +28,17 @@
 //   단답형 채점은 공백·대소문자를 무시하고 비교합니다.
 //   ('5 / 6' 이라고 써도 '5/6' 과 같은 것으로 봅니다)
 //   학생마다 표기가 갈릴 만한 답은 accept 에 여러 개 적어두세요.
+//
+// ── 수식 적는 법 ────────────────────────────────────────────
+//   prompt 와 choices 안에서 $ 와 $ 사이에 적으면 수식으로 나옵니다.
+//     '$\\frac{1}{2}$'      →  ½ 모양의 분수
+//     '$\\sqrt{2}$'         →  √2
+//     '$x^2$', '$a_1$'      →  위·아래 첨자
+//     '$\\int_0^1 x\\,dx$'  →  정적분
+//   TypeScript 문자열이라 역슬래시는 두 번(\\frac) 적어야 합니다.
+//   관리자 화면에서는 한 번(\frac)만 적으면 됩니다.
+//   accept(단답형 정답)에는 수식을 쓰지 마세요. 학생이 키보드로
+//   입력하는 글자 그대로 비교하기 때문입니다.
 // ─────────────────────────────────────────────────────────────
 
 export type Stage = 'middle' | 'high1' | 'high2'
@@ -66,23 +77,23 @@ export const questions: Question[] = [
     type: 'choice',
     concept: '분수의 덧셈',
     stage: 'middle',
-    prompt: '1/2 + 1/3 의 값은?',
-    choices: ['2/5', '5/6', '1/6', '2/6'],
+    prompt: '$\\frac{1}{2} + \\frac{1}{3}$ 의 값은?',
+    choices: ['$\\frac{2}{5}$', '$\\frac{5}{6}$', '$\\frac{1}{6}$', '$\\frac{2}{6}$'],
     answer: 1,
   },
   {
     type: 'choice',
     concept: '지수법칙',
     stage: 'middle',
-    prompt: '2³ × 2⁴ 을 간단히 하면?',
-    choices: ['2⁷', '2¹²', '4⁷', '2¹'],
+    prompt: '$2^3 \\times 2^4$ 을 간단히 하면?',
+    choices: ['$2^7$', '$2^{12}$', '$4^7$', '$2^1$'],
     answer: 0,
   },
   {
     type: 'short',
     concept: '일차방정식',
     stage: 'middle',
-    prompt: '3x − 7 = 8 을 만족하는 x 의 값을 구하시오.',
+    prompt: '$3x - 7 = 8$ 을 만족하는 $x$ 의 값을 구하시오.',
     placeholder: '숫자만 입력',
     accept: ['5'],
   },
@@ -90,15 +101,15 @@ export const questions: Question[] = [
     type: 'choice',
     concept: '인수분해',
     stage: 'middle',
-    prompt: 'x² − 5x + 6 을 인수분해하면?',
-    choices: ['(x−1)(x−6)', '(x+2)(x+3)', '(x−2)(x−3)', '(x−5)(x+6)'],
+    prompt: '$x^2 - 5x + 6$ 을 인수분해하면?',
+    choices: ['$(x-1)(x-6)$', '$(x+2)(x+3)$', '$(x-2)(x-3)$', '$(x-5)(x+6)$'],
     answer: 2,
   },
   {
     type: 'short',
     concept: '연립방정식',
     stage: 'middle',
-    prompt: 'x + y = 5, x − y = 1 일 때 x 의 값을 구하시오.',
+    prompt: '$x + y = 5$, $x - y = 1$ 일 때 $x$ 의 값을 구하시오.',
     placeholder: '숫자만 입력',
     accept: ['3'],
   },
@@ -106,7 +117,7 @@ export const questions: Question[] = [
     type: 'short',
     concept: '함수의 값',
     stage: 'high1',
-    prompt: 'f(x) = 2x + 1 일 때 f(3) 의 값을 구하시오.',
+    prompt: '$f(x) = 2x + 1$ 일 때 $f(3)$ 의 값을 구하시오.',
     placeholder: '숫자만 입력',
     accept: ['7'],
   },
@@ -114,7 +125,7 @@ export const questions: Question[] = [
     type: 'choice',
     concept: '일차함수의 기울기',
     stage: 'high1',
-    prompt: '두 점 (1, 3) 과 (3, 7) 을 지나는 직선의 기울기는?',
+    prompt: '두 점 $(1,\\ 3)$ 과 $(3,\\ 7)$ 을 지나는 직선의 기울기는?',
     choices: ['1', '2', '3', '4'],
     answer: 1,
   },
@@ -122,23 +133,23 @@ export const questions: Question[] = [
     type: 'choice',
     concept: '이차함수의 꼭짓점',
     stage: 'high1',
-    prompt: 'y = (x − 2)² + 3 의 꼭짓점의 좌표는?',
-    choices: ['(−2, 3)', '(2, 3)', '(2, −3)', '(3, 2)'],
+    prompt: '$y = (x - 2)^2 + 3$ 의 꼭짓점의 좌표는?',
+    choices: ['$(-2,\\ 3)$', '$(2,\\ 3)$', '$(2,\\ -3)$', '$(3,\\ 2)$'],
     answer: 1,
   },
   {
     type: 'choice',
     concept: '절댓값 부등식',
     stage: 'high1',
-    prompt: '|x − 1| < 3 의 해는?',
-    choices: ['−2 < x < 4', 'x < 4', '−3 < x < 3', 'x > −2'],
+    prompt: '$|x - 1| < 3$ 의 해는?',
+    choices: ['$-2 < x < 4$', '$x < 4$', '$-3 < x < 3$', '$x > -2$'],
     answer: 0,
   },
   {
     type: 'short',
     concept: '로그의 뜻',
     stage: 'high2',
-    prompt: '2ˣ = 8 을 만족하는 x 의 값을 구하시오.',
+    prompt: '$2^x = 8$ 을 만족하는 $x$ 의 값을 구하시오.',
     placeholder: '숫자만 입력',
     accept: ['3'],
   },
@@ -146,8 +157,8 @@ export const questions: Question[] = [
     type: 'choice',
     concept: '삼각비',
     stage: 'high2',
-    prompt: 'sin 30° 의 값은?',
-    choices: ['1/2', '√2/2', '√3/2', '1'],
+    prompt: '$\\sin 30^\\circ$ 의 값은?',
+    choices: ['$\\frac{1}{2}$', '$\\frac{\\sqrt{2}}{2}$', '$\\frac{\\sqrt{3}}{2}$', '$1$'],
     answer: 0,
   },
   {

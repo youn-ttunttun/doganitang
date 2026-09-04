@@ -1,6 +1,7 @@
 import { ArrowDown, ArrowUp, Pencil, Trash2 } from 'lucide-react'
 import { stageLabel, type Stage } from '../diagnostic'
 import type { EditableQuestion } from '../lib/diagnosticStore'
+import MathText from './MathText'
 
 type Props = {
   rows: EditableQuestion[]
@@ -25,14 +26,16 @@ export default function QuestionList({ rows, busy = false, onEdit, onDelete, onM
             </div>
 
             <p className="app-prompt">
-              {index + 1}. {row.prompt}
+              {index + 1}. <MathText>{row.prompt}</MathText>
             </p>
 
             <p className="app-answer">
               정답 —{' '}
-              {row.type === 'choice'
-                ? (row.choices[row.answer ?? 0] ?? '(설정 안 됨)')
-                : row.accept.join(' 또는 ')}
+              {row.type === 'choice' ? (
+                <MathText>{row.choices[row.answer ?? 0] ?? '(설정 안 됨)'}</MathText>
+              ) : (
+                row.accept.join(' 또는 ')
+              )}
             </p>
           </div>
 

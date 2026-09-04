@@ -10,6 +10,7 @@ export type Field =
   | { key: string; label: string; kind: 'multiline'; hint?: string }
   | { key: string; label: string; kind: 'strings'; hint?: string }
   | { key: string; label: string; kind: 'toggle'; hint?: string }
+  | { key: string; label: string; kind: 'image'; hint?: string }
   | { key: string; label: string; kind: 'group'; fields: Field[]; hint?: string }
   | { key: string; label: string; kind: 'rows'; titleKey: string; fields: Field[]; hint?: string }
 
@@ -81,6 +82,17 @@ export const contentSpec: SectionSpec[] = [
           { key: 'title', label: '교재명', kind: 'text' },
           { key: 'subject', label: '과목', kind: 'text' },
           { key: 'desc', label: '설명', kind: 'multiline' },
+        ],
+      },
+      {
+        key: 'images',
+        label: '교재 실물 사진',
+        kind: 'rows',
+        titleKey: 'alt',
+        hint: '비워두면 사진 영역이 아예 나오지 않습니다.',
+        fields: [
+          { key: 'src', label: '사진', kind: 'image' },
+          { key: 'alt', label: '사진 설명', kind: 'text', hint: '예) Checklist pre 교재 내지' },
         ],
       },
     ],
@@ -212,7 +224,12 @@ export const contentSpec: SectionSpec[] = [
           { key: 'before', label: '이전', kind: 'text' },
           { key: 'after', label: '이후', kind: 'text' },
           { key: 'note', label: '메모', kind: 'multiline' },
-          { key: 'image', label: '인증 이미지 파일명', kind: 'text', hint: 'public/ 폴더에 넣은 파일명' },
+          {
+            key: 'image',
+            label: '성적표 캡처',
+            kind: 'image',
+            hint: '이름·학교가 보이면 가리고 올려주세요.',
+          },
         ],
       },
     ],
@@ -230,7 +247,12 @@ export const contentSpec: SectionSpec[] = [
         fields: [
           { key: 'quote', label: '내용', kind: 'multiline' },
           { key: 'who', label: '작성자', kind: 'text', hint: '예) 고2 학부모' },
-          { key: 'image', label: '캡처 파일명', kind: 'text' },
+          {
+            key: 'image',
+            label: '후기 캡처',
+            kind: 'image',
+            hint: '이름·프로필 사진은 가리고 올려주세요.',
+          },
         ],
       },
     ],

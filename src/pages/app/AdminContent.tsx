@@ -1,8 +1,20 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowDown, ArrowUp, Check, ExternalLink, Loader2, Plus, RotateCcw, X } from 'lucide-react'
+import {
+  ArrowDown,
+  ArrowUp,
+  Check,
+  ExternalLink,
+  ImagePlus,
+  Loader2,
+  Plus,
+  RotateCcw,
+  X,
+} from 'lucide-react'
 import { defaultContent, type SiteContent } from '../../content'
 import { contentSpec, type Field, type SectionSpec } from '../../lib/contentSpec'
 import { clearSiteContent, loadSiteContent, saveSiteContent } from '../../lib/siteContent'
+import { asset } from '../../lib/asset'
+import { uploadImage } from '../../lib/uploads'
 
 type Row = Record<string, unknown>
 
@@ -181,6 +193,10 @@ function FieldEditor({
     )
   }
 
+  if (field.kind === 'image') {
+    return <ImageField field={field} value={String(value ?? '')} onChange={onChange} />
+  }
+
   if (field.kind === 'toggle') {
     return (
       <label className="app-toggle">
@@ -302,6 +318,70 @@ function FieldEditor({
         <Plus size={14} />
         {field.label} 추가
       </button>
+    </div>
+  )
+}
+
+/**
+ * 사진 한 장을 올리는 칸.
+ * 파일을 고르면 Supabase 저장소에 올라가고, 주소가 여기에 저장됩니다.
+ * 배포를 다시 하지 않아도 사이트에 바로 나옵니다.
+ */
+function ImageField({
+  field,
+  value,
+  onChange,
+}: {
+  field: Field
+  value: string
+  onChange: (value: unknown) => void
+}) {
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+
+  async function pick(file: File | undefined) {
+    if (!file) return
+    setBusy(true)
+    setError('')
+    try {
+      onChange(await uploadImage(file))
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '사진을 올리지 못했습니다.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="field">
+      <span className="field-label">{field.label}</span>
+      {field.hint && <span className="app-hint">{field.hint}</span>}
+
+      {value ? (
+        <div className="app-image-picked">
+          <img src={asset(value)} alt="" />
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => onChange('')}>
+            <X size={14} />
+            사진 지우기
+          </button>
+        </div>
+      ) : (
+        <label className={`app-image-drop ${busy ? 'is-busy' : ''}`}>
+          <input
+            type="file"
+            accept="image/*"
+            disabled={busy}
+            onChange={(e) => {
+              pick(e.target.files?.[0])
+              e.target.value = ''
+            }}
+          />
+          {busy ? <Loader2 size={18} className="spin" /> : <ImagePlus size={18} />}
+          <span>{busy ? '올리는 중…' : '사진 고르기 (5MB까지)'}</span>
+        </label>
+      )}
+
+      {error && <span className="app-error">{error}</span>}
     </div>
   )
 }

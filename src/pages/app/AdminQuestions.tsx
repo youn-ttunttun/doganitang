@@ -47,13 +47,21 @@ export default function AdminQuestions() {
     }
   }
 
+  // position 값을 서로 맞바꾸지 않고, 바뀐 화면 순서대로 0부터 다시 매깁니다.
+  // 맞바꾸는 방식은 두 문항의 position 이 같으면 같은 값을 두 번 쓰는 셈이라
+  // 아무것도 움직이지 않았습니다. (문항을 지운 뒤 새로 추가하면 값이 겹칩니다)
+  // 다시 매기면 값이 겹쳐 있든 중간이 비어 있든 그 자리에서 바로잡힙니다.
   async function move(index: number, direction: -1 | 1) {
-    const current = rows[index]
-    const target = rows[index + direction]
-    if (!target) return
+    const swapped = index + direction
+    if (swapped < 0 || swapped >= rows.length) return
+
+    const next = [...rows]
+    ;[next[index], next[swapped]] = [next[swapped], next[index]]
+
     await run(async () => {
-      await saveQuestion({ ...current, position: target.position })
-      await saveQuestion({ ...target, position: current.position })
+      for (const [order, row] of next.entries()) {
+        if (row.position !== order) await saveQuestion({ ...row, position: order })
+      }
     })
   }
 
@@ -75,7 +83,15 @@ export default function AdminQuestions() {
           </Link>
           <button
             className="btn btn-primary btn-sm"
-            onClick={() => setDraft({ ...EMPTY_DRAFT, position: rows.length })}
+            onClick={() =>
+              // 중간 문항을 지운 적이 있으면 '개수'와 '마지막 position'이 어긋나
+              // 이미 있는 문항과 같은 값이 됩니다. 그래서 개수가 아니라
+              // 가장 큰 position 다음 번호를 씁니다.
+              setDraft({
+                ...EMPTY_DRAFT,
+                position: rows.length ? Math.max(...rows.map((row) => row.position)) + 1 : 0,
+              })
+            }
           >
             <Plus size={15} />
             문항 추가

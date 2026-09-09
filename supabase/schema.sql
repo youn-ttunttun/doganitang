@@ -377,3 +377,15 @@ create policy "site-media 는 관리자만 바꿉니다"
 create policy "site-media 는 관리자만 지웁니다"
   on storage.objects for delete to authenticated
   using (bucket_id = 'site-media' and public.is_admin());
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 10. 진단 문항에 '초등 수학' 구간 추가
+--
+--   노베이스 학생 가운데 중등 이전에서 막히는 경우가 있어
+--   구간을 하나 더 뒀습니다. 이미 실행했더라도 안전합니다.
+-- ═════════════════════════════════════════════════════════════
+
+alter table public.diagnostic_questions drop constraint if exists diagnostic_questions_stage_check;
+alter table public.diagnostic_questions add constraint diagnostic_questions_stage_check
+  check (stage in ('elementary', 'middle', 'high1', 'high2'));

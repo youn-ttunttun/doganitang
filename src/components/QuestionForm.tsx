@@ -1,5 +1,5 @@
 import { Check, Loader2, Plus, X } from 'lucide-react'
-import type { Stage } from '../diagnostic'
+import { stageLabel, type Stage } from '../diagnostic'
 import type { QuestionDraft } from '../lib/diagnosticStore'
 import MathText from './MathText'
 
@@ -78,9 +78,12 @@ export default function QuestionForm({ draft, busy = false, onChange, onCancel, 
             <label className="field">
               <span className="field-label">난이도 구간</span>
               <select value={draft.stage} onChange={(e) => set('stage', e.target.value as Stage)}>
-                <option value="middle">중등 기초</option>
-                <option value="high1">고1 개념</option>
-                <option value="high2">수능 과목</option>
+                {/* 구간을 새로 만들면 stageLabel 한 곳만 고치면 됩니다 */}
+                {Object.entries(stageLabel).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
               </select>
             </label>
           </div>

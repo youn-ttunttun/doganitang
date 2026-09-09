@@ -41,7 +41,7 @@
 //   입력하는 글자 그대로 비교하기 때문입니다.
 // ─────────────────────────────────────────────────────────────
 
-export type Stage = 'middle' | 'high1' | 'high2'
+export type Stage = 'elementary' | 'middle' | 'high1' | 'high2'
 
 type Base = {
   concept: string
@@ -66,7 +66,9 @@ export type Question = ChoiceQuestion | ShortQuestion
 /** 학생이 제출한 답. 객관식은 보기 번호, 단답형은 입력한 문자열. */
 export type Answer = number | string | null
 
+// 쉬운 단계부터 적습니다. 문항 편집 화면의 선택지 순서가 이 순서를 따릅니다.
 export const stageLabel: Record<Stage, string> = {
+  elementary: '초등 수학',
   middle: '중등 기초',
   high1: '고1 개념',
   high2: '수능 과목',

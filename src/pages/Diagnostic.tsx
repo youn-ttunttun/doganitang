@@ -38,6 +38,10 @@ function writeRun(run: SavedRun | null) {
   }
 }
 
+/** 남은 시간이 이보다 적으면 타이머 색이 바뀝니다. */
+const WARN_MS = 5 * 60_000
+const URGENT_MS = 60_000
+
 /** 남은 밀리초를 분:초 로. */
 function formatClock(ms: number): string {
   const total = Math.ceil(ms / 1000)
@@ -172,8 +176,12 @@ export default function Diagnostic() {
         {phase === 'quiz' && (
           <div className="quiz-top-meta">
             {remainingMs !== null && (
-              <span className={`quiz-timer ${remainingMs <= 60_000 ? 'is-urgent' : ''}`}>
-                <Clock size={14} aria-hidden="true" />
+              <span
+                className={`quiz-timer ${
+                  remainingMs <= URGENT_MS ? 'is-urgent' : remainingMs <= WARN_MS ? 'is-warn' : ''
+                }`}
+              >
+                <Clock size={16} aria-hidden="true" />
                 {formatClock(remainingMs)}
               </span>
             )}

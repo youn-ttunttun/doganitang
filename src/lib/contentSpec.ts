@@ -354,6 +354,12 @@ export const contentSpec: SectionSpec[] = [
     desc: '진단 테스트 시작 화면에 나오는 문구입니다.',
     fields: [
       { key: 'duration', label: '소요 시간', kind: 'text', hint: '예) 약 20분' },
+      {
+        key: 'timeLimit',
+        label: '제한 시간(분)',
+        kind: 'text',
+        hint: '예) 20 · 비우면 시간을 재지 않습니다',
+      },
       { key: 'title', label: '제목', kind: 'text' },
       { key: 'lead', label: '설명', kind: 'multiline' },
       { key: 'facts', label: '안내 항목', kind: 'strings' },

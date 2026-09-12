@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, Clock, FileText, Loader2, RotateCcw } from 'lucide-react'
-import { consulting, diagnosticInfo, site } from '../content'
 import { useContent } from '../lib/siteContent'
 import { pickVerdict, stageLabel, toneOf } from '../diagnostic'
 import { gradeAnswers, loadQuestions, type GradeResult, type LoadedQuestions } from '../lib/diagnosticStore'
@@ -9,8 +8,44 @@ import MathText from '../components/MathText'
 
 type Phase = 'intro' | 'quiz' | 'result'
 
+/**
+ * 푸는 중인 상태를 탭에 잠깐 저장합니다.
+ * 남은 시간이 아니라 '끝나는 시각'을 저장하므로, 새로고침해서
+ * 시간을 벌 수는 없습니다. 제한 시간이 있을 때만 저장합니다.
+ */
+const RUN_KEY = 'teamlesson:diagnostic-run'
+
+type SavedRun = { deadline: number; answers: Record<string, string>; index: number }
+
+function readRun(): SavedRun | null {
+  try {
+    const raw = sessionStorage.getItem(RUN_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as SavedRun
+    return typeof parsed?.deadline === 'number' ? parsed : null
+  } catch {
+    return null
+  }
+}
+
+function writeRun(run: SavedRun | null) {
+  try {
+    if (run) sessionStorage.setItem(RUN_KEY, JSON.stringify(run))
+    else sessionStorage.removeItem(RUN_KEY)
+  } catch {
+    // 시크릿 모드 등에서 저장이 막힐 수 있습니다. 그때는 새로고침하면
+    // 처음부터 다시 풀게 되지만, 화면의 타이머는 그대로 돕니다.
+  }
+}
+
+/** 남은 밀리초를 분:초 로. */
+function formatClock(ms: number): string {
+  const total = Math.ceil(ms / 1000)
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`
+}
+
 export default function Diagnostic() {
-  const { verdicts } = useContent()
+  const { verdicts, diagnosticInfo, consulting, site } = useContent()
   const [loaded, setLoaded] = useState<LoadedQuestions | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -19,6 +54,12 @@ export default function Diagnostic() {
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [result, setResult] = useState<GradeResult | null>(null)
   const [grading, setGrading] = useState(false)
+
+  // 제한 시간(분). 관리자 화면에서 비우면 시간을 재지 않습니다.
+  const limitMinutes = Math.max(0, Number(diagnosticInfo.timeLimit) || 0)
+  const [deadline, setDeadline] = useState<number | null>(null)
+  const [now, setNow] = useState(() => Date.now())
+  const remainingMs = deadline === null ? null : Math.max(0, deadline - now)
 
   useEffect(() => {
     loadQuestions()
@@ -48,6 +89,7 @@ export default function Diagnostic() {
 
   async function finish() {
     setGrading(true)
+    writeRun(null)
     try {
       const graded = await gradeAnswers(loaded!, answers)
       setResult(graded)
@@ -71,13 +113,54 @@ export default function Diagnostic() {
     }
   }
 
+  function start() {
+    const until = limitMinutes > 0 ? Date.now() + limitMinutes * 60_000 : null
+    setDeadline(until)
+    setNow(Date.now())
+    setPhase('quiz')
+    if (until !== null) writeRun({ deadline: until, answers: {}, index: 0 })
+  }
+
   function restart() {
     setAnswers({})
     setResult(null)
     setIndex(0)
+    setDeadline(null)
+    writeRun(null)
     setPhase('intro')
     window.scrollTo(0, 0)
   }
+
+  // 새로고침 복구. 끝나는 시각이 이미 지났으면 아래 타이머가 곧바로 제출합니다.
+  useEffect(() => {
+    if (!loaded || phase !== 'intro') return
+    const run = readRun()
+    if (!run || loaded.questions.length === 0) return
+    setAnswers(run.answers)
+    setIndex(Math.min(run.index, loaded.questions.length - 1))
+    setDeadline(run.deadline)
+    setNow(Date.now())
+    setPhase('quiz')
+  }, [loaded, phase])
+
+  // 푸는 동안 답과 위치를 계속 저장해둡니다.
+  useEffect(() => {
+    if (phase !== 'quiz' || deadline === null) return
+    writeRun({ deadline, answers, index })
+  }, [phase, deadline, answers, index])
+
+  // 1초마다 다시 그리고, 시간이 다 되면 그때까지 고른 답으로 자동 제출합니다.
+  useEffect(() => {
+    if (phase !== 'quiz' || remainingMs === null) return
+    if (remainingMs === 0) {
+      if (!grading) finish()
+      return
+    }
+    const id = setTimeout(() => setNow(Date.now()), 500)
+    return () => clearTimeout(id)
+    // finish 는 매 렌더마다 새로 만들어지므로 의존성에 넣지 않습니다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, remainingMs, grading])
 
   return (
     <div className="quiz-page">
@@ -87,9 +170,17 @@ export default function Diagnostic() {
           {site.name}
         </Link>
         {phase === 'quiz' && (
-          <span className="quiz-count">
-            {index + 1} / {questions.length}
-          </span>
+          <div className="quiz-top-meta">
+            {remainingMs !== null && (
+              <span className={`quiz-timer ${remainingMs <= 60_000 ? 'is-urgent' : ''}`}>
+                <Clock size={14} aria-hidden="true" />
+                {formatClock(remainingMs)}
+              </span>
+            )}
+            <span className="quiz-count">
+              {index + 1} / {questions.length}
+            </span>
+          </div>
         )}
       </header>
 
@@ -124,8 +215,14 @@ export default function Diagnostic() {
                 </li>
                 <li>
                   <Clock size={16} aria-hidden="true" />
-                  {diagnosticInfo.duration} 소요
+                  {limitMinutes > 0 ? `제한 시간 ${limitMinutes}분` : `${diagnosticInfo.duration} 소요`}
                 </li>
+                {limitMinutes > 0 && (
+                  <li>
+                    <Check size={16} aria-hidden="true" />
+                    시간이 끝나면 그때까지 푼 내용으로 자동 제출됩니다
+                  </li>
+                )}
                 {diagnosticInfo.facts.map((fact) => (
                   <li key={fact}>
                     <Check size={16} aria-hidden="true" />
@@ -134,7 +231,7 @@ export default function Diagnostic() {
                 ))}
               </ul>
 
-              <button className="btn btn-primary btn-lg" onClick={() => setPhase('quiz')}>
+              <button className="btn btn-primary btn-lg" onClick={start}>
                 진단 시작하기
                 <ArrowRight size={18} />
               </button>

@@ -400,11 +400,16 @@ export const material = {
       title: 'Checklist pre',
       subject: '고등수학 Pre과정',
       desc: '중등수학까지 거슬러 올라가 정말 필요한 개념만 골라 담았습니다.',
+      // 관리자 화면에서 올립니다. 비우면 책 모양 아이콘이 나옵니다.
+      cover: '',
+      toc: '',
     },
     {
       title: 'Checklist 대수',
       subject: '대수 (구 수학1)',
       desc: '지수·로그함수, 삼각함수, 수열을 노베이스 기준으로 다시 썼습니다.',
+      cover: '',
+      toc: '',
     },
   ],
 

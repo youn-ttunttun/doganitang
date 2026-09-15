@@ -4,6 +4,8 @@ import { getClient, isBackendReady } from './supabase'
 /** 학생 화면에 내려가는 문항 (정답 없음) */
 export type PublicQuestion = {
   id: string
+  /** 배점. 1~4점. 기본은 1점입니다. */
+  points: number
   type: 'choice' | 'short'
   concept: string
   stage: Stage
@@ -51,6 +53,7 @@ export function toEditable(question: Question, index: number): EditableQuestion 
   return {
     id: `q-${index}`,
     position: index,
+    points: 1,
     active: true,
     type: question.type,
     concept: question.concept,
@@ -80,6 +83,7 @@ function splitEditable(rows: EditableQuestion[]): LoadedQuestions {
     secrets,
     questions: active.map((row) => ({
       id: row.id,
+      points: row.points,
       type: row.type,
       concept: row.concept,
       stage: row.stage,
@@ -101,7 +105,7 @@ export async function loadQuestions(): Promise<LoadedQuestions> {
   if (isBackendReady) {
     const { data, error } = await getClient()
       .from('diagnostic_public')
-      .select('id, type, concept, stage, prompt, choices, placeholder')
+      .select('id, points, type, concept, stage, prompt, choices, placeholder')
 
     if (!error && data && data.length > 0) {
       return {
@@ -111,6 +115,7 @@ export async function loadQuestions(): Promise<LoadedQuestions> {
           id: String(row.id),
           type: row.type as PublicQuestion['type'],
           concept: row.concept ?? '',
+          points: row.points ?? 1,
           stage: (row.stage ?? 'middle') as Stage,
           prompt: row.prompt,
           choices: Array.isArray(row.choices) ? (row.choices as string[]) : [],
@@ -173,8 +178,13 @@ export async function gradeAnswers(
     return { id: question.id, concept: question.concept, state: ok ? ('correct' as const) : ('wrong' as const) }
   })
 
-  const correct = details.filter((d) => d.state === 'correct').length
-  const total = questions.length
+  // 문항 수가 아니라 배점 합으로 셉니다.
+  const points = new Map(questions.map((q) => [q.id, q.points]))
+  const total = questions.reduce((sum, q) => sum + q.points, 0)
+  const correct = details.reduce(
+    (sum, d) => (d.state === 'correct' ? sum + (points.get(d.id) ?? 1) : sum),
+    0,
+  )
 
   return { total, correct, ratio: total === 0 ? 0 : correct / total, details }
 }
@@ -193,6 +203,7 @@ export async function listQuestionsForAdmin(): Promise<EditableQuestion[]> {
   return (data ?? []).map((row) => ({
     id: String(row.id),
     position: row.position ?? 0,
+    points: row.points ?? 1,
     active: row.active ?? true,
     type: row.type,
     concept: row.concept ?? '',
@@ -210,6 +221,7 @@ export type QuestionDraft = Omit<EditableQuestion, 'id'> & { id?: string }
 export async function saveQuestion(draft: QuestionDraft): Promise<void> {
   const payload = {
     position: draft.position,
+    points: draft.points,
     active: draft.active,
     type: draft.type,
     concept: draft.concept,

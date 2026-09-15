@@ -21,6 +21,7 @@ export default function QuestionList({ rows, busy = false, onEdit, onDelete, onM
             <div className="app-row-top">
               <span className="app-kind">{row.type === 'choice' ? '객관식' : '단답형'}</span>
               <span className="app-dim">{stageLabel[row.stage as Stage]}</span>
+              <span className="app-dim">{row.points}점</span>
               <span className="app-dim">{row.concept}</span>
               {!row.active && <span className="app-off">출제 안 함</span>}
             </div>

@@ -7,7 +7,6 @@ import Faq from '../components/Faq'
 import Footer from '../components/Footer'
 import Hero from '../components/Hero'
 import Marquee from '../components/Marquee'
-import Material from '../components/Material'
 import Nav from '../components/Nav'
 import Positioning from '../components/Positioning'
 import Pricing from '../components/Pricing'
@@ -39,7 +38,6 @@ export default function Landing() {
         <Hero />
         <Marquee />
         <Audience />
-        <Material />
         <Curriculum />
         <Positioning />
         <Proof />

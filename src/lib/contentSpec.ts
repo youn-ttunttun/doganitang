@@ -82,6 +82,8 @@ export const contentSpec: SectionSpec[] = [
           { key: 'title', label: '교재명', kind: 'text' },
           { key: 'subject', label: '과목', kind: 'text' },
           { key: 'desc', label: '설명', kind: 'multiline' },
+          { key: 'cover', label: '표지 사진', kind: 'image', hint: '비우면 책 모양 아이콘이 나옵니다' },
+          { key: 'toc', label: '목차 사진', kind: 'image', hint: '아래 사진 영역에 함께 나옵니다' },
         ],
       },
       {

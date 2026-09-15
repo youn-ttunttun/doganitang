@@ -19,6 +19,7 @@ const MATH_SNIPPETS: { label: string; tex: string }[] = [
 
 export const EMPTY_DRAFT: QuestionDraft = {
   position: 0,
+  points: 1,
   active: true,
   type: 'choice',
   concept: '',
@@ -72,6 +73,20 @@ export default function QuestionForm({ draft, busy = false, onChange, onCancel, 
               >
                 <option value="choice">객관식</option>
                 <option value="short">단답형</option>
+              </select>
+            </label>
+
+            <label className="field">
+              <span className="field-label">배점</span>
+              <select
+                value={String(draft.points)}
+                onChange={(e) => set('points', Number(e.target.value))}
+              >
+                {[1, 2, 3, 4].map((point) => (
+                  <option key={point} value={point}>
+                    {point}점
+                  </option>
+                ))}
               </select>
             </label>
 

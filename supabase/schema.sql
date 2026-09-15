@@ -389,3 +389,87 @@ create policy "site-media 는 관리자만 지웁니다"
 alter table public.diagnostic_questions drop constraint if exists diagnostic_questions_stage_check;
 alter table public.diagnostic_questions add constraint diagnostic_questions_stage_check
   check (stage in ('elementary', 'middle', 'high1', 'high2'));
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 11. 진단 문항에 배점 (1~4점)
+--
+--   문항마다 무게가 달라서, 맞은 개수가 아니라 배점 합으로
+--   채점합니다. 기존 문항은 모두 1점이 됩니다.
+--   여러 번 실행해도 안전합니다.
+-- ═════════════════════════════════════════════════════════════
+
+alter table public.diagnostic_questions
+  add column if not exists points int not null default 1;
+
+alter table public.diagnostic_questions drop constraint if exists diagnostic_questions_points_check;
+alter table public.diagnostic_questions add constraint diagnostic_questions_points_check
+  check (points between 1 and 4);
+
+-- 배점은 학생 화면에도 보여주므로 뷰에 넣습니다. (정답은 그대로 빠져 있습니다)
+create or replace view public.diagnostic_public
+with (security_invoker = false) as
+  select id, position, points, type, concept, stage, prompt, choices, placeholder
+  from public.diagnostic_questions
+  where active
+  order by position, created_at;
+
+grant select on public.diagnostic_public to anon, authenticated;
+
+-- 채점도 문항 수가 아니라 배점 합으로 셉니다.
+create or replace function public.grade_diagnostic(submission jsonb)
+returns jsonb
+language plpgsql
+stable
+security definer set search_path = public
+as $$
+declare
+  total   int := 0;
+  correct int := 0;
+  details jsonb := '[]'::jsonb;
+  q       record;
+  given   text;
+  ok      boolean;
+begin
+  for q in
+    select * from public.diagnostic_questions where active
+    order by position, created_at
+  loop
+    total := total + q.points;
+    given := null;
+
+    select item->>'value' into given
+    from jsonb_array_elements(submission) as item
+    where item->>'id' = q.id::text
+    limit 1;
+
+    if given is null or normalize_answer(given) = '' then
+      ok := null;  -- 미응답
+    elsif q.type = 'choice' then
+      ok := (given = q.answer::text);
+    else
+      ok := exists (
+        select 1 from unnest(q.accept) as a
+        where normalize_answer(a) = normalize_answer(given)
+      );
+    end if;
+
+    if ok then correct := correct + q.points; end if;
+
+    details := details || jsonb_build_object(
+      'id', q.id,
+      'concept', q.concept,
+      'state', case when ok is null then 'skipped'
+                    when ok then 'correct'
+                    else 'wrong' end
+    );
+  end loop;
+
+  return jsonb_build_object(
+    'total', total,
+    'correct', correct,
+    'ratio', case when total = 0 then 0 else correct::numeric / total end,
+    'details', details
+  );
+end;
+$$;

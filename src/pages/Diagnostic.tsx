@@ -74,6 +74,8 @@ export default function Diagnostic() {
   const questions = loaded?.questions ?? []
 
   const question = questions[index]
+  // 전부 1점이면 배점을 굳이 보여주지 않습니다.
+  const usesPoints = questions.some((q) => q.points !== 1)
   const answeredCount = questions.filter((q) => (answers[q.id] ?? '') !== '').length
   const picked = useMemo(
     () => (result ? pickVerdict(verdicts, result.ratio) : null),
@@ -263,6 +265,7 @@ export default function Diagnostic() {
                 <div className="quiz-meta">
                   <span className="quiz-stage">{stageLabel[question.stage]}</span>
                   <span className="quiz-concept">{question.concept}</span>
+                  {usesPoints && <span className="quiz-points">{question.points}점</span>}
                 </div>
 
                 <p className="quiz-prompt">
@@ -330,7 +333,7 @@ export default function Diagnostic() {
               <div className={`quiz-score quiz-score--${tone}`}>
                 <strong>
                   {result.correct}
-                  <small>/ {result.total}</small>
+                  <small>/ {result.total}{usesPoints ? '점' : ''}</small>
                 </strong>
                 <span>{verdict.course}부터 시작</span>
               </div>

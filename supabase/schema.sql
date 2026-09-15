@@ -407,7 +407,10 @@ alter table public.diagnostic_questions add constraint diagnostic_questions_poin
   check (points between 1 and 4);
 
 -- 배점은 학생 화면에도 보여주므로 뷰에 넣습니다. (정답은 그대로 빠져 있습니다)
-create or replace view public.diagnostic_public
+-- create or replace 로는 컬럼을 중간에 끼워 넣을 수 없어서 지우고 다시 만듭니다.
+drop view if exists public.diagnostic_public;
+
+create view public.diagnostic_public
 with (security_invoker = false) as
   select id, position, points, type, concept, stage, prompt, choices, placeholder
   from public.diagnostic_questions

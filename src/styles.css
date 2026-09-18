@@ -47,8 +47,12 @@
   color-scheme: light;
 }
 
+/* 어두울 때의 색.
+   같은 값이 아래 두 곳에 들어갑니다. 한쪽만 고치면 어긋납니다.
+     ① 기기 설정이 어두울 때 (버튼으로 '밝게' 를 고른 경우는 제외)
+     ② 버튼으로 '어둡게' 를 고른 경우 */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     --brand: #4d94e0;
     --brand-strong: #6aa9ec;
     --brand-soft: rgba(77, 148, 224, 0.14);
@@ -58,7 +62,7 @@
     --danger: #f87171;
 
     --bg: #0b1119;
-    --bg-muted: #17222f;
+    --bg-muted: #1b2735;
     --bg-dark: #03070d;
     --surface: #131d28;
     --surface-dark: rgba(255, 255, 255, 0.05);
@@ -76,6 +80,35 @@
 
     color-scheme: dark;
   }
+}
+
+:root[data-theme='dark'] {
+    --brand: #4d94e0;
+    --brand-strong: #6aa9ec;
+    --brand-soft: rgba(77, 148, 224, 0.14);
+    --brand-on-dark: #6aa9ec;
+    --accent: #58b878;
+    --warning: #f0a83c;
+    --danger: #f87171;
+
+    --bg: #0b1119;
+    --bg-muted: #1b2735;
+    --bg-dark: #03070d;
+    --surface: #131d28;
+    --surface-dark: rgba(255, 255, 255, 0.05);
+
+    --text: #eef3f8;
+    --text-dim: #a3b1c0;
+    --text-faint: #6f7f8f;
+
+    --border: rgba(255, 255, 255, 0.1);
+    --border-strong: rgba(255, 255, 255, 0.2);
+
+    --shadow-sm: none;
+    --shadow-md: 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 32px 64px -24px rgba(0, 0, 0, 0.7);
+
+    color-scheme: dark;
 }
 
 /* ── 기본 ────────────────────────────────────────────────── */
@@ -289,6 +322,26 @@ textarea {
 
 .nav-cta:hover {
   background: var(--brand-strong) !important;
+}
+
+/* 밝게/어둡게 전환. 메뉴가 접히는 폭에서도 계속 보여야 합니다. */
+.nav-theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  margin-left: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.nav-theme:hover {
+  background: var(--bg-muted);
 }
 
 .nav-toggle {

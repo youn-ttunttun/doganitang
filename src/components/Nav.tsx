@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, Moon, Sun, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useScrolled } from '../hooks'
 import { useContent } from '../lib/siteContent'
+import { useTheme } from '../lib/theme'
 
 export default function Nav() {
   const { nav, resultCases, reviews, site, pricing } = useContent()
   const scrolled = useScrolled()
+  const { theme, toggle } = useTheme()
   const [open, setOpen] = useState(false)
 
   // 아직 채우지 않은 섹션은 메뉴에서도 감춥니다.
@@ -44,6 +46,14 @@ export default function Nav() {
             무료 진단
           </Link>
         </nav>
+
+        <button
+          className="nav-theme"
+          onClick={toggle}
+          aria-label={theme === 'dark' ? '밝게 보기' : '어둡게 보기'}
+        >
+          {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+        </button>
 
         <button
           className="nav-toggle"

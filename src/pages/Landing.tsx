@@ -39,10 +39,10 @@ export default function Landing() {
         <Hero />
         <Marquee />
         <Audience />
-        <Curriculum />
+        <Curriculum compact />
         <Positioning />
         <Proof />
-        <Teachers />
+        <Teachers compact />
         <Pricing />
         <Faq />
         <News />

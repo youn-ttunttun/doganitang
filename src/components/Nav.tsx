@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react'
 import { Menu, Moon, Sun, X } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useScrolled } from '../hooks'
 import { useContent } from '../lib/siteContent'
 import { useTheme } from '../lib/theme'
+
+/** 메인에서 떼어내 따로 페이지가 된 항목들. 나머지는 메인 안의 위치로 갑니다. */
+const PAGES: Record<string, string> = {
+  material: '/curriculum',
+  curriculum: '/curriculum',
+  teachers: '/teachers',
+}
 
 export default function Nav() {
   const { nav, resultCases, reviews, site, pricing } = useContent()
   const scrolled = useScrolled()
   const { theme, toggle } = useTheme()
+  const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
 
   // 아직 채우지 않은 섹션은 메뉴에서도 감춥니다.
@@ -30,18 +38,37 @@ export default function Nav() {
   return (
     <header className={`nav ${scrolled ? 'nav--solid' : ''}`}>
       <div className="container nav-inner">
-        <a className="nav-logo" href="#top" onClick={() => setOpen(false)}>
+        <Link
+          className="nav-logo"
+          to="/"
+          onClick={() => {
+            setOpen(false)
+            window.scrollTo(0, 0)
+          }}
+        >
           {site.name}
           <span className="nav-logo-dot">:</span>
           <span className="nav-logo-sub">{site.tagline}</span>
-        </a>
+        </Link>
 
         <nav className={`nav-links ${open ? 'is-open' : ''}`}>
-          {items.map((item) => (
-            <a key={item.id} href={`#${item.id}`} onClick={() => setOpen(false)}>
-              {item.label}
-            </a>
-          ))}
+          {items.map((item) => {
+            const page = PAGES[item.id]
+            if (page) {
+              return (
+                <Link key={item.id} to={page} onClick={() => setOpen(false)}>
+                  {item.label}
+                </Link>
+              )
+            }
+            // 메인 밖에서는 먼저 메인으로 돌아가야 그 자리로 갈 수 있습니다.
+            const href = pathname === '/' ? `#${item.id}` : `/#${item.id}`
+            return (
+              <a key={item.id} href={href} onClick={() => setOpen(false)}>
+                {item.label}
+              </a>
+            )
+          })}
           <Link className="nav-cta" to="/diagnostic" onClick={() => setOpen(false)}>
             무료 진단
           </Link>

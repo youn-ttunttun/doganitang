@@ -9,6 +9,8 @@ import Landing from './pages/Landing'
  * 눌렀을 때 따로 불러옵니다. 수식 표시(KaTeX)처럼 무거운 것이
  * 홍보 페이지 속도를 잡아먹지 않게 하기 위해서입니다.
  */
+const CurriculumPage = lazy(() => import('./pages/CurriculumPage'))
+const TeachersPage = lazy(() => import('./pages/TeachersPage'))
 const Diagnostic = lazy(() => import('./pages/Diagnostic'))
 const Login = lazy(() => import('./pages/app/Login'))
 const AppShell = lazy(() => import('./pages/app/AppShell'))
@@ -32,6 +34,8 @@ export default function App() {
           <Routes>
             {/* 공개 영역 */}
             <Route path="/" element={<Landing />} />
+            <Route path="/curriculum" element={<CurriculumPage />} />
+            <Route path="/teachers" element={<TeachersPage />} />
             <Route path="/diagnostic" element={<Diagnostic />} />
 
             {/* 로그인 영역 — 홍보 요소가 없는 별도 레이아웃 */}

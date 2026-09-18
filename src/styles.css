@@ -2789,6 +2789,35 @@ textarea {
   gap: 12px;
 }
 
+/* '자세히 보기' 같은 섹션 끝 링크. */
+.section-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 26px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brand);
+  transition: gap 0.15s ease;
+}
+
+.section-more:hover {
+  gap: 12px;
+}
+
+.section-more--on-dark {
+  color: var(--brand-on-dark);
+}
+
+/* 메인에서 떼어낸 페이지 — 고정된 메뉴에 제목이 가리지 않게 띄웁니다. */
+.subpage {
+  padding-top: 56px;
+}
+
+.subpage-back {
+  padding-bottom: 72px;
+}
+
 .tutors-title--light {
   margin-top: 48px;
 }

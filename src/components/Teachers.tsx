@@ -1,7 +1,10 @@
+import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
-export default function Teachers() {
+/** compact 는 메인 페이지 요약입니다. 튜터 목록은 전용 페이지에만 둡니다. */
+export default function Teachers({ compact = false }: { compact?: boolean }) {
   const { leads, tutors, sections } = useContent()
   const copy = sections.teachers
   return (
@@ -32,11 +35,18 @@ export default function Teachers() {
         ))}
       </div>
 
-      {tutors.length > 0 && copy.tutorsTitle && (
+      {compact && (
+        <Link className="section-more section-more--on-dark" to="/teachers">
+          가르치는 사람들 자세히 보기
+          <ArrowRight size={16} aria-hidden="true" />
+        </Link>
+      )}
+
+      {!compact && tutors.length > 0 && copy.tutorsTitle && (
         <h3 className="tutors-title">{copy.tutorsTitle}</h3>
       )}
       <div className="bento">
-        {tutors.map((tutor) => (
+        {!compact && tutors.map((tutor) => (
           <article className="tile tile--tutor tile--hover s4" key={tutor.name}>
             <div className="tutor-top">
               <span className="tutor-name">{tutor.name} T</span>

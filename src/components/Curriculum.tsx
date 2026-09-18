@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { BookOpen, Images } from 'lucide-react'
+import { ArrowRight, BookOpen, Images } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { asset } from '../lib/asset'
 import { useContent } from '../lib/siteContent'
 import Lightbox, { type Shot } from './Lightbox'
@@ -22,7 +23,11 @@ function shotsOf(book: Book): Shot[] {
   return shots
 }
 
-export default function Curriculum() {
+/**
+ * compact 는 메인 페이지에 얹는 요약입니다.
+ * 과정 카드만 보여주고, 교재 이야기·사진·수업 원칙은 전용 페이지로 넘깁니다.
+ */
+export default function Curriculum({ compact = false }: { compact?: boolean }) {
   const { curriculum, principles, sections, material } = useContent()
   const copy = sections.curriculum
   const [preview, setPreview] = useState<{ title: string; shots: Shot[] } | null>(null)
@@ -119,8 +124,15 @@ export default function Curriculum() {
         })}
       </div>
 
+      {compact && (
+        <Link className="section-more" to="/curriculum">
+          교재와 수업 방식까지 자세히 보기
+          <ArrowRight size={16} aria-hidden="true" />
+        </Link>
+      )}
+
       {/* 교재를 왜 직접 만들었는지. 예전 '교재' 섹션이 여기로 들어왔습니다. */}
-      {(material.paragraphs.length > 0 || looseBooks.length > 0) && (
+      {!compact && (material.paragraphs.length > 0 || looseBooks.length > 0) && (
         <div className="material-story" id="material">
           {text(material.title) && <h3 className="tutors-title">{material.title}</h3>}
           <div className="bento">
@@ -161,7 +173,7 @@ export default function Curriculum() {
       )}
 
       {/* 교재 실물·목차 사진이 준비되면 여기에 나란히 표시됩니다. */}
-      {photos.length > 0 && (
+      {!compact && photos.length > 0 && (
         <div className="bento material-photos">
           {photos.map((image, i) => (
             <figure className="tile tile--photo s4" key={`${image.src}-${i}`}>
@@ -172,11 +184,11 @@ export default function Curriculum() {
       )}
 
       {/* 원칙을 전부 지우면 제목도 함께 사라집니다 */}
-      {principles.length > 0 && copy.principlesTitle && (
+      {!compact && principles.length > 0 && copy.principlesTitle && (
         <h3 className="tutors-title tutors-title--light">{copy.principlesTitle}</h3>
       )}
       <div className="bento">
-        {principles.map((principle, index) => (
+        {!compact && principles.map((principle, index) => (
           <article className="tile tile--hover s4" key={principle.title}>
             <span className="tile-num">{String(index + 1).padStart(2, '0')}</span>
             <h4 className="tile-title">{principle.title}</h4>

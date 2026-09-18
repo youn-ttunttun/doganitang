@@ -12,7 +12,6 @@ export default function Proof() {
   return (
     <Section
       id="proof"
-      tone="muted"
       eyebrow={copy.eyebrow || undefined}
       title={copy.title || undefined}
       lead={copy.lead || undefined}

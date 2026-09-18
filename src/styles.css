@@ -14,7 +14,7 @@
   --danger: #b91c1c;
 
   --bg: #ffffff;
-  --bg-muted: #f6f7f9;
+  --bg-muted: #eceff4;
   --bg-dark: #0d1b2a;
   --surface: #ffffff;
   --surface-dark: rgba(255, 255, 255, 0.05);
@@ -58,8 +58,8 @@
     --danger: #f87171;
 
     --bg: #0b1119;
-    --bg-muted: #101922;
-    --bg-dark: #060b12;
+    --bg-muted: #17222f;
+    --bg-dark: #03070d;
     --surface: #131d28;
     --surface-dark: rgba(255, 255, 255, 0.05);
 
@@ -1366,6 +1366,57 @@ textarea {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
+}
+
+/* 소식 목록 — 날짜와 글을 두 칸으로 나란히 둡니다. */
+.news-list {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--border);
+}
+
+.news-item {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 20px;
+  padding: 22px 24px;
+  background: var(--surface);
+}
+
+.news-date {
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-faint);
+}
+
+.news-title {
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 700;
+}
+
+.news-text {
+  margin: 8px 0 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  white-space: pre-line;
+}
+
+@media (max-width: 620px) {
+  .news-item {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
+/* 어두운 띠 위에 올라간 흰 카드. 글자색까지 물려받으면 안 보입니다. */
+.section--dark .compare {
+  color: var(--text);
 }
 
 .compare-head,

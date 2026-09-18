@@ -7,6 +7,7 @@ export default function Positioning() {
   return (
     <Section
       id="why"
+      tone="dark"
       eyebrow={positioning.eyebrow}
       title={positioning.title}
       lead={positioning.lead}

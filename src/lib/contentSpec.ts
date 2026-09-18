@@ -351,6 +351,24 @@ export const contentSpec: SectionSpec[] = [
     ],
   },
   {
+    key: 'news',
+    label: '소식',
+    desc: '모집 소식이나 공지. 하나도 없으면 사이트에 이 영역이 나오지 않습니다.',
+    fields: [
+      {
+        key: '',
+        label: '소식',
+        kind: 'rows',
+        titleKey: 'title',
+        fields: [
+          { key: 'date', label: '날짜', kind: 'text', hint: '예) 2026-03-02' },
+          { key: 'title', label: '제목', kind: 'text' },
+          { key: 'body', label: '내용', kind: 'multiline' },
+        ],
+      },
+    ],
+  },
+  {
     key: 'diagnosticInfo',
     label: '진단 테스트 안내',
     desc: '진단 테스트 시작 화면에 나오는 문구입니다.',

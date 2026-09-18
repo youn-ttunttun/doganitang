@@ -237,12 +237,23 @@ export const pricing = {
 // ── 섹션 제목 ────────────────────────────────────────────────
 // 각 섹션의 라벨·제목·설명. 비우면 그 줄이 화면에서 사라집니다.
 
+/**
+ * 모집 소식·공지. 관리자 화면에서 올립니다.
+ * 비우면 이 영역은 사이트에 나오지 않습니다.
+ */
+export const news: { date: string; title: string; body: string }[] = []
+
 export const sections = {
   curriculum: {
     eyebrow: 'Curriculum',
     title: '처음부터, 순서대로',
     lead: 'Pre과정에서 기초를 채우고 대수와 미적분1으로 넘어갑니다.\n어느 튜터에게 배우든 이 순서와 이 교재로 진행합니다.',
     principlesTitle: '수업은 이렇게 진행합니다',
+  },
+  news: {
+    eyebrow: 'News',
+    title: 'Teamlesson 소식',
+    lead: '',
   },
   teachers: {
     eyebrow: 'Team',
@@ -459,6 +470,7 @@ export const defaultContent = {
   positioning,
   material,
   sections,
+  news,
 }
 
 export type SiteContent = typeof defaultContent

@@ -4,6 +4,7 @@ import Apply from '../components/Apply'
 import Audience from '../components/Audience'
 import Curriculum from '../components/Curriculum'
 import Faq from '../components/Faq'
+import News from '../components/News'
 import Footer from '../components/Footer'
 import Hero from '../components/Hero'
 import Marquee from '../components/Marquee'
@@ -44,6 +45,7 @@ export default function Landing() {
         <Teachers />
         <Pricing />
         <Faq />
+        <News />
         <Apply />
       </main>
       <Footer />

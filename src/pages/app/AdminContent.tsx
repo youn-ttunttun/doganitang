@@ -310,7 +310,12 @@ function FieldEditor({
         onClick={() => {
           const blank: Row = {}
           for (const sub of field.fields) {
-            blank[sub.key] = sub.kind === 'strings' ? [] : sub.kind === 'toggle' ? true : ''
+            blank[sub.key] =
+              sub.kind === 'strings' || sub.kind === 'rows'
+                ? []
+                : sub.kind === 'toggle'
+                  ? true
+                  : ''
           }
           onChange([...rows, blank])
         }}

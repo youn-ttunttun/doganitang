@@ -414,6 +414,8 @@ export const material = {
       // 관리자 화면에서 올립니다. 비우면 책 모양 아이콘이 나옵니다.
       cover: '',
       toc: '',
+      // 미리보기로 넘겨볼 사진. 필요한 만큼 늘리면 됩니다.
+      gallery: [] as { src: string; alt: string }[],
     },
     {
       title: 'Checklist 대수',
@@ -421,6 +423,7 @@ export const material = {
       desc: '지수·로그함수, 삼각함수, 수열을 노베이스 기준으로 다시 썼습니다.',
       cover: '',
       toc: '',
+      gallery: [] as { src: string; alt: string }[],
     },
   ],
 

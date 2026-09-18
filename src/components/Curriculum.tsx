@@ -1,29 +1,49 @@
-import { BookOpen } from 'lucide-react'
+import { useState } from 'react'
+import { BookOpen, Images } from 'lucide-react'
 import { asset } from '../lib/asset'
 import { useContent } from '../lib/siteContent'
+import Lightbox, { type Shot } from './Lightbox'
 import Section from './Section'
 
 /** 관리자가 예전에 저장한 문구에는 새로 만든 칸이 없을 수 있습니다. */
 const text = (value: unknown) => (typeof value === 'string' ? value.trim() : '')
+const list = <T,>(value: unknown): T[] => (Array.isArray(value) ? (value as T[]) : [])
+
+type Book = { title: string; subject: string; desc: string; cover?: string; toc?: string; gallery?: Shot[] }
+
+/** 한 교재에서 미리보기로 넘겨볼 사진들. 표지 → 목차 → 나머지 순서입니다. */
+function shotsOf(book: Book): Shot[] {
+  const shots: Shot[] = []
+  if (text(book.cover)) shots.push({ src: text(book.cover), alt: `${book.title} 표지` })
+  if (text(book.toc)) shots.push({ src: text(book.toc), alt: `${book.title} 목차` })
+  for (const shot of list<Shot>(book.gallery)) {
+    if (text(shot.src)) shots.push({ src: text(shot.src), alt: text(shot.alt) || book.title })
+  }
+  return shots
+}
 
 export default function Curriculum() {
   const { curriculum, principles, sections, material } = useContent()
   const copy = sections.curriculum
+  const [preview, setPreview] = useState<{ title: string; shots: Shot[] } | null>(null)
+
+  const books = list<Book>(material.books)
 
   // 교재의 '과목' 과 과정의 '이름' 이 같으면 그 과정 카드에 함께 보여줍니다.
-  const bookOf = (courseName: string) =>
-    material.books.find((book) => text(book.subject) === text(courseName))
+  // 한 과정에 여러 권을 둘 수 있습니다. (Pre 처럼 여러 권짜리 교재)
+  const booksOf = (courseName: string) =>
+    books.filter((book) => text(book.subject) === text(courseName))
 
   // 어느 과정에도 붙지 못한 교재는 아래에 따로 남깁니다. 말없이 사라지면 안 됩니다.
-  const looseBooks = material.books.filter(
+  const looseBooks = books.filter(
     (book) => !curriculum.some((course) => text(course.name) === text(book.subject)),
   )
 
   const photos = [
-    ...material.books
+    ...books
       .filter((book) => text(book.toc) !== '')
       .map((book) => ({ src: text(book.toc), alt: `${book.title} 목차` })),
-    ...material.images,
+    ...list<Shot>(material.images),
   ].filter((image) => text(image.src) !== '')
 
   return (
@@ -35,8 +55,8 @@ export default function Curriculum() {
     >
       <div className="bento">
         {curriculum.map((course, index) => {
-          const book = bookOf(course.name)
-          const cover = text(book?.cover)
+          const courseBooks = booksOf(course.name)
+          const shots = courseBooks.flatMap(shotsOf)
 
           return (
             <article
@@ -59,19 +79,39 @@ export default function Curriculum() {
                 ))}
               </ul>
 
-              {book && (
-                <div className="course-book">
-                  <div className={`book-cover book-cover--sm ${cover ? 'has-photo' : ''}`}>
-                    {cover ? (
-                      <img src={asset(cover)} alt={`${book.title} 표지`} loading="lazy" />
-                    ) : (
-                      <BookOpen size={14} aria-hidden="true" />
-                    )}
-                  </div>
-                  <div className="course-book-info">
-                    <span className="course-book-label">교재</span>
-                    <p className="course-book-title">{book.title}</p>
-                  </div>
+              {courseBooks.length > 0 && (
+                <div className="course-books">
+                  <span className="course-book-label">
+                    교재
+                    {courseBooks.length > 1 && ` ${courseBooks.length}권`}
+                  </span>
+
+                  {courseBooks.map((book) => {
+                    const cover = text(book.cover)
+                    return (
+                      <div className="course-book" key={book.title}>
+                        <div className={`book-cover book-cover--sm ${cover ? 'has-photo' : ''}`}>
+                          {cover ? (
+                            <img src={asset(cover)} alt={`${book.title} 표지`} loading="lazy" />
+                          ) : (
+                            <BookOpen size={14} aria-hidden="true" />
+                          )}
+                        </div>
+                        <p className="course-book-title">{book.title}</p>
+                      </div>
+                    )
+                  })}
+
+                  {shots.length > 0 && (
+                    <button
+                      type="button"
+                      className="btn btn-ghost btn-sm course-preview"
+                      onClick={() => setPreview({ title: `${course.code} 교재`, shots })}
+                    >
+                      <Images size={14} />
+                      미리보기 {shots.length}장
+                    </button>
+                  )}
                 </div>
               )}
             </article>
@@ -144,6 +184,10 @@ export default function Curriculum() {
           </article>
         ))}
       </div>
+
+      {preview && (
+        <Lightbox title={preview.title} shots={preview.shots} onClose={() => setPreview(null)} />
+      )}
     </Section>
   )
 }

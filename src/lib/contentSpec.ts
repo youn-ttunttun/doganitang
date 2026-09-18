@@ -78,12 +78,24 @@ export const contentSpec: SectionSpec[] = [
         label: '교재 카드',
         kind: 'rows',
         titleKey: 'title',
+        hint: "'과목' 을 커리큘럼의 과정 이름과 똑같이 적으면 그 과정 카드에 함께 나옵니다. 한 과정에 여러 권을 둘 수도 있습니다.",
         fields: [
           { key: 'title', label: '교재명', kind: 'text' },
           { key: 'subject', label: '과목', kind: 'text' },
           { key: 'desc', label: '설명', kind: 'multiline' },
           { key: 'cover', label: '표지 사진', kind: 'image', hint: '비우면 책 모양 아이콘이 나옵니다' },
           { key: 'toc', label: '목차 사진', kind: 'image', hint: '아래 사진 영역에 함께 나옵니다' },
+          {
+            key: 'gallery',
+            label: '미리보기 사진',
+            kind: 'rows',
+            titleKey: 'alt',
+            hint: '교재 카드의 "미리보기" 버튼을 누르면 넘겨볼 수 있습니다.',
+            fields: [
+              { key: 'src', label: '사진', kind: 'image' },
+              { key: 'alt', label: '사진 설명', kind: 'text', hint: '예) Checklist pre 1권 목차' },
+            ],
+          },
         ],
       },
       {
@@ -432,6 +444,11 @@ export const contentSpec: SectionSpec[] = [
         { key: 'title', label: '제목', kind: 'text' },
         { key: 'lead', label: '설명', kind: 'multiline' },
         { key: 'reviewsTitle', label: '후기 목록 제목', kind: 'text' },
+      ] },
+      { key: 'news', label: '소식', kind: 'group', fields: [
+        { key: 'eyebrow', label: '라벨', kind: 'text' },
+        { key: 'title', label: '제목', kind: 'text' },
+        { key: 'lead', label: '설명', kind: 'multiline' },
       ] },
       { key: 'faq', label: '자주 묻는 질문', kind: 'group', fields: [
         { key: 'eyebrow', label: '라벨', kind: 'text' },

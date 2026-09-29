@@ -1,5 +1,6 @@
 import { ArrowRight, Check, PencilRuler } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { scrollToId } from '../lib/scroll'
 import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
@@ -48,7 +49,15 @@ export default function Pricing() {
               </ul>
             )}
 
-            <a className={`btn ${plan.highlight ? 'btn-on-feature' : 'btn-ghost'} plan-cta`} href="#apply">
+            <a
+              className={`btn ${plan.highlight ? 'btn-on-feature' : 'btn-ghost'} plan-cta`}
+              href="#apply"
+              onClick={(event) => {
+              event.preventDefault()
+              history.replaceState(null, '', '#apply')
+              scrollToId('apply')
+            }}
+            >
               {pricing.cta}
               <ArrowRight size={16} />
             </a>

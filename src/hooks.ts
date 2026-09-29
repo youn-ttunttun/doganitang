@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { REVEAL_ALL } from './lib/scroll'
 
 /**
  * 요소가 화면에 들어오면 한 번만 true가 됩니다. 등장 애니메이션에 씁니다.
@@ -9,6 +10,15 @@ export function useReveal<T extends HTMLElement>() {
   const [shown, setShown] = useState(
     () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   )
+
+  // 메뉴로 건너뛸 때는 기다리지 않고 바로 보여줍니다.
+  // 도착한 자리가 비어 있다가 뒤늦게 떠오르면 걸리는 느낌이 납니다.
+  useEffect(() => {
+    if (shown) return
+    const show = () => setShown(true)
+    window.addEventListener(REVEAL_ALL, show)
+    return () => window.removeEventListener(REVEAL_ALL, show)
+  }, [shown])
 
   useEffect(() => {
     const el = ref.current

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { scrollToId } from '../lib/scroll'
 import Apply from '../components/Apply'
 import Audience from '../components/Audience'
 import Curriculum from '../components/Curriculum'
@@ -18,11 +19,12 @@ import Teachers from '../components/Teachers'
 export default function Landing() {
   const { hash } = useLocation()
 
-  // 진단 결과 화면에서 '/#apply' 로 넘어온 경우 해당 위치로 이동시킵니다.
+  // 다른 화면에서 '/#apply' 처럼 위치를 달고 넘어온 경우입니다.
+  // 이미 페이지가 바뀌며 한 번 움직였으므로, 여기서 또 미끄러지면
+  // 두 번 움직이는 것처럼 보입니다. 그래서 바로 그 자리로 놓습니다.
   useEffect(() => {
     if (!hash) return
-    const el = document.querySelector(hash)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+    scrollToId(hash.slice(1), { instant: true })
   }, [hash])
 
   return (

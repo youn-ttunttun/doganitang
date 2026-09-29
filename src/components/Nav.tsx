@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Menu, Moon, Sun, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useScrolled } from '../hooks'
+import { scrollToId } from '../lib/scroll'
 import { useContent } from '../lib/siteContent'
 import { useTheme } from '../lib/theme'
 
@@ -78,9 +79,20 @@ export default function Nav() {
               )
             }
             // 메인 밖에서는 먼저 메인으로 돌아가야 그 자리로 갈 수 있습니다.
-            const href = pathname === '/' ? `#${item.id}` : `/#${item.id}`
+            const onLanding = pathname === '/'
             return (
-              <a key={item.id} href={href} onClick={() => setOpen(false)}>
+              <a
+                key={item.id}
+                href={onLanding ? `#${item.id}` : `/#${item.id}`}
+                onClick={(event) => {
+                  setOpen(false)
+                  if (!onLanding) return
+                  // 브라우저 기본 이동 대신 직접 움직입니다. (scroll.ts 참고)
+                  event.preventDefault()
+                  history.replaceState(null, '', `#${item.id}`)
+                  scrollToId(item.id)
+                }}
+              >
                 {item.label}
               </a>
             )

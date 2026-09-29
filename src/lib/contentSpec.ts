@@ -457,6 +457,28 @@ export const contentSpec: SectionSpec[] = [
       ] },
     ] },
   {
+    key: 'nav',
+    label: '상단 메뉴',
+    desc: '맨 위에 보이는 메뉴입니다. 순서를 바꾸거나 지울 수 있습니다.',
+    fields: [
+      {
+        key: '',
+        label: '메뉴',
+        kind: 'rows',
+        titleKey: 'label',
+        fields: [
+          { key: 'label', label: '이름', kind: 'text' },
+          {
+            key: 'id',
+            label: '이어지는 곳',
+            kind: 'text',
+            hint: 'curriculum(커리큘럼·교재) / why / proof / teachers / pricing / news(공지)',
+          },
+        ],
+      },
+    ],
+  },
+  {
     key: 'site',
     label: '기본 정보',
     desc: '사이트 이름과 연락처. 여러 곳에 함께 쓰입니다.',

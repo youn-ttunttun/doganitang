@@ -13,7 +13,7 @@ const PAGES: Record<string, string> = {
 }
 
 export default function Nav() {
-  const { nav, resultCases, reviews, site, pricing } = useContent()
+  const { nav, resultCases, reviews, site, pricing, news } = useContent()
   const scrolled = useScrolled()
   const { theme, toggle } = useTheme()
   const { pathname } = useLocation()
@@ -24,8 +24,24 @@ export default function Nav() {
   const items = nav.filter((item) => {
     if (item.id === 'proof') return hasProof
     if (item.id === 'pricing') return pricing.plans.length > 0
-    return true
+    if (item.id === 'news') return news.length > 0
+
+    // '교재' 와 '커리큘럼' 처럼 두 항목이 같은 페이지로 가면 하나만 남깁니다.
+    // 페이지 이름과 이어지는 곳이 같은 쪽(= 커리큘럼)을 남깁니다.
+    const page = PAGES[item.id]
+    const duplicated =
+      page &&
+      page !== `/${item.id}` &&
+      nav.some((other) => PAGES[other.id] === page && page === `/${other.id}`)
+
+    return !duplicated
   })
+
+  // 공지를 올렸는데 메뉴에 없으면 넣어줍니다.
+  const menu =
+    news.length > 0 && !items.some((item) => item.id === 'news')
+      ? [...items, { id: 'news', label: '공지' }]
+      : items
 
   // 메뉴가 열려 있는 동안에는 뒤 배경이 스크롤되지 않도록 잠급니다.
   useEffect(() => {
@@ -52,7 +68,7 @@ export default function Nav() {
         </Link>
 
         <nav className={`nav-links ${open ? 'is-open' : ''}`}>
-          {items.map((item) => {
+          {menu.map((item) => {
             const page = PAGES[item.id]
             if (page) {
               return (

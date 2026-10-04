@@ -34,6 +34,11 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
 
   const books = list<Book>(material.books)
 
+  // 카드 개수에 맞춰 폭을 정해야 마지막 줄에 빈칸이 안 생깁니다.
+  // (4개면 한 줄에 넷, 2개면 둘. 좁은 화면에서는 styles.css 가 다시 접습니다)
+  const courseSpan =
+    { 1: 's12', 2: 's6', 4: 's3' }[curriculum.length as 1 | 2 | 4] ?? 's4'
+
   // 교재의 '과목' 과 과정의 '이름' 이 같으면 그 과정 카드에 함께 보여줍니다.
   // 한 과정에 여러 권을 둘 수 있습니다. (Pre 처럼 여러 권짜리 교재)
   const booksOf = (courseName: string) =>
@@ -66,7 +71,7 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
           return (
             <article
               // 첫 과정(Pre)은 시작점이라 강조 타일로 둡니다.
-              className={`tile tile--hover s4 ${index === 0 ? 'tile--feature' : ''}`}
+              className={`tile tile--hover ${courseSpan} ${index === 0 ? 'tile--feature' : ''}`}
               key={course.code}
             >
               <span className="course-step">STEP {index + 1}</span>
@@ -135,40 +140,45 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
       {!compact && (material.paragraphs.length > 0 || looseBooks.length > 0) && (
         <div className="material-story" id="material">
           {text(material.title) && <h3 className="tutors-title">{material.title}</h3>}
-          <div className="bento">
-            {/* 교재 카드가 전부 과정으로 옮겨가면 글이 폭을 다 씁니다. */}
-            <div className={`tile ${looseBooks.length > 0 ? 's7' : 's12'}`}>
-              {material.paragraphs.map((paragraph) => (
-                <p className="tile-body" key={paragraph}>
-                  {paragraph}
-                </p>
-              ))}
-            </div>
 
-            {looseBooks.length > 0 && (
-              <div className="books s5">
-                {looseBooks.map((book) => {
-                  const cover = text(book.cover)
-                  return (
-                    <article className="book" key={book.title}>
-                      <div className={`book-cover ${cover ? 'has-photo' : ''}`}>
-                        {cover ? (
-                          <img src={asset(cover)} alt={`${book.title} 표지`} loading="lazy" />
-                        ) : (
-                          <BookOpen size={18} aria-hidden="true" />
-                        )}
-                      </div>
-                      <div className="book-info">
-                        <h4 className="book-title">{book.title}</h4>
-                        <p className="book-subject">{book.subject}</p>
-                        <p className="book-desc">{book.desc}</p>
-                      </div>
-                    </article>
-                  )
-                })}
+          {material.paragraphs.length > 0 && (
+            <div className="bento">
+              <div className="tile s12">
+                {material.paragraphs.map((paragraph) => (
+                  <p className="tile-body" key={paragraph}>
+                    {paragraph}
+                  </p>
+                ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
+
+          {/* 아직 어느 과정에도 붙지 않은 교재입니다. 글 옆에 끼우면 글이
+              눌리고 교재도 작아져서, 아래에 한 줄을 따로 씁니다.
+              커리큘럼에 같은 이름의 과정을 만들면 위 과정 카드로 올라갑니다. */}
+          {looseBooks.length > 0 && (
+            <div className="bento">
+              {looseBooks.map((book) => {
+                const cover = text(book.cover)
+                return (
+                  <article className="book s4" key={book.title}>
+                    <div className={`book-cover ${cover ? 'has-photo' : ''}`}>
+                      {cover ? (
+                        <img src={asset(cover)} alt={`${book.title} 표지`} loading="lazy" />
+                      ) : (
+                        <BookOpen size={18} aria-hidden="true" />
+                      )}
+                    </div>
+                    <div className="book-info">
+                      <h4 className="book-title">{book.title}</h4>
+                      <p className="book-subject">{book.subject}</p>
+                      <p className="book-desc">{book.desc}</p>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          )}
         </div>
       )}
 

@@ -155,6 +155,12 @@ export const contentSpec: SectionSpec[] = [
     desc: '일반 과외와 비교하는 표.',
     fields: [
       { key: 'eyebrow', label: '라벨', kind: 'text' },
+      {
+        key: 'teamNote',
+        label: '표 위 강조 문장',
+        kind: 'multiline',
+        hint: "'팀 수업인가?' 하는 오해를 막는 자리입니다. 비우면 나오지 않습니다",
+      },
       { key: 'title', label: '제목', kind: 'text' },
       { key: 'lead', label: '설명', kind: 'multiline' },
       {

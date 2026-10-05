@@ -476,6 +476,25 @@ textarea {
   color: var(--text-dim);
 }
 
+/* 영어 제목만으로는 '나한테 맞나' 에 답이 안 됩니다. 그 답을 크게 적는 줄.
+   Bebas Neue 는 라틴 전용이라 한글인 이 줄에는 쓰지 않습니다. */
+.hero-hook {
+  margin-top: 18px;
+  font-size: clamp(1.15rem, 3.2vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+/* 버튼 아래 작은 안내. 누르기 전 망설임을 지웁니다. */
+.hero-cta-note {
+  margin-top: 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;

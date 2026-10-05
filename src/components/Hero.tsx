@@ -28,6 +28,8 @@ export default function Hero() {
           ))}
         </h1>
 
+        {hero.hook && <p className="hero-hook">{hero.hook}</p>}
+
         <p className="hero-sub">
           {hero.sub.split('\n').map((line) => (
             <span key={line}>{line}</span>
@@ -52,6 +54,8 @@ export default function Hero() {
             <ArrowRight size={18} />
           </a>
         </div>
+
+        {hero.ctaNote && <p className="hero-cta-note">{hero.ctaNote}</p>}
 
         <div className="bento hero-stats">
           {stats.map((stat) => (

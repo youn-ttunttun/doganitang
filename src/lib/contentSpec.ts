@@ -32,7 +32,9 @@ export const contentSpec: SectionSpec[] = [
       { key: 'badges', label: '배지', kind: 'strings', hint: '제목 위의 작은 라벨' },
       { key: 'lead', label: '한 줄 소개', kind: 'text' },
       { key: 'headline', label: '큰 제목', kind: 'multiline', hint: '줄바꿈하면 화면에서도 줄이 나뉩니다' },
+      { key: 'hook', label: '큰 제목 아래 한 줄', kind: 'text', hint: '처음 들어온 사람이 제일 먼저 읽는 줄입니다' },
       { key: 'sub', label: '설명', kind: 'multiline' },
+      { key: 'ctaNote', label: '버튼 아래 안내', kind: 'text', hint: '예) 20분이면 끝납니다 · 가입 없이 결과 확인' },
     ],
   },
   {

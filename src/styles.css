@@ -1433,18 +1433,6 @@ textarea {
 
 /* ── 비교표 ──────────────────────────────────────────────── */
 
-/* 이름 때문에 생기는 '팀 수업인가?' 오해를 막는 줄. 표 위에 둡니다. */
-.team-note {
-  max-width: 44rem;
-  margin: 0 0 26px;
-  padding-left: 16px;
-  border-left: 3px solid var(--brand-on-dark);
-  font-size: clamp(0.98rem, 2.2vw, 1.08rem);
-  font-weight: 600;
-  line-height: 1.75;
-  color: var(--text-on-dark);
-}
-
 .compare {
   overflow: hidden;
   border: 1px solid var(--border);

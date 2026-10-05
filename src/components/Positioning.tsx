@@ -12,8 +12,6 @@ export default function Positioning() {
       title={positioning.title}
       lead={positioning.lead}
     >
-      {positioning.teamNote && <p className="team-note">{positioning.teamNote}</p>}
-
       <div className="compare">
         <div className="compare-head">
           <span className="compare-point" />

@@ -491,3 +491,15 @@ create policy "관리자만 신청서 삭제"
   on public.applications for delete
   to authenticated
   using (public.is_admin());
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 13. 신청서 숨기기
+--
+--   장난 신청이나 중복 접수를 목록에서 치우되 기록은 남깁니다.
+--   지우는 것과 달리 되돌릴 수 있습니다.
+--   여러 번 실행해도 안전합니다.
+-- ═════════════════════════════════════════════════════════════
+
+alter table public.applications
+  add column if not exists hidden boolean not null default false;

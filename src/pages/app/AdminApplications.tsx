@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Download, Loader2, Trash2 } from 'lucide-react'
+import { Download, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { applicationKindLabel, type ApplicationKind } from '../../lib/applications'
 import { getClient } from '../../lib/supabase'
 
@@ -15,6 +15,7 @@ type Row = {
   level: string
   message: string
   status: string
+  hidden: boolean
 }
 
 const STATUS: { value: string; label: string }[] = [
@@ -28,7 +29,8 @@ export default function AdminApplications() {
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [removing, setRemoving] = useState<string | null>(null)
+  const [busyId, setBusyId] = useState<string | null>(null)
+  const [showHidden, setShowHidden] = useState(false)
 
   useEffect(() => {
     getClient()
@@ -58,7 +60,7 @@ export default function AdminApplications() {
     ]
 
     const escape = (value: string) => `"${String(value ?? '').replace(/"/g, '""')}"`
-    const lines = rows.map((row) =>
+    const lines = visible.map((row) =>
       [
         new Date(row.created_at).toLocaleString('ko-KR'),
         applicationKindLabel[row.kind] ?? row.kind,
@@ -84,24 +86,24 @@ export default function AdminApplications() {
     URL.revokeObjectURL(url)
   }
 
-  /** 신청서를 지웁니다. 되돌릴 수 없어서 누구 것인지 확인한 뒤 지웁니다. */
-  async function remove(row: Row) {
-    const ok = confirm(
-      `${row.name} 님의 신청서를 지울까요?\n\n` +
-        `접수일 ${new Date(row.created_at).toLocaleDateString('ko-KR')} · ${row.contact}\n\n` +
-        '지운 뒤에는 되돌릴 수 없습니다.',
-    )
-    if (!ok) return
-
-    setRemoving(row.id)
-    const { error } = await getClient().from('applications').delete().eq('id', row.id)
-    setRemoving(null)
+  /**
+   * 목록에서만 치웁니다. 기록은 그대로 남아 있어서 언제든 되돌릴 수 있습니다.
+   * '숨긴 신청서 보기' 를 켜면 다시 나타납니다.
+   */
+  async function toggleHidden(row: Row) {
+    const next = !row.hidden
+    setBusyId(row.id)
+    const { error } = await getClient()
+      .from('applications')
+      .update({ hidden: next })
+      .eq('id', row.id)
+    setBusyId(null)
 
     if (error) {
       setError(error.message)
       return
     }
-    setRows((prev) => prev.filter((item) => item.id !== row.id))
+    setRows((prev) => prev.map((item) => (item.id === row.id ? { ...item, hidden: next } : item)))
     setError('')
   }
 
@@ -110,6 +112,9 @@ export default function AdminApplications() {
     const { error } = await getClient().from('applications').update({ status }).eq('id', id)
     if (error) setError(error.message)
   }
+
+  const visible = rows.filter((row) => (showHidden ? true : !row.hidden))
+  const hiddenCount = rows.filter((row) => row.hidden).length
 
   if (loading) {
     return (
@@ -122,25 +127,33 @@ export default function AdminApplications() {
   return (
     <>
       <div className="app-head">
-        <h1>신청서 {rows.length}건</h1>
-        {rows.length > 0 && (
-          <div className="app-head-actions">
+        <h1>신청서 {visible.length}건</h1>
+        <div className="app-head-actions">
+          {hiddenCount > 0 && (
+            <button className="btn btn-ghost btn-sm" onClick={() => setShowHidden((v) => !v)}>
+              {showHidden ? <EyeOff size={15} /> : <Eye size={15} />}
+              {showHidden ? '숨긴 것 접기' : `숨긴 것 ${hiddenCount}건 보기`}
+            </button>
+          )}
+          {visible.length > 0 && (
             <button className="btn btn-ghost btn-sm" onClick={exportCsv}>
               <Download size={15} />
               CSV로 내보내기
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {error && <p className="app-error">{error}</p>}
 
-      {rows.length === 0 ? (
-        <p className="app-note">아직 접수된 신청서가 없습니다.</p>
+      {visible.length === 0 ? (
+        <p className="app-note">
+          {rows.length === 0 ? '아직 접수된 신청서가 없습니다.' : '보이는 신청서가 없습니다.'}
+        </p>
       ) : (
         <div className="app-list">
-          {rows.map((row) => (
-            <article className="app-row" key={row.id}>
+          {visible.map((row) => (
+            <article className={`app-row ${row.hidden ? 'is-off' : ''}`} key={row.id}>
               <div className="app-row-main">
                 <div className="app-row-top">
                   <span className="app-kind">{applicationKindLabel[row.kind] ?? row.kind}</span>
@@ -174,15 +187,16 @@ export default function AdminApplications() {
 
                 <div className="app-row-actions">
                   <button
-                    title="삭제"
-                    className="is-danger"
-                    disabled={removing === row.id}
-                    onClick={() => remove(row)}
+                    title={row.hidden ? '다시 보이기' : '목록에서 숨기기'}
+                    disabled={busyId === row.id}
+                    onClick={() => toggleHidden(row)}
                   >
-                    {removing === row.id ? (
+                    {busyId === row.id ? (
                       <Loader2 size={15} className="spin" />
+                    ) : row.hidden ? (
+                      <Eye size={15} />
                     ) : (
-                      <Trash2 size={15} />
+                      <EyeOff size={15} />
                     )}
                   </button>
                 </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Download, Loader2 } from 'lucide-react'
+import { Download, Loader2, Trash2 } from 'lucide-react'
 import { applicationKindLabel, type ApplicationKind } from '../../lib/applications'
 import { getClient } from '../../lib/supabase'
 
@@ -28,6 +28,7 @@ export default function AdminApplications() {
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [removing, setRemoving] = useState<string | null>(null)
 
   useEffect(() => {
     getClient()
@@ -81,6 +82,27 @@ export default function AdminApplications() {
     link.download = `teamlesson-신청서-${new Date().toISOString().slice(0, 10)}.csv`
     link.click()
     URL.revokeObjectURL(url)
+  }
+
+  /** 신청서를 지웁니다. 되돌릴 수 없어서 누구 것인지 확인한 뒤 지웁니다. */
+  async function remove(row: Row) {
+    const ok = confirm(
+      `${row.name} 님의 신청서를 지울까요?\n\n` +
+        `접수일 ${new Date(row.created_at).toLocaleDateString('ko-KR')} · ${row.contact}\n\n` +
+        '지운 뒤에는 되돌릴 수 없습니다.',
+    )
+    if (!ok) return
+
+    setRemoving(row.id)
+    const { error } = await getClient().from('applications').delete().eq('id', row.id)
+    setRemoving(null)
+
+    if (error) {
+      setError(error.message)
+      return
+    }
+    setRows((prev) => prev.filter((item) => item.id !== row.id))
+    setError('')
   }
 
   async function updateStatus(id: string, status: string) {
@@ -141,13 +163,30 @@ export default function AdminApplications() {
                 {row.message && <p className="app-message">{row.message}</p>}
               </div>
 
-              <select value={row.status} onChange={(e) => updateStatus(row.id, e.target.value)}>
-                {STATUS.map((status) => (
-                  <option key={status.value} value={status.value}>
-                    {status.label}
-                  </option>
-                ))}
-              </select>
+              <div className="app-row-side">
+                <select value={row.status} onChange={(e) => updateStatus(row.id, e.target.value)}>
+                  {STATUS.map((status) => (
+                    <option key={status.value} value={status.value}>
+                      {status.label}
+                    </option>
+                  ))}
+                </select>
+
+                <div className="app-row-actions">
+                  <button
+                    title="삭제"
+                    className="is-danger"
+                    disabled={removing === row.id}
+                    onClick={() => remove(row)}
+                  >
+                    {removing === row.id ? (
+                      <Loader2 size={15} className="spin" />
+                    ) : (
+                      <Trash2 size={15} />
+                    )}
+                  </button>
+                </div>
+              </div>
             </article>
           ))}
         </div>

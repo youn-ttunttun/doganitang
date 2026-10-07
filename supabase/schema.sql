@@ -476,3 +476,18 @@ begin
   );
 end;
 $$;
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 12. 신청서 삭제 (관리자)
+--
+--   장난 신청이나 중복 접수를 지울 수 있게 합니다.
+--   지우면 되돌릴 수 없으니 화면에서 한 번 더 확인을 받습니다.
+--   여러 번 실행해도 안전합니다.
+-- ═════════════════════════════════════════════════════════════
+
+drop policy if exists "관리자만 신청서 삭제" on public.applications;
+create policy "관리자만 신청서 삭제"
+  on public.applications for delete
+  to authenticated
+  using (public.is_admin());

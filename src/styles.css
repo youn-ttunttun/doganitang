@@ -2499,6 +2499,14 @@ textarea {
   gap: 10px;
 }
 
+/* 신청서 줄의 오른쪽 — 상태 고르기와 삭제 버튼 */
+.app-row-side {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
 .app-row {
   display: flex;
   align-items: flex-start;

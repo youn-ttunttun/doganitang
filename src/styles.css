@@ -1364,10 +1364,18 @@ textarea {
 
 /* ── 진행 과정 ───────────────────────────────────────────── */
 
+/* 넓은 화면: 화살표로 이은 도식 */
+.flow-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 좁은 화면: 카드로 쌓기. 도식은 글씨가 읽을 수 없을 만큼 작아집니다. */
 .flow {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 40px 34px;
+  display: none;
+  grid-template-columns: 1fr;
+  gap: 34px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1375,28 +1383,23 @@ textarea {
 
 .flow-step {
   position: relative;
-  padding: 24px 22px;
+  padding: 22px 20px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
 }
 
-/* 단계 사이 화살표. 칸 사이 빈 곳 가운데에 놓습니다. */
-.flow-step::after {
+.flow-step:not(:last-child)::after {
   content: '';
   position: absolute;
-  top: 50%;
-  right: -22px;
+  bottom: -22px;
+  left: 50%;
   width: 9px;
   height: 9px;
   border-top: 2px solid var(--text-faint);
   border-right: 2px solid var(--text-faint);
-  transform: translateY(-50%) rotate(45deg);
-}
-
-.flow-step:last-child::after {
-  display: none;
+  transform: translateX(-50%) rotate(135deg);
 }
 
 .flow-num {
@@ -1426,10 +1429,9 @@ textarea {
   color: var(--text-dim);
 }
 
-/* 마지막 단계에서 갈라지는 갈래. 위로 연결선을 그어 이어 보이게 합니다. */
 .flow-endings {
   position: relative;
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
@@ -1458,25 +1460,23 @@ textarea {
 }
 
 .flow-note {
-  margin: 22px 0 0;
+  margin: 24px 0 0;
   text-align: center;
   font-size: 14px;
   color: var(--text-dim);
 }
 
-/* 한 줄에 다 못 들어가면 세로로 쌓이므로 화살표도 아래를 봅니다. */
 @media (max-width: 860px) {
-  .flow {
-    grid-template-columns: 1fr;
-    gap: 34px;
+  .flow-diagram {
+    display: none;
   }
 
-  .flow-step::after {
-    top: auto;
-    right: auto;
-    bottom: -22px;
-    left: 50%;
-    transform: translateX(-50%) rotate(135deg);
+  .flow {
+    display: grid;
+  }
+
+  .flow-endings {
+    display: flex;
   }
 }
 

@@ -247,6 +247,25 @@ export const pricing = {
  */
 export const news: { date: string; title: string; body: string }[] = []
 
+/**
+ * 신청 뒤에 무엇이 어떤 순서로 일어나는지. 학부모가 제일 궁금해하는 부분입니다.
+ * steps 를 전부 지우면 이 영역이 화면에서 사라집니다.
+ */
+export const process = {
+  eyebrow: 'How it works',
+  title: '신청하면 이렇게 진행됩니다',
+  lead: '',
+  steps: [
+    { title: '무료 진단 테스트', desc: '20분이면 지금 어디서 막혔는지 나옵니다.' },
+    { title: '시범 수업 · 상담', desc: '결과를 함께 보고 시작점과 일정을 정합니다.' },
+    { title: '수업 등록', desc: '과정과 횟수를 확정합니다.' },
+    { title: '튜터 배정', desc: '일정과 지역에 맞는 수학 1등급 튜터를 배정합니다.' },
+  ],
+  // 마지막 단계에서 갈라지는 두 갈래
+  endings: ['대면 수업', '비대면(화상) 수업'],
+  note: '진단 결과만 보고 시범 수업 없이 바로 등록하셔도 됩니다.',
+}
+
 export const sections = {
   curriculum: {
     eyebrow: 'Curriculum',
@@ -478,6 +497,7 @@ export const defaultContent = {
   material,
   sections,
   news,
+  process,
 }
 
 export type SiteContent = typeof defaultContent

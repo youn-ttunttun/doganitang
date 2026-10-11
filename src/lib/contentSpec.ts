@@ -365,6 +365,28 @@ export const contentSpec: SectionSpec[] = [
     ],
   },
   {
+    key: 'process',
+    label: '진행 과정',
+    desc: '신청 뒤 어떤 순서로 진행되는지. 단계를 전부 지우면 화면에서 사라집니다.',
+    fields: [
+      { key: 'eyebrow', label: '라벨', kind: 'text' },
+      { key: 'title', label: '제목', kind: 'text' },
+      { key: 'lead', label: '설명', kind: 'multiline' },
+      {
+        key: 'steps',
+        label: '단계',
+        kind: 'rows',
+        titleKey: 'title',
+        fields: [
+          { key: 'title', label: '단계 이름', kind: 'text' },
+          { key: 'desc', label: '설명', kind: 'multiline' },
+        ],
+      },
+      { key: 'endings', label: '마지막에 갈라지는 갈래', kind: 'strings', hint: '예) 대면 수업 · 비대면 수업. 비우면 안 나옵니다' },
+      { key: 'note', label: '아래 덧붙이는 말', kind: 'text' },
+    ],
+  },
+  {
     key: 'news',
     label: '소식',
     desc: '모집 소식이나 공지. 하나도 없으면 사이트에 이 영역이 나오지 않습니다.',

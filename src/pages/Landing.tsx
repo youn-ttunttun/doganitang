@@ -12,6 +12,7 @@ import Marquee from '../components/Marquee'
 import Nav from '../components/Nav'
 import Positioning from '../components/Positioning'
 import Pricing from '../components/Pricing'
+import Process from '../components/Process'
 import Proof from '../components/Proof'
 import StickyCta from '../components/StickyCta'
 import Teachers from '../components/Teachers'
@@ -45,6 +46,7 @@ export default function Landing() {
         <Positioning />
         <Proof />
         <Teachers compact />
+        <Process />
         <Pricing />
         <Faq />
         <News />

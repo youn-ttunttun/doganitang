@@ -1362,6 +1362,124 @@ textarea {
   color: var(--text-dim);
 }
 
+/* ── 진행 과정 ───────────────────────────────────────────── */
+
+.flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 40px 34px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flow-step {
+  position: relative;
+  padding: 24px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 단계 사이 화살표. 칸 사이 빈 곳 가운데에 놓습니다. */
+.flow-step::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -22px;
+  width: 9px;
+  height: 9px;
+  border-top: 2px solid var(--text-faint);
+  border-right: 2px solid var(--text-faint);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.flow-step:last-child::after {
+  display: none;
+}
+
+.flow-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-full);
+  background: var(--brand);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.flow-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.flow-desc {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+/* 마지막 단계에서 갈라지는 갈래. 위로 연결선을 그어 이어 보이게 합니다. */
+.flow-endings {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 34px;
+  padding-top: 26px;
+}
+
+.flow-endings::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 18px;
+  background: var(--border-strong);
+}
+
+.flow-ending {
+  padding: 9px 18px;
+  border: 1px solid var(--brand);
+  border-radius: var(--radius-full);
+  background: var(--brand-soft);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.flow-note {
+  margin: 22px 0 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+/* 한 줄에 다 못 들어가면 세로로 쌓이므로 화살표도 아래를 봅니다. */
+@media (max-width: 860px) {
+  .flow {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .flow-step::after {
+    top: auto;
+    right: auto;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%) rotate(135deg);
+  }
+}
+
 /* ── 성적 변화 마퀴 ──────────────────────────────────────── */
 
 .marquee {

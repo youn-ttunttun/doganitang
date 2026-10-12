@@ -3044,8 +3044,52 @@ textarea {
   font-weight: 600;
 }
 
-.course-preview {
+/* 교재 사진을 카드 안에 바로 보여줍니다. 눌러야 보이면 안 보고 지나칩니다. */
+.course-shots {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: 100%;
   margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.course-shots:has(img:only-of-type) {
+  grid-template-columns: 1fr;
+}
+
+.course-shots img {
+  width: 100%;
+  height: 104px;
+  object-fit: cover;
+  object-position: top;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color 0.2s ease;
+}
+
+.course-shots:hover img {
+  border-color: var(--brand);
+}
+
+.course-shots-hint {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: var(--radius-full);
+  background: rgba(8, 14, 22, 0.78);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #fff;
 }
 
 /* 교재 사진을 크게 넘겨보는 창 */

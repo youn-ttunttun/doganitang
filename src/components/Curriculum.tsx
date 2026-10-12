@@ -49,10 +49,15 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
     (book) => !curriculum.some((course) => text(course.name) === text(book.subject)),
   )
 
+  // 표지는 과정 카드에 이미 나오므로 여기서는 목차와 미리보기 사진만 모읍니다.
   const photos = [
-    ...books
-      .filter((book) => text(book.toc) !== '')
-      .map((book) => ({ src: text(book.toc), alt: `${book.title} 목차` })),
+    ...books.flatMap((book) => [
+      ...(text(book.toc) ? [{ src: text(book.toc), alt: `${book.title} 목차` }] : []),
+      ...list<Shot>(book.gallery).map((shot) => ({
+        src: text(shot.src),
+        alt: text(shot.alt) || book.title,
+      })),
+    ]),
     ...list<Shot>(material.images),
   ].filter((image) => text(image.src) !== '')
 
@@ -115,11 +120,17 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
                   {shots.length > 0 && (
                     <button
                       type="button"
-                      className="btn btn-ghost btn-sm course-preview"
+                      className="course-shots"
                       onClick={() => setPreview({ title: `${course.code} 교재`, shots })}
+                      aria-label={`${course.code} 교재 사진 ${shots.length}장 크게 보기`}
                     >
-                      <Images size={14} />
-                      미리보기 {shots.length}장
+                      {shots.slice(0, 2).map((shot) => (
+                        <img key={shot.src} src={asset(shot.src)} alt={shot.alt} loading="lazy" />
+                      ))}
+                      <span className="course-shots-hint">
+                        <Images size={13} aria-hidden="true" />
+                        {shots.length > 2 ? `+${shots.length - 2}장 더` : '크게 보기'}
+                      </span>
                     </button>
                   )}
                 </div>

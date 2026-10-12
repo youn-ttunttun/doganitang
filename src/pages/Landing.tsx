@@ -42,8 +42,8 @@ export default function Landing() {
         <Hero />
         <Marquee />
         <Audience />
-        <Curriculum compact />
         <Process />
+        <Curriculum compact />
         <Positioning />
         <Proof />
         <Teachers compact />

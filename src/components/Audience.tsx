@@ -8,7 +8,7 @@ import Section from './Section'
 export default function Audience() {
   const { audience, audienceSection } = useContent()
   return (
-    <Section id="audience" tone="muted" eyebrow={audienceSection.eyebrow} title={audienceSection.title}>
+    <Section id="audience" eyebrow={audienceSection.eyebrow} title={audienceSection.title}>
       <ul className="audience-grid">
         {audience.map((item) => (
           <li className="tile audience-item" key={item}>

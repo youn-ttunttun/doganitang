@@ -34,18 +34,13 @@ export default function Process() {
 
   // ── 도식 자리 계산 ───────────────────────────────────────
   const W = 1000
-  const H = endings.length > 0 ? 300 : 230
-  const BOX_H = 60
-  const GAP = 30
-  const END_W = 160
-  const mainRight = endings.length > 0 ? W - END_W - 90 : W - 10
-  const boxW = Math.min(175, (mainRight - 10 - (steps.length - 1) * GAP) / steps.length)
-  const rowY = endings.length > 0 ? 112 : 60
+  const H = 110
+  const BOX_H = 66
+  const GAP = 26
+  const boxW = (W - 10 - (steps.length - 1) * GAP) / steps.length
+  const rowY = 22
   const midY = rowY + BOX_H / 2
-  const xOf = (i: number) => 10 + i * (boxW + GAP)
-
-  const lastRight = xOf(steps.length - 1) + boxW
-  const endX = W - END_W - 10
+  const xOf = (i: number) => 5 + i * (boxW + GAP)
 
   return (
     <Section
@@ -80,38 +75,6 @@ export default function Process() {
             />
           ))}
 
-          {/* 첫 단계에서 등록으로 바로 가는 지름길 */}
-          {steps.length >= 3 && (
-            <path
-              d={`M ${xOf(0) + boxW / 2} ${rowY + BOX_H + 4}
-                  C ${xOf(0) + boxW / 2} ${rowY + BOX_H + 70},
-                    ${xOf(2) + boxW / 2} ${rowY + BOX_H + 70},
-                    ${xOf(2) + boxW / 2} ${rowY + BOX_H + 8}`}
-              fill="none"
-              stroke="var(--text-faint)"
-              strokeWidth="2"
-              strokeDasharray="5 5"
-              markerEnd="url(#flow-arrow)"
-            />
-          )}
-
-          {/* 마지막에서 갈라지는 화살표 */}
-          {endings.map((text, i) => {
-            const y = endings.length === 1 ? midY : i === 0 ? 46 : H - 66
-            return (
-              <line
-                key={`branch-${text}`}
-                x1={lastRight + 4}
-                y1={midY}
-                x2={endX - 6}
-                y2={y + 25}
-                stroke="var(--text-faint)"
-                strokeWidth="2"
-                markerEnd="url(#flow-arrow)"
-              />
-            )
-          })}
-
           {/* 단계 상자 */}
           {steps.map((step, i) => (
             <g key={step.title}>
@@ -135,24 +98,6 @@ export default function Process() {
             </g>
           ))}
 
-          {/* 갈라진 끝 */}
-          {endings.map((text, i) => {
-            const y = endings.length === 1 ? rowY : i === 0 ? 21 : H - 91
-            return (
-              <g key={`end-${text}`}>
-                <rect
-                  x={endX} y={y} width={END_W} height={50} rx="25"
-                  fill="var(--brand-soft)" stroke="var(--brand)" strokeWidth="1.5"
-                />
-                <text
-                  x={endX + END_W / 2} y={y + 31}
-                  textAnchor="middle" fill="var(--brand)" fontSize="15" fontWeight="700"
-                >
-                  {text}
-                </text>
-              </g>
-            )
-          })}
         </svg>
       </div>
 

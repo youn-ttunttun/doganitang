@@ -3008,7 +3008,9 @@ textarea {
 
 /* 과정 카드 아래에 붙는 교재. 커리큘럼과 교재를 한 섹션에서 보여줍니다. */
 .course-books {
-  margin-top: 18px;
+  /* 설명과 단원 줄 수가 카드마다 달라서, 교재가 들쭉날쭉한 높이에서
+     시작했습니다. 남는 공간을 위로 밀어 카드 아래에 붙입니다. */
+  margin-top: auto;
   padding-top: 16px;
   border-top: 1px solid var(--border);
 }

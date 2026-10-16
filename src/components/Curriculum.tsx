@@ -68,7 +68,7 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
       title={copy.title || undefined}
       lead={copy.lead || undefined}
     >
-      <div className="bento">
+      <div className="bento course-cards">
         {curriculum.map((course, index) => {
           const courseBooks = booksOf(course.name)
           const shots = courseBooks.flatMap(shotsOf)

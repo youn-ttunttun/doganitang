@@ -699,6 +699,44 @@ textarea {
   .r2 { grid-row: auto; }
 }
 
+/* 좁은 화면에서 과정 카드가 하나씩 화면을 다 차지해 한참 내려야 했습니다.
+   옆으로 넘겨 보도록 바꿉니다. 손가락을 떼면 카드에 딱 맞춰 멈춥니다. */
+@media (max-width: 760px) {
+  .course-cards {
+    display: flex;
+    gap: 12px;
+    margin-inline: -20px;
+    padding-inline: 20px;
+    padding-bottom: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .course-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .course-cards > .tile {
+    flex: 0 0 84%;
+    scroll-snap-align: center;
+  }
+
+  /* 옆으로 넘기는 동안 글자가 너무 크면 한 카드에 안 들어갑니다. */
+  .course-cards .course-name {
+    margin: 4px 0 12px;
+    font-size: 20px;
+  }
+
+  .course-cards .tile {
+    padding: 22px 20px;
+  }
+
+  .course-shots img {
+    height: 88px;
+  }
+}
+
 @media (max-width: 620px) {
   .bento {
     gap: 10px;

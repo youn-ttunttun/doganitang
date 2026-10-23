@@ -73,7 +73,11 @@ export default function AdminApplications() {
       '상태',
     ]
 
-    const escape = (value: string) => `"${String(value ?? '').replace(/"/g, '""')}"`
+    const escape = (raw: string) => {
+      const value = String(raw ?? '')
+      const safe = /^[=+@\-\t\r]/.test(value) ? `'${value}` : value
+      return `"${safe.replace(/"/g, '""')}"`
+    }
     const lines = visible.map((row) =>
       [
         new Date(row.created_at).toLocaleString('ko-KR'),

@@ -19,6 +19,12 @@ type Row = {
   source: string
   recent_grade: string
   tutor_match: string
+  birth_year: number | null
+  gender: string
+  recent_exam: string
+  tuition_confirmed: boolean | null
+  consent_at: string | null
+  consent_version: string | null
   admin_memo: string
 }
 
@@ -56,7 +62,7 @@ export default function AdminApplications() {
       '이름',
       '학생 연락처',
       '학부모 연락처',
-      '학년',
+      '상태', '출생 연도', '성별', '최근 시험명/원점수', '수업료 확인', '동의일', '동의문 버전',
       '희망 과목',
       '최근 모의고사',
       '유입경로',
@@ -76,6 +82,8 @@ export default function AdminApplications() {
         row.contact,
         row.guardian_contact,
         row.grade,
+        String(row.birth_year ?? ''), row.gender, row.recent_exam,
+        row.tuition_confirmed == null ? '미수집' : row.tuition_confirmed ? '확인' : '미확인', row.consent_at ?? '', row.consent_version ?? '',
         row.course,
         row.recent_grade,
         row.source,

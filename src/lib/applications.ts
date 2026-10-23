@@ -18,6 +18,10 @@ export type ApplicationInput = {
   gender: string
   recentExam: string
   tuitionConfirmed: boolean
+  marketingSms: boolean
+  marketingEmail: boolean
+  marketingPhone: string
+  marketingEmailAddress: string
   recentGrade: string
 }
 
@@ -43,9 +47,14 @@ export async function submitApplication(input: ApplicationInput): Promise<void> 
     gender: input.gender,
     recent_exam: input.recentExam,
     tuition_confirmed: input.tuitionConfirmed,
-    consent_version: '2026-10-24',
+    consent_version: '2026-10-24-v3',
     consent_at: new Date().toISOString(),
-    form_version: 2,
+    form_version: 3,
+    marketing_sms: input.marketingSms,
+    marketing_email: input.marketingEmail,
+    marketing_phone: input.marketingSms ? input.marketingPhone.replace(/[- ]/g, '') : null,
+    marketing_email_address: input.marketingEmail ? input.marketingEmailAddress.trim() : null,
+    marketing_consent_version: input.marketingSms || input.marketingEmail ? '2026-10-24-v3' : null,
     status: 'new',
   })
 

@@ -36,6 +36,7 @@ const EMPTY: ApplicationInput = {
   gender: '',
   recentExam: '',
   tuitionConfirmed: false,
+  marketingSms: false, marketingEmail: false, marketingPhone: '', marketingEmailAddress: '',
 }
 
 type Status = 'idle' | 'sending' | 'done' | 'error'
@@ -69,7 +70,7 @@ export default function Apply() {
     setForm((prev) => ({ ...prev, [key]: value }))
 
   const filled = form.name.trim() && form.contact.trim() && form.grade && form.course && form.birthYear && form.level.trim() && form.source && (!GRADES.slice(0, 3).concat('중등').includes(form.grade) || form.guardianContact.trim())
-  const canSubmit = Boolean(filled) && agreed && form.tuitionConfirmed && (Number(form.birthYear) < 2012 || (Number(form.birthYear) === 2012 && ageConfirmed)) && status !== 'sending'
+  const canSubmit = Boolean(filled) && (!form.marketingSms || /^01[016789][0-9]{7,8}$/.test(form.marketingPhone.replace(/[- ]/g, ''))) && (!form.marketingEmail || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.marketingEmailAddress)) && agreed && form.tuitionConfirmed && (Number(form.birthYear) < 2012 || (Number(form.birthYear) === 2012 && ageConfirmed)) && status !== 'sending'
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -231,7 +232,15 @@ export default function Apply() {
         {form.birthYear === '2012' && <label className="agree"><input type="checkbox" checked={ageConfirmed} onChange={e => setAgeConfirmed(e.target.checked)} required /><span>생일이 지나 만 14세 이상입니다.</span></label>}
         <label className="agree"><input type="checkbox" checked={form.tuitionConfirmed} onChange={(e) => set('tuitionConfirmed', e.target.checked)} required /><span>수업료 정보를 확인하셨습니까? (필수)</span></label>
         <label className="agree"><input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} required /><span>개인정보 수집·이용에 동의합니다. (필수)</span></label>
-        <div className="agree"><span>수집·이용자: 팀레슨. 목적: 상담 연락, 수업 안내 및 LMS에서의 신청 관리. 필수 항목: 이름 또는 별명, 상태, 출생 연도, 희망 과목, 현재 수학 상황 및 요청 사항, 학생 연락처, 유입 경로, 중·고등학교 재학생의 학부모 연락처. 선택 항목: 성별, 최근 모의고사 등급·시험명·원점수, 그 외 제공한 학부모 연락처와 남긴 말. 보유기간: 상담 종료 후 30일 이내 파기하며, 수업 등록 시 수강에 필요한 정보는 별도 안내 후 관리합니다. 동의를 거부할 수 있으나 신청서 접수는 제한됩니다. 선택 항목은 입력하지 않아도 신청할 수 있습니다.</span></div>
+        <div className="agree"><span>수집·이용자: 팀레슨. 목적: 상담 연락, 수업 안내 및 LMS에서의 신청 관리. 필수 항목: 이름 또는 별명, 상태, 출생 연도, 희망 과목, 현재 수학 상황 및 요청 사항, 학생 연락처, 유입 경로, 중·고등학교 재학생의 학부모 연락처. 선택 항목: 성별, 최근 모의고사 등급·시험명·원점수, 그 외 제공한 학부모 연락처와 남긴 말. 보유기간: 상담 종료 후 90일 이내 파기하며, 수업 등록 시 수강에 필요한 정보는 별도 안내 후 관리합니다. 동의를 거부할 수 있으나 신청서 접수는 제한됩니다. 선택 항목은 입력하지 않아도 신청할 수 있습니다.</span></div>
+
+        <fieldset className="field"><legend className="field-label">광고성 정보 수신 및 이를 위한 개인정보 수집·이용 동의 (선택)</legend>
+          <div className="agree"><span>팀레슨의 수업·강좌·이벤트 광고를 아래에서 선택한 연락처로 보내는 데 동의합니다. 수집 항목은 선택한 채널의 휴대전화번호 또는 이메일 주소이며, 상담 종료 후 90일 이내 또는 동의 철회 시까지 이용 후 파기합니다. 동의하지 않아도 상담·수업 신청에 불이익이 없습니다. 학부모 연락처는 광고에 사용하지 않습니다. 수신 거부는 수신 메시지의 안내 또는 <a href="mailto:soismoi12@snu.ac.kr">이메일</a>로 요청할 수 있습니다.</span></div>
+          <label className="agree"><input type="checkbox" checked={form.marketingSms} onChange={e => { set('marketingSms', e.target.checked); if (!e.target.checked) set('marketingPhone', ''); }} /><span>SMS 광고성 정보 수신 및 휴대전화번호 수집·이용에 동의합니다. (선택)</span></label>
+          {form.marketingSms && <label className="field"><span className="field-label">광고 수신용 본인 휴대전화번호</span><input type="text" inputMode="tel" autoComplete="tel" value={form.marketingPhone} onChange={e=>set('marketingPhone',e.target.value)} placeholder="본인 명의 휴대전화번호 (예: 01012345678)" maxLength={20} required /></label>}
+          <label className="agree"><input type="checkbox" checked={form.marketingEmail} onChange={e => { set('marketingEmail', e.target.checked); if (!e.target.checked) set('marketingEmailAddress', ''); }} /><span>이메일 광고성 정보 수신 및 이메일 주소 수집·이용에 동의합니다. (선택)</span></label>
+          {form.marketingEmail && <label className="field"><span className="field-label">광고 수신용 본인 이메일</span><input type="text" inputMode="email" autoComplete="email" value={form.marketingEmailAddress} onChange={e=>set('marketingEmailAddress',e.target.value)} placeholder="name@example.com" maxLength={254} required /></label>}
+        </fieldset>
 
         {status === 'error' && (
           <p className="apply-error">

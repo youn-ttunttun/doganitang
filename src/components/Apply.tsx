@@ -10,14 +10,14 @@ import {
 } from '../lib/applications'
 import Section from './Section'
 
-const GRADES = ['고1', '고2', '고3', 'N수', '중등']
+const GRADES = ['고1', '고2', '고3', 'N수', '중등', '자퇴', '기타: 직장인, 만학도 등']
 const COURSES = ['Pre (기초부터)', '대수', '미적분1', '아직 모르겠어요']
 
 /** 어디서 보고 왔는지. 홍보를 어디에 더 쓸지 정하는 근거가 됩니다. */
 const SOURCES = ['인스타그램', '지인 소개', '검색(네이버·구글)', '학교·학원', '기타']
 
 const RECENT_GRADES = [
-  '1등급', '2등급', '3등급', '4등급', '5등급',
+  '3등급', '4등급', '5등급',
   '6등급', '7등급', '8등급', '9등급', '아직 본 적 없어요',
 ]
 
@@ -32,6 +32,10 @@ const EMPTY: ApplicationInput = {
   message: '',
   source: '',
   recentGrade: '',
+  birthYear: '',
+  gender: '',
+  recentExam: '',
+  tuitionConfirmed: false,
 }
 
 type Status = 'idle' | 'sending' | 'done' | 'error'
@@ -57,14 +61,15 @@ export default function Apply() {
     }
   }, [])
   const [agreed, setAgreed] = useState(false)
+  const [ageConfirmed, setAgeConfirmed] = useState(false)
   const [status, setStatus] = useState<Status>('idle')
   const [copied, setCopied] = useState(false)
 
   const set = <K extends keyof ApplicationInput>(key: K, value: ApplicationInput[K]) =>
     setForm((prev) => ({ ...prev, [key]: value }))
 
-  const filled = form.name.trim() && form.contact.trim() && form.grade && form.course
-  const canSubmit = Boolean(filled) && agreed && status !== 'sending'
+  const filled = form.name.trim() && form.contact.trim() && form.grade && form.course && form.birthYear && form.level.trim() && form.source && (!GRADES.slice(0, 3).concat('중등').includes(form.grade) || form.guardianContact.trim())
+  const canSubmit = Boolean(filled) && agreed && form.tuitionConfirmed && (Number(form.birthYear) < 2012 || (Number(form.birthYear) === 2012 && ageConfirmed)) && status !== 'sending'
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -139,6 +144,7 @@ export default function Apply() {
               onClick={() => {
                 setForm(EMPTY)
                 setAgreed(false)
+                setAgeConfirmed(false)
                 setStatus('idle')
               }}
             >
@@ -199,131 +205,33 @@ export default function Apply() {
           </div>
         </fieldset>
 
-        <div className="field-row">
-          <label className="field">
-            <span className="field-label">
-              이름 <em>필수</em>
-            </span>
-            <input
-              type="text"
-              value={form.name}
-              onChange={(e) => set('name', e.target.value)}
-              placeholder="학생 이름"
-              maxLength={40}
-              required
-            />
-          </label>
-
-          <label className="field">
-            <span className="field-label">
-              학생 연락처 <em>필수</em>
-            </span>
-            <input
-              type="text"
-              value={form.contact}
-              onChange={(e) => set('contact', e.target.value)}
-              placeholder="전화번호, 카카오 ID, 인스타 아이디 등"
-              maxLength={120}
-              required
-            />
-          </label>
-        </div>
-
-        <label className="field">
-          <span className="field-label">학부모 연락처 (선택)</span>
-          <input
-            type="text"
-            value={form.guardianContact}
-            onChange={(e) => set('guardianContact', e.target.value)}
-            placeholder="상담을 학부모님과 진행하실 경우 남겨주세요"
-            maxLength={120}
-          />
+        <label className="field"><span className="field-label">이름 <em>필수</em></span>
+          <input type="text" value={form.name} onChange={(e) => set('name', e.target.value)} placeholder="학생 이름 혹은 별명을 적어주세요." maxLength={40}  required />
         </label>
-
-        <div className="field-row">
-          <label className="field">
-            <span className="field-label">
-              학년 <em>필수</em>
-            </span>
-            <select value={form.grade} onChange={(e) => set('grade', e.target.value)} required>
-              <option value="">선택해주세요</option>
-              {GRADES.map((grade) => (
-                <option key={grade} value={grade}>
-                  {grade}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="field">
-            <span className="field-label">
-              희망 과목 <em>필수</em>
-            </span>
-            <select value={form.course} onChange={(e) => set('course', e.target.value)} required>
-              <option value="">선택해주세요</option>
-              {COURSES.map((course) => (
-                <option key={course} value={course}>
-                  {course}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <div className="field-row">
-          <label className="field">
-            <span className="field-label">최근 모의고사 등급 (선택)</span>
-            <select value={form.recentGrade} onChange={(e) => set('recentGrade', e.target.value)}>
-              <option value="">선택해주세요</option>
-              {RECENT_GRADES.map((grade) => (
-                <option key={grade} value={grade}>
-                  {grade}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="field">
-            <span className="field-label">어떻게 알고 오셨나요? (선택)</span>
-            <select value={form.source} onChange={(e) => set('source', e.target.value)}>
-              <option value="">선택해주세요</option>
-              {SOURCES.map((source) => (
-                <option key={source} value={source}>
-                  {source}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <label className="field">
-          <span className="field-label">현재 수학 상황 (선택)</span>
-          <input
-            type="text"
-            value={form.level}
-            onChange={(e) => set('level', e.target.value)}
-            placeholder="예) 최근 모의고사 7등급, 중학교 때부터 손 놓았어요"
-            maxLength={500}
-          />
+        <label className="field"><span className="field-label">상태 <em>필수</em></span><select value={form.grade} onChange={(e) => set('grade', e.target.value)} required><option value="">선택해주세요</option>{GRADES.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
+        <label className="field"><span className="field-label">출생 연도 <em>필수</em></span><select value={form.birthYear} onChange={(e) => set('birthYear', e.target.value)} required><option value="">선택해주세요</option>{Array.from({ length: 77 }, (_, i) => String(2026 - i)).map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
+        <label className="field"><span className="field-label">성별 (선택)</span><select value={form.gender} onChange={(e) => set('gender', e.target.value)} ><option value="">선택해주세요</option>{['여성', '남성', '공개하지 않음'].map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
+        <label className="field"><span className="field-label">희망 과목 <em>필수</em></span><select value={form.course} onChange={(e) => set('course', e.target.value)} required><option value="">선택해주세요</option>{COURSES.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
+        <label className="field"><span className="field-label">최근 모의고사 등급 (선택)</span><select value={form.recentGrade} onChange={(e) => set('recentGrade', e.target.value)} ><option value="">선택해주세요</option>{RECENT_GRADES.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
+        <label className="field"><span className="field-label">최근 응시한 모의고사명/원점수 (선택)</span>
+          <input type="text" value={form.recentExam} onChange={(e) => set('recentExam', e.target.value)} placeholder="예) 2026학년도 고2 9월 모의고사 / 30점대" maxLength={200}   />
         </label>
-
-        <label className="field">
-          <span className="field-label">남기고 싶은 말 (선택)</span>
-          <textarea
-            value={form.message}
-            onChange={(e) => set('message', e.target.value)}
-            placeholder="궁금한 점이나 원하는 수업 일정을 자유롭게 적어주세요"
-            rows={4}
-            maxLength={2000}
-          />
+        <label className="field"><span className="field-label">현재 수학 상황 및 요청 사항 <em>필수</em></span>
+          <textarea value={form.level} onChange={(e) => set('level', e.target.value)} placeholder="예) 중학교 때부터 놓았다가 두 달 전부터 동네 학원에서 OO 교재로 대수 지수로그 진도 나가고 있습니다." maxLength={500} rows={4} required />
         </label>
-
-        <label className="agree">
-          <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-          <span>
-            상담 연락을 위해 입력한 정보를 수집·이용하는 데 동의합니다. 상담이 끝나면 파기됩니다.
-          </span>
+        <label className="field"><span className="field-label">학생 연락처 <em>필수</em></span>
+          <input type="text" value={form.contact} onChange={(e) => set('contact', e.target.value)} placeholder="전화번호, 카카오 ID, 인스타 아이디 등" maxLength={120}  required />
         </label>
+        <label className="field"><span className="field-label">학부모 연락처 (중/고등학교 재학생 필수)</span><input type="text" value={form.guardianContact} onChange={(e) => set('guardianContact', e.target.value)} placeholder="학부모님 연락처를 남겨주세요" maxLength={120} required={['고1', '고2', '고3', '중등'].includes(form.grade)} /></label>
+        <label className="field"><span className="field-label">어떻게 알고 오셨나요? <em>필수</em></span><select value={form.source} onChange={(e) => set('source', e.target.value)} required><option value="">선택해주세요</option>{SOURCES.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
+        <label className="field"><span className="field-label">남기고 싶은 말 (선택)</span>
+          <textarea value={form.message} onChange={(e) => set('message', e.target.value)} placeholder="추가로 전하실 내용이 있다면 적어주세요" maxLength={2000} rows={4}  />
+        </label>
+        {Number(form.birthYear) >= 2012 && <div className="agree"><span>만 14세 미만 학생은 법정대리인 동의 확인이 필요합니다. 보호자께서 <a href={site.instagram} target="_blank" rel="noreferrer">인스타그램 DM</a>으로 먼저 문의해주세요.</span></div>}
+        {form.birthYear === '2012' && <label className="agree"><input type="checkbox" checked={ageConfirmed} onChange={e => setAgeConfirmed(e.target.checked)} required /><span>생일이 지나 만 14세 이상입니다.</span></label>}
+        <label className="agree"><input type="checkbox" checked={form.tuitionConfirmed} onChange={(e) => set('tuitionConfirmed', e.target.checked)} required /><span>수업료 정보를 확인하셨습니까? (필수)</span></label>
+        <label className="agree"><input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} required /><span>개인정보 수집·이용에 동의합니다. (필수)</span></label>
+        <div className="agree"><span>수집·이용자: 팀레슨. 목적: 상담 연락, 수업 안내 및 LMS에서의 신청 관리. 필수 항목: 이름 또는 별명, 상태, 출생 연도, 희망 과목, 현재 수학 상황 및 요청 사항, 학생 연락처, 유입 경로, 중·고등학교 재학생의 학부모 연락처. 선택 항목: 성별, 최근 모의고사 등급·시험명·원점수, 그 외 제공한 학부모 연락처와 남긴 말. 보유기간: 상담 종료 후 30일 이내 파기하며, 수업 등록 시 수강에 필요한 정보는 별도 안내 후 관리합니다. 동의를 거부할 수 있으나 신청서 접수는 제한됩니다. 선택 항목은 입력하지 않아도 신청할 수 있습니다.</span></div>
 
         {status === 'error' && (
           <p className="apply-error">

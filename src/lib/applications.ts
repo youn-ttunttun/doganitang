@@ -14,6 +14,10 @@ export type ApplicationInput = {
   level: string
   message: string
   source: string
+  birthYear: string
+  gender: string
+  recentExam: string
+  tuitionConfirmed: boolean
   recentGrade: string
 }
 
@@ -35,6 +39,13 @@ export async function submitApplication(input: ApplicationInput): Promise<void> 
     message: input.message,
     source: input.source,
     recent_grade: input.recentGrade,
+    birth_year: Number(input.birthYear),
+    gender: input.gender,
+    recent_exam: input.recentExam,
+    tuition_confirmed: input.tuitionConfirmed,
+    consent_version: '2026-10-24',
+    consent_at: new Date().toISOString(),
+    form_version: 2,
     status: 'new',
   })
 
@@ -52,7 +63,13 @@ export function buildDmText(input: ApplicationInput): string {
     `이름: ${input.name}`,
     `연락처: ${input.contact}`,
     input.guardianContact && `학부모 연락처: ${input.guardianContact}`,
-    `학년: ${input.grade}`,
+    `상태: ${input.grade}`,
+    `출생 연도: ${input.birthYear}`,
+    `성별: ${input.gender || "미응답"}`,
+    `최근 모의고사 등급: ${input.recentGrade || "미응답"}`,
+    `최근 응시한 모의고사명/원점수: ${input.recentExam || "미응답"}`,
+    `유입 경로: ${input.source}`,
+    `수업료 확인: ${input.tuitionConfirmed ? "확인" : "미확인"}`,
     `희망 과목: ${input.course}`,
     input.level && `현재 상황: ${input.level}`,
     input.message && `남길 말: ${input.message}`,

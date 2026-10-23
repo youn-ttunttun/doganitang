@@ -2656,6 +2656,33 @@ textarea {
 }
 
 /* 신청서 줄의 오른쪽 — 상태 고르기와 삭제 버튼 */
+/* 관리자가 적는 칸. 신청자가 쓴 내용과 구분되게 위에 선을 둡니다. */
+.app-row-notes {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+
+.app-row-notes label {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-row-notes span {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.app-row-notes input {
+  padding: 7px 10px;
+  font-size: 13.5px;
+}
+
 .app-row-side {
   display: flex;
   align-items: center;

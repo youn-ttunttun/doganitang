@@ -13,6 +13,8 @@ export type ApplicationInput = {
   course: string
   level: string
   message: string
+  source: string
+  recentGrade: string
 }
 
 export const applicationKindLabel: Record<ApplicationKind, string> = {
@@ -31,6 +33,8 @@ export async function submitApplication(input: ApplicationInput): Promise<void> 
     course: input.course,
     level: input.level,
     message: input.message,
+    source: input.source,
+    recent_grade: input.recentGrade,
     status: 'new',
   })
 

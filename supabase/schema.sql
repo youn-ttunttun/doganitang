@@ -503,3 +503,20 @@ create policy "관리자만 신청서 삭제"
 
 alter table public.applications
   add column if not exists hidden boolean not null default false;
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 14. 신청서에 칸 네 개 추가
+--
+--   source        유입경로 (신청할 때 학생이 고릅니다)
+--   recent_grade  최근 모의고사 등급 (신청할 때 학생이 고릅니다)
+--   tutor_match   튜터 매칭 기록 (관리자가 적습니다)
+--   admin_memo    코멘트 — 이미 있던 칸인데 화면에 안 보이던 것을 꺼냅니다
+--
+--   여러 번 실행해도 안전합니다.
+-- ═════════════════════════════════════════════════════════════
+
+alter table public.applications
+  add column if not exists source       text default '',
+  add column if not exists recent_grade text default '',
+  add column if not exists tutor_match  text default '';

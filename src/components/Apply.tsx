@@ -13,6 +13,14 @@ import Section from './Section'
 const GRADES = ['고1', '고2', '고3', 'N수', '중등']
 const COURSES = ['Pre (기초부터)', '대수', '미적분1', '아직 모르겠어요']
 
+/** 어디서 보고 왔는지. 홍보를 어디에 더 쓸지 정하는 근거가 됩니다. */
+const SOURCES = ['인스타그램', '지인 소개', '검색(네이버·구글)', '학교·학원', '기타']
+
+const RECENT_GRADES = [
+  '1등급', '2등급', '3등급', '4등급', '5등급',
+  '6등급', '7등급', '8등급', '9등급', '아직 본 적 없어요',
+]
+
 const EMPTY: ApplicationInput = {
   kind: 'consult',
   name: '',
@@ -22,6 +30,8 @@ const EMPTY: ApplicationInput = {
   course: '',
   level: '',
   message: '',
+  source: '',
+  recentGrade: '',
 }
 
 type Status = 'idle' | 'sending' | 'done' | 'error'
@@ -254,6 +264,32 @@ export default function Apply() {
               {COURSES.map((course) => (
                 <option key={course} value={course}>
                   {course}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <div className="field-row">
+          <label className="field">
+            <span className="field-label">최근 모의고사 등급 (선택)</span>
+            <select value={form.recentGrade} onChange={(e) => set('recentGrade', e.target.value)}>
+              <option value="">선택해주세요</option>
+              {RECENT_GRADES.map((grade) => (
+                <option key={grade} value={grade}>
+                  {grade}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="field">
+            <span className="field-label">어떻게 알고 오셨나요? (선택)</span>
+            <select value={form.source} onChange={(e) => set('source', e.target.value)}>
+              <option value="">선택해주세요</option>
+              {SOURCES.map((source) => (
+                <option key={source} value={source}>
+                  {source}
                 </option>
               ))}
             </select>

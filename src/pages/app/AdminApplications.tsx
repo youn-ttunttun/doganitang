@@ -16,6 +16,10 @@ type Row = {
   message: string
   status: string
   hidden: boolean
+  source: string
+  recent_grade: string
+  tutor_match: string
+  admin_memo: string
 }
 
 const STATUS: { value: string; label: string }[] = [
@@ -54,8 +58,12 @@ export default function AdminApplications() {
       '학부모 연락처',
       '학년',
       '희망 과목',
+      '최근 모의고사',
+      '유입경로',
       '현재 상황',
       '남긴 말',
+      '튜터 매칭',
+      '코멘트',
       '상태',
     ]
 
@@ -69,8 +77,12 @@ export default function AdminApplications() {
         row.guardian_contact,
         row.grade,
         row.course,
+        row.recent_grade,
+        row.source,
         row.level,
         row.message,
+        row.tutor_match,
+        row.admin_memo,
         STATUS.find((s) => s.value === row.status)?.label ?? row.status,
       ]
         .map(escape)
@@ -105,6 +117,16 @@ export default function AdminApplications() {
     }
     setRows((prev) => prev.map((item) => (item.id === row.id ? { ...item, hidden: next } : item)))
     setError('')
+  }
+
+  /** 관리자가 적는 칸. 칸에서 손을 떼면 저장합니다. */
+  async function saveField(id: string, field: 'tutor_match' | 'admin_memo', value: string) {
+    setRows((prev) => prev.map((row) => (row.id === id ? { ...row, [field]: value } : row)))
+    const { error } = await getClient()
+      .from('applications')
+      .update({ [field]: value })
+      .eq('id', id)
+    if (error) setError(error.message)
   }
 
   async function updateStatus(id: string, status: string) {
@@ -172,8 +194,34 @@ export default function AdminApplications() {
                     <span className="app-dim"> · 학부모 {row.guardian_contact}</span>
                   )}
                 </p>
+                {(row.recent_grade || row.source) && (
+                  <p className="app-dim">
+                    {[row.recent_grade, row.source].filter(Boolean).join(' · ')}
+                  </p>
+                )}
                 {row.level && <p className="app-dim">{row.level}</p>}
                 {row.message && <p className="app-message">{row.message}</p>}
+
+                <div className="app-row-notes">
+                  <label>
+                    <span>튜터 매칭</span>
+                    <input
+                      type="text"
+                      defaultValue={row.tutor_match ?? ''}
+                      placeholder="예) 김OO 튜터 · 10/25 시작"
+                      onBlur={(e) => saveField(row.id, 'tutor_match', e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    <span>코멘트</span>
+                    <input
+                      type="text"
+                      defaultValue={row.admin_memo ?? ''}
+                      placeholder="상담 내용, 특이사항"
+                      onBlur={(e) => saveField(row.id, 'admin_memo', e.target.value)}
+                    />
+                  </label>
+                </div>
               </div>
 
               <div className="app-row-side">

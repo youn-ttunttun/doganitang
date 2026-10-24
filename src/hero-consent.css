@@ -36,6 +36,11 @@
 .consent-details summary { width: fit-content; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .consent-details p { margin-top: 8px; }
 @media (min-width: 641px) {
+  .hero { min-height: clamp(740px, 90vh, 1000px); }
+  .hero-photo { left: auto; width: auto; height: 100%; aspect-ratio: 1104 / 1424; }
+  .hero-photo img { object-position: center; }
+  .hero-photo:not(.hero-sign-highlight) { mask-image: linear-gradient(90deg, transparent, #000 26%); }
+  .hero-sign-highlight img { mask-position: center; }
   .hero .hero-inner { align-items: flex-start; text-align: left; }
   .hero-message { max-width: 58%; }
   .hero .hero-badges { order: 4; margin-top: 28px; margin-bottom: 0; }
@@ -45,6 +50,8 @@
 }
 @media (max-width: 640px) {
   .hero { padding-top: 68px; padding-bottom: max(40px, env(safe-area-inset-bottom)); min-height: 100vh; min-height: 100dvh; }
+  .hero-photo { bottom: auto; height: 78svh; min-height: 540px; }
+  .hero-photo:not(.hero-sign-highlight) { mask-image: linear-gradient(#000 70%, transparent); }
   .hero-photo img { object-position: 62% 42%; opacity: .86; }
   .hero-sign-highlight img { opacity: 1; mask-position: 62% 42%; }
   .hero-photo-shade { background: radial-gradient(ellipse at 15% 10%, rgba(70, 103, 156, .2), transparent 55%), radial-gradient(ellipse at 95% 35%, rgba(168, 122, 103, .1), transparent 52%), linear-gradient(180deg, rgba(5, 16, 31, .28), rgba(6, 18, 33, .66) 48%, #091524 100%); }

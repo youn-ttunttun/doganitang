@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ArrowRight, Check, PencilRuler } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { scrollToId } from '../lib/scroll'
@@ -7,6 +8,13 @@ import Section from './Section'
 /** 수강료. 등록된 항목이 없으면 렌더링하지 않습니다. */
 export default function Pricing() {
   const { pricing } = useContent()
+  // 좁은 화면에서는 한 번에 하나만 보여주고 탭으로 고릅니다.
+  // 처음에는 '가장 많이 선택합니다' 가 붙은 것을 띄웁니다.
+  const [active, setActive] = useState(() => {
+    const i = pricing.plans.findIndex((plan) => plan.highlight)
+    return i >= 0 ? i : 0
+  })
+
   if (pricing.plans.length === 0) return null
 
   // 두 개면 절반씩, 그 이상이면 3열로. (2개를 3열 폭에 두면 오른쪽이 비어 보입니다)
@@ -20,10 +28,29 @@ export default function Pricing() {
       title={pricing.title}
       lead={pricing.lead || undefined}
     >
-      <div className="bento">
-        {pricing.plans.map((plan) => (
+      {pricing.plans.length > 1 && (
+        <div className="plan-tabs" role="tablist">
+          {pricing.plans.map((plan, index) => (
+            <button
+              key={plan.name}
+              type="button"
+              role="tab"
+              aria-selected={index === active}
+              className={index === active ? 'is-active' : ''}
+              onClick={() => setActive(index)}
+            >
+              {plan.name}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className="bento plan-cards">
+        {pricing.plans.map((plan, index) => (
           <article
-            className={`tile tile--hover ${span} plan ${plan.highlight ? 'tile--feature' : ''}`}
+            className={`tile tile--hover ${span} plan ${plan.highlight ? 'tile--feature' : ''} ${
+              index === active ? 'is-active' : ''
+            }`}
             key={plan.name}
           >
             <div className="plan-head">
@@ -34,8 +61,8 @@ export default function Pricing() {
 
             <div className="plan-price">
               <strong>{plan.price}</strong>
-              {plan.hourly && <span className="plan-hourly">{plan.hourly}</span>}
               {plan.unit && <span className="plan-unit">{plan.unit}</span>}
+              {plan.hourly && <span className="plan-hourly">{plan.hourly}</span>}
             </div>
 
             {plan.features.length > 0 && (

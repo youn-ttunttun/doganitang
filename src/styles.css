@@ -4238,34 +4238,61 @@ textarea {
     font-size: 11px;
   }
 
-  /* 진행 과정도 옆으로 넘깁니다. 다섯이 세로로 쌓이면 1.3화면입니다. */
+  /* 진행 과정 — 도식은 한눈에 보여야 하므로 옆으로 넘기지 않습니다.
+     번호를 세로선으로 이은 타임라인으로 다섯 단계를 한 화면에 담습니다. */
   .flow {
-    display: flex;
-    gap: 12px;
-    margin-inline: -20px;
-    padding-inline: 20px;
-    padding-bottom: 10px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-
-  .flow::-webkit-scrollbar {
-    display: none;
+    display: grid;
+    gap: 0;
   }
 
   .flow-step {
-    flex: 0 0 72%;
-    scroll-snap-align: center;
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    column-gap: 12px;
+    padding: 0 0 14px;
+    border: 0;
+    background: none;
+    box-shadow: none;
   }
 
-  /* 가로로 넘기므로 화살표도 옆을 봅니다. */
+  .flow-num {
+    grid-row: span 2;
+    position: relative;
+    z-index: 1;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+  }
+
+  .flow-title {
+    align-self: center;
+    font-size: 15px;
+  }
+
+  .flow-desc {
+    grid-column: 2;
+    margin: 2px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* 번호와 번호를 잇는 세로선 */
   .flow-step:not(:last-child)::after {
-    top: 50%;
-    bottom: auto;
-    left: auto;
-    right: -22px;
-    transform: translateY(-50%) rotate(45deg);
+    top: 30px;
+    bottom: 0;
+    left: 13px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    border: 0;
+    background: var(--border-strong);
+    transform: none;
+  }
+
+  .flow-note {
+    margin-top: 6px;
+    text-align: left;
+    font-size: 12.5px;
   }
 
   /* 비교표를 한 번 더 좁힙니다. */

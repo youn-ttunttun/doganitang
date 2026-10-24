@@ -23,6 +23,8 @@ export type ApplicationInput = {
   marketingPhone: string
   marketingEmailAddress: string
   recentGrade: string
+  /** 수강료에서 고른 과정. 비어 있으면 아직 안 고른 것입니다. */
+  plan: string
 }
 
 export const applicationKindLabel: Record<ApplicationKind, string> = {
@@ -42,6 +44,7 @@ export async function submitApplication(input: ApplicationInput): Promise<void> 
     level: input.level,
     message: input.message,
     source: input.source,
+    plan: input.plan,
     recent_grade: input.recentGrade,
     birth_year: Number(input.birthYear),
     gender: input.gender,

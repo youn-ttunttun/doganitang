@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { ArrowRight, Check, PencilRuler } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { scrollToId } from '../lib/scroll'
 import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
@@ -77,10 +76,15 @@ export default function Pricing() {
               className={`btn ${plan.highlight ? 'btn-on-feature' : 'btn-ghost'} plan-cta`}
               href="#apply"
               onClick={(event) => {
-              event.preventDefault()
-              history.replaceState(null, '', '#apply')
-              scrollToId('apply')
-            }}
+                event.preventDefault()
+                // 어느 과정을 눌렀는지 신청 폼이 알 수 있게 들고 갑니다.
+                try {
+                  sessionStorage.setItem('teamlesson:plan', plan.name)
+                } catch {
+                  // 시크릿 모드 등에서 저장이 막혀도 창은 열립니다.
+                }
+                window.dispatchEvent(new Event('teamlesson:open-apply'))
+              }}
             >
               {pricing.cta}
               <ArrowRight size={16} />

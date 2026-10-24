@@ -520,3 +520,17 @@ alter table public.applications
   add column if not exists source       text default '',
   add column if not exists recent_grade text default '',
   add column if not exists tutor_match  text default '';
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 15. 신청서에 '희망 수업' 추가
+--
+--   수강료 카드의 '이 수업으로 상담 신청' 을 누르면 어느 과정을
+--   눌렀는지 신청서에 담깁니다. 전에는 그냥 폼으로 내려가기만 해서
+--   어느 수업을 원하는지 알 수 없었습니다.
+--
+--   여러 번 실행해도 안전합니다.
+-- ═════════════════════════════════════════════════════════════
+
+alter table public.applications
+  add column if not exists plan text default '';

@@ -521,7 +521,7 @@ textarea {
 /* ── 섹션 공통 ───────────────────────────────────────────── */
 
 .section {
-  padding: 104px 0;
+  padding: 80px 0;
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -644,7 +644,7 @@ textarea {
 .tile {
   display: flex;
   flex-direction: column;
-  padding: 28px;
+  padding: 22px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -1121,11 +1121,80 @@ textarea {
 
 /* ── 신청 폼 ─────────────────────────────────────────────── */
 
+/* 신청 폼을 창으로 띄웁니다. 맨 아래로 내려가는 대신 그 자리에서 씁니다.
+   폼이 남색 배경 위에 그려져 있어 창도 같은 색을 씁니다. */
+.apply-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(4, 8, 14, 0.82);
+  backdrop-filter: blur(4px);
+}
+
+.apply-dialog-inner {
+  display: flex;
+  flex-direction: column;
+  width: min(820px, 100%);
+  max-height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: var(--bg-dark);
+}
+
+.apply-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border-dark);
+  font-size: 15px;
+  color: var(--text-on-dark);
+}
+
+.apply-dialog-head button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-on-dark);
+  cursor: pointer;
+}
+
+.apply-dialog-body {
+  padding: 18px;
+  overflow: auto;
+}
+
+/* 창 안에서는 폼이 이미 창 테두리를 쓰므로 자기 테두리를 지웁니다. */
+.apply-dialog-body .apply-form {
+  max-width: none;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* 고른 수업이 한눈에 보이게. */
+.apply-form .apply-plan select {
+  border-color: var(--brand-on-dark);
+  background: color-mix(in srgb, var(--brand) 24%, transparent);
+  font-weight: 700;
+}
+
 .apply-form {
   display: grid;
   gap: 18px;
   max-width: 760px;
-  padding: 32px;
+  padding: 26px;
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
   background: var(--surface-dark);
@@ -1437,7 +1506,7 @@ textarea {
 
 .flow-step {
   position: relative;
-  padding: 22px 20px;
+  padding: 18px 16px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -1626,7 +1695,7 @@ textarea {
   display: grid;
   grid-template-columns: 132px 1fr;
   gap: 20px;
-  padding: 22px 24px;
+  padding: 18px 20px;
   background: var(--surface);
 }
 
@@ -1684,7 +1753,7 @@ textarea {
 .compare-point {
   display: flex;
   align-items: center;
-  padding: 18px 20px;
+  padding: 14px 18px;
   font-size: 13px;
   font-weight: 600;
   color: var(--text-faint);
@@ -1694,7 +1763,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 18px 20px;
+  padding: 14px 18px;
   font-size: 14.5px;
   line-height: 1.6;
 }
@@ -3093,8 +3162,8 @@ textarea {
 
 .book {
   display: flex;
-  gap: 18px;
-  padding: 24px;
+  gap: 16px;
+  padding: 20px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -3564,7 +3633,7 @@ textarea {
 /* ── 수강료 ──────────────────────────────────────────────── */
 
 .plan {
-  padding: 30px 28px;
+  padding: 24px 22px;
 }
 
 .plan-head {

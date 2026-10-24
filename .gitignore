@@ -3,5 +3,8 @@ dist
 dist-ssr
 *.local
 .DS_Store
+# 비밀키·환경변수는 올리지 않습니다. 예시 파일만 예외입니다.
 .env
+.env.*
+!.env.example
 *.tsbuildinfo

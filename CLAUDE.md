@@ -83,7 +83,10 @@ supabase/schema.sql   테이블·정책·함수 전부. 여러 번 실행해도 
 | 경로 | 화면 | 접근 |
 | --- | --- | --- |
 | `/` | 홍보 페이지 | 공개 |
+| `/curriculum` | 커리큘럼·교재 (메인에서 떼어낸 페이지) | 공개 |
+| `/teachers` | 선생님 (메인에서 떼어낸 페이지) | 공개 |
 | `/diagnostic` | 진단 테스트 | 공개 |
+| `/apply` | 시범 수업 신청서. `?plan=주 2회` 로 희망 수업을 채워 엽니다 | 공개 |
 | `/app/login` | 로그인·가입 | 공개 |
 | `/app/content` | 사이트 문구 + 사진 편집 | 로그인 |
 | `/app/questions` | 진단 문항 편집 | 관리자 |
@@ -169,10 +172,34 @@ where id = (select id from auth.users where email = 'your@email.com');
 - 도메인을 사면 두 곳을 바꿔야 합니다:
   `vite.config.ts` 의 `SITE_URL`, Supabase **Authentication → URL Configuration**
 
-### 브랜치
+### 공동 작업 규칙 — 반드시 지킬 것
 
-작업은 `claude/website-development-hkhosu` 에서 하고, 배포하려면 `main` 에
-fast-forward 머지 후 푸시합니다. (`main` 이 Vercel 배포 브랜치)
+이 저장소는 윤로관(`youn-ttunttun`)과 김준식(`jsbecreative`)이 함께 고칩니다.
+`main` 이 Vercel 배포 브랜치라, `main` 에 들어가는 순간 사이트가 바뀝니다.
+
+1. **작업 전에** `git fetch` 로 GitHub 최신 상태를, `git status` 로 로컬 변경을 확인합니다
+2. **작업별 브랜치**를 따서 고칩니다. `main` 에 바로 커밋·푸시하지 않습니다
+3. 끝나면 `npm run build` 로 확인 → 커밋·푸시 → **`main` 대상 PR** 을 만듭니다
+4. 다른 사람의 변경을 덮어쓰거나 **강제 푸시(`--force`)하지 않습니다**
+5. **신청서 항목이나 DB 저장 구조를 바꿀 때는 먼저 알립니다.**
+   준식의 LMS 가 신청서를 받아 쓰므로 LMS 쪽도 같이 고쳐야 합니다.
+   무엇이 바뀌는지(칸 이름, 값, 의미)를 먼저 정리해 공유한 뒤 진행합니다
+6. 비밀키와 환경변수 파일(`.env*`)은 GitHub 에 올리지 않습니다.
+   `.env.example` 만 예외로 올립니다
+
+### 신청서(applications) 칸 — LMS 와 맞춰야 하는 목록
+
+| 칸 | 뜻 | 비고 |
+| --- | --- | --- |
+| `kind` | 신청 종류 | 지금은 `trial`(시범 수업, 40분·1만원) 하나만 받습니다. `consult`·`diagnostic`·`detail` 은 예전 신청서용 |
+| `plan` | 희망 수업 | 수강료 카드 이름(`주 1회` 등). 비면 미정 |
+| `source` | 유입경로 | |
+| `recent_grade` | 최근 모의고사 등급 | |
+| `tutor_match` | 튜터 매칭 기록 | 관리자가 적음 |
+| `admin_memo` | 코멘트 | 관리자가 적음 |
+| `hidden` | 목록에서 숨김 | 지우지 않고 감추기 |
+
+칸을 더하거나 뜻을 바꾸면 이 표와 `supabase/schema.sql` 을 함께 고칩니다.
 
 ---
 

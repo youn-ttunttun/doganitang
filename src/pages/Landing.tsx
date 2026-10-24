@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { scrollToId } from '../lib/scroll'
-import Apply from '../components/Apply'
+import ApplyCta from '../components/ApplyCta'
 import Audience from '../components/Audience'
 import Curriculum from '../components/Curriculum'
 import Faq from '../components/Faq'
@@ -50,7 +50,7 @@ export default function Landing() {
         <Pricing />
         <Faq />
         <News />
-        <Apply />
+        <ApplyCta />
       </main>
       <Footer />
       <StickyCta />

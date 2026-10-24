@@ -72,23 +72,13 @@ export default function Pricing() {
               </ul>
             )}
 
-            <a
+            <Link
               className={`btn ${plan.highlight ? 'btn-on-feature' : 'btn-ghost'} plan-cta`}
-              href="#apply"
-              onClick={(event) => {
-                event.preventDefault()
-                // 어느 과정을 눌렀는지 신청 폼이 알 수 있게 들고 갑니다.
-                try {
-                  sessionStorage.setItem('teamlesson:plan', plan.name)
-                } catch {
-                  // 시크릿 모드 등에서 저장이 막혀도 창은 열립니다.
-                }
-                window.dispatchEvent(new Event('teamlesson:open-apply'))
-              }}
+              to={`/apply?plan=${encodeURIComponent(plan.name)}`}
             >
               {pricing.cta}
               <ArrowRight size={16} />
-            </a>
+            </Link>
           </article>
         ))}
       </div>

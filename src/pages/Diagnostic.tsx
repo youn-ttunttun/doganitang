@@ -424,7 +424,7 @@ export default function Diagnostic() {
 
                   <Link
                     className="btn btn-primary btn-lg btn-block"
-                    to="/#apply"
+                    to="/apply"
                     onClick={() => {
                       try {
                         sessionStorage.setItem('teamlesson:applyKind', 'detail')
@@ -444,7 +444,7 @@ export default function Diagnostic() {
               <div className="quiz-cta-actions quiz-cta-actions--plain">
                 <Link
                   className={`btn ${verdict.eligible ? 'btn-ghost' : 'btn-primary btn-lg'}`}
-                  to="/#apply"
+                  to="/apply"
                   onClick={() => {
                     try {
                       sessionStorage.setItem('teamlesson:applyKind', 'consult')

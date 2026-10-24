@@ -1,6 +1,5 @@
 import { ArrowRight, PencilRuler } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { scrollToId } from '../lib/scroll'
 import { useContent } from '../lib/siteContent'
 
 export default function Hero() {
@@ -41,18 +40,10 @@ export default function Hero() {
             <PencilRuler size={18} />
             무료 진단 테스트
           </Link>
-          <a
-            className="btn btn-ghost btn-lg"
-            href="#apply"
-            onClick={(event) => {
-              event.preventDefault()
-              history.replaceState(null, '', '#apply')
-              scrollToId('apply')
-            }}
-          >
+          <Link className="btn btn-ghost btn-lg" to="/apply">
             수업 등록 상담
             <ArrowRight size={18} />
-          </a>
+          </Link>
         </div>
 
         {hero.ctaNote && <p className="hero-cta-note">{hero.ctaNote}</p>}

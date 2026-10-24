@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Instagram, PencilRuler } from 'lucide-react'
+import { PencilRuler, Send } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { useContent } from '../lib/siteContent'
 
 /**
  * 아래에 붙는 CTA 바.
@@ -9,7 +8,6 @@ import { useContent } from '../lib/siteContent'
  * (바로 앞에 신청 폼이 있는데 버튼이 계속 따라다닐 이유가 없습니다)
  */
 export default function StickyCta() {
-  const { site } = useContent()
   const [shown, setShown] = useState(false)
 
   useEffect(() => {
@@ -46,10 +44,10 @@ export default function StickyCta() {
         <PencilRuler size={16} />
         무료 진단 테스트
       </Link>
-      <a className="btn btn-ghost" href={site.instagram} target="_blank" rel="noreferrer">
-        <Instagram size={16} />
-        DM 문의
-      </a>
+      <Link className="btn btn-ghost" to="/apply">
+        <Send size={16} />
+        신청서 작성하기
+      </Link>
     </div>
   )
 }

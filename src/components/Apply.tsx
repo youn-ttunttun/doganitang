@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
-import { Check, Copy, Instagram, Loader2, Send, X } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
+import { Check, Copy, Instagram, Loader2, Send } from 'lucide-react'
 import { useContent } from '../lib/siteContent'
 import {
   buildDmText,
@@ -45,38 +45,14 @@ type Status = 'idle' | 'sending' | 'done' | 'error'
 
 export default function Apply() {
   const { apply: applyCopy, site, consulting, pricing } = useContent()
-  const [dialogOpen, setDialogOpen] = useState(false)
   const [form, setForm] = useState<ApplicationInput>(EMPTY)
+  const [params] = useSearchParams()
 
-  // 수강료에서 '이 수업으로 상담 신청' 을 누르면 창으로 띄웁니다.
-  // 전에는 맨 아래로 내려가기만 해서 무엇을 골랐는지도 알 수 없었습니다.
+  // 수강료 카드에서 넘어오면 주소에 고른 수업이 붙어 옵니다. (/apply?plan=주 2회)
   useEffect(() => {
-    function open() {
-      let picked = ''
-      try {
-        picked = sessionStorage.getItem('teamlesson:plan') ?? ''
-      } catch {
-        // 저장이 막혀 있어도 창은 열립니다.
-      }
-      if (picked) setForm((prev) => ({ ...prev, plan: picked, kind: 'consult' }))
-      setDialogOpen(true)
-    }
-    window.addEventListener('teamlesson:open-apply', open)
-    return () => window.removeEventListener('teamlesson:open-apply', open)
-  }, [])
-
-  // 창이 열린 동안 뒤 화면이 같이 스크롤되지 않게 막습니다.
-  useEffect(() => {
-    if (!dialogOpen) return
-    const previous = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setDialogOpen(false)
-    window.addEventListener('keydown', onKey)
-    return () => {
-      document.body.style.overflow = previous
-      window.removeEventListener('keydown', onKey)
-    }
-  }, [dialogOpen])
+    const picked = params.get('plan')
+    if (picked) setForm((prev) => ({ ...prev, plan: picked, kind: 'consult' }))
+  }, [params])
 
   // 진단 테스트를 풀고 넘어온 경우, 결과를 '현재 수학 상황'에 자동으로 채웁니다.
   useEffect(() => {
@@ -309,47 +285,14 @@ export default function Apply() {
   )
 
   return (
-    <>
-      <Section
-        id="apply"
-        tone="dark"
-        eyebrow={applyCopy.eyebrow}
-        title={applyCopy.title}
-        lead={applyCopy.sub}
-      >
-        {/* 좁은 화면에서는 폼이 세 화면을 넘어갑니다. 버튼만 두고 창으로 받습니다. */}
-        <div className="apply-inline">{formEl}</div>
-        <button
-          type="button"
-          className="btn btn-primary btn-lg apply-open"
-          onClick={() => setDialogOpen(true)}
-        >
-          <Send size={18} />
-          신청서 작성하기
-        </button>
-      </Section>
-
-      {dialogOpen &&
-        createPortal(
-          <div
-            className="apply-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-label={applyCopy.title}
-            onClick={() => setDialogOpen(false)}
-          >
-            <div className="apply-dialog-inner" onClick={(e) => e.stopPropagation()}>
-              <header className="apply-dialog-head">
-                <strong>{applyCopy.title}</strong>
-                <button onClick={() => setDialogOpen(false)} aria-label="닫기">
-                  <X size={18} />
-                </button>
-              </header>
-              <div className="apply-dialog-body">{formEl}</div>
-            </div>
-          </div>,
-          document.body,
-        )}
-    </>
+    <Section
+      id="apply"
+      tone="dark"
+      eyebrow={applyCopy.eyebrow}
+      title={applyCopy.title}
+      lead={applyCopy.sub}
+    >
+      {formEl}
+    </Section>
   )
 }

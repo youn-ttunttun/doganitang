@@ -12,6 +12,7 @@ import Landing from './pages/Landing'
 const CurriculumPage = lazy(() => import('./pages/CurriculumPage'))
 const TeachersPage = lazy(() => import('./pages/TeachersPage'))
 const Diagnostic = lazy(() => import('./pages/Diagnostic'))
+const ApplyPage = lazy(() => import('./pages/ApplyPage'))
 const Login = lazy(() => import('./pages/app/Login'))
 const AppShell = lazy(() => import('./pages/app/AppShell'))
 const AdminContent = lazy(() => import('./pages/app/AdminContent'))
@@ -37,6 +38,7 @@ export default function App() {
             <Route path="/curriculum" element={<CurriculumPage />} />
             <Route path="/teachers" element={<TeachersPage />} />
             <Route path="/diagnostic" element={<Diagnostic />} />
+            <Route path="/apply" element={<ApplyPage />} />
 
             {/* 로그인 영역 — 홍보 요소가 없는 별도 레이아웃 */}
             <Route path="/app/login" element={<Login />} />

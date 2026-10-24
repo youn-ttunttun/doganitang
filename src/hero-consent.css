@@ -10,8 +10,6 @@
 }
 .hero-photo, .hero-photo-shade { position: absolute; inset: 0; pointer-events: none; }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 58% 18%; filter: saturate(.52) brightness(.75); opacity: .72; }
-/* Restore only the bright sign faces above the dark photo overlay. */
-.hero-sign-highlight img { filter: url(#hero-sign-light); opacity: 1; mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1104 1424'%3E%3Cpath fill='white' d='M610 247L785 302L785 334L610 289Z'/%3E%3C/svg%3E"); mask-size: cover; mask-position: 58% 18%; }
 .hero-photo-shade {
   background: radial-gradient(ellipse at 12% 18%, rgba(61, 103, 153, .26), transparent 58%), radial-gradient(ellipse at 94% 20%, rgba(170, 124, 101, .15), transparent 52%), linear-gradient(110deg, rgba(5, 16, 31, .84), rgba(6, 18, 33, .45) 65%, rgba(8, 21, 37, .24)), linear-gradient(0deg, #091524, transparent 65%);
 }
@@ -37,11 +35,10 @@
 .consent-details p { margin-top: 8px; }
 @media (min-width: 641px) {
   .hero { min-height: clamp(740px, 90vh, 1000px); }
-  .hero-photo { left: auto; width: auto; height: 100%; aspect-ratio: 1104 / 1424; }
-  .hero-photo img { object-position: center; }
-  .hero-photo:not(.hero-sign-highlight) { mask-image: linear-gradient(90deg, transparent, #000 26%); }
-  .hero-sign-highlight img { mask-position: center; }
-  .hero .hero-inner { align-items: flex-start; text-align: left; }
+  .hero-photo { left: auto; width: min(100%, calc(clamp(740px, 90vh, 1000px) * .95)); height: 100%; }
+  .hero-photo img { object-position: 62% 20%; }
+  .hero-photo { mask-image: linear-gradient(90deg, transparent, #000 26%); }
+  .hero .hero-inner { align-items: flex-start; text-align: left; padding-top: 64px; }
   .hero-message { max-width: 58%; }
   .hero .hero-badges { order: 4; margin-top: 28px; margin-bottom: 0; }
   .hero .hero-actions { order: 2; }
@@ -50,12 +47,10 @@
 }
 @media (max-width: 640px) {
   .hero { padding-top: 68px; padding-bottom: max(40px, env(safe-area-inset-bottom)); min-height: 100vh; min-height: 100dvh; }
-  .hero-photo { bottom: auto; height: 78svh; min-height: 540px; }
-  .hero-photo:not(.hero-sign-highlight) { mask-image: linear-gradient(#000 70%, transparent); }
+  .hero-photo { bottom: auto; height: 90svh; min-height: 540px; mask-image: linear-gradient(#000 70%, transparent); }
   .hero-photo img { object-position: 62% 42%; opacity: .86; }
-  .hero-sign-highlight img { opacity: 1; mask-position: 62% 42%; }
   .hero-photo-shade { background: radial-gradient(ellipse at 15% 10%, rgba(70, 103, 156, .2), transparent 55%), radial-gradient(ellipse at 95% 35%, rgba(168, 122, 103, .1), transparent 52%), linear-gradient(180deg, rgba(5, 16, 31, .28), rgba(6, 18, 33, .66) 48%, #091524 100%); }
-  .hero .hero-inner { text-align: left; align-items: flex-start; padding-top: clamp(210px, 29svh, 268px); padding-bottom: 0; min-height: calc(100vh - 108px); min-height: calc(100dvh - 108px); }
+  .hero .hero-inner { text-align: left; align-items: flex-start; padding-top: clamp(250px, 35svh, 330px); padding-bottom: 0; min-height: calc(100vh - 108px); min-height: calc(100dvh - 108px); }
   .hero-message { font-size: clamp(22px, 6.4vw, 28px); line-height: 1.42; }
   .hero .hero-badges { order: 4; gap: 7px; margin-top: clamp(26px, 4.5svh, 42px); margin-bottom: 0; }
   .hero .hero-badges .badge { padding: 6px 12px; font-size: 13px; line-height: 1.5; }

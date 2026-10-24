@@ -4,17 +4,26 @@ import { useContent } from '../lib/siteContent'
 
 export default function Hero() {
   const { hero, stats } = useContent()
+  const visibleStats = stats.filter(stat => stat.value.trim() && stat.label.trim())
+  const badges = hero.badges.filter(badge => badge.trim()).map(badge => badge.replace('서울대·연세대', '서울대').replace('서울대 연세대', '서울대'))
   const hasDisplayHeadline = Boolean(hero.headline.trim())
   const headline = hasDisplayHeadline ? hero.headline : hero.hook.replace('학생들이 ', '학생들이\n')
 
   return (
     <div className="hero" id="top">
-      <picture className="hero-photo" aria-hidden="true"><source media="(max-width: 640px)" srcSet="/snu-gate-mobile.webp" /><img src="/snu-gate.webp" alt="" fetchPriority="high" width={1440} height={1080} /></picture><div className="hero-photo-shade" aria-hidden="true" />
+      <picture className="hero-photo" aria-hidden="true"><source media="(max-width: 640px)" srcSet="/snu-gate-brand-mobile-v2.webp" /><img src="/snu-gate-brand-v2.webp" alt="" fetchPriority="high" width={1104} height={1424} /></picture><div className="hero-photo-shade" aria-hidden="true" />
       <div className="hero-glow" aria-hidden="true" />
+      <svg width="0" height="0" aria-hidden="true" style={{ position: 'absolute' }}>
+        <defs><filter id="hero-sign-light" colorInterpolationFilters="sRGB">
+          <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2 2 2 0 -4.5" />
+          <feComposite in="SourceGraphic" operator="in" />
+        </filter></defs>
+      </svg>
+      <picture className="hero-photo hero-sign-highlight" aria-hidden="true"><source media="(max-width: 640px)" srcSet="/snu-gate-brand-mobile-v2.webp" /><img src="/snu-gate-brand-v2.webp" alt="" width={1104} height={1424} /></picture>
 
       <div className="container hero-inner">
         <div className="hero-badges">
-          {hero.badges.map((badge) => (
+          {badges.map((badge) => (
             <span className="badge" key={badge}>
               {badge}
             </span>
@@ -50,14 +59,14 @@ export default function Hero() {
 
         {hero.ctaNote && <p className="hero-cta-note">{hero.ctaNote}</p>}
 
-        <div className="bento hero-stats">
-          {stats.map((stat) => (
+        {visibleStats.length > 0 && <div className="bento hero-stats">
+          {visibleStats.map((stat) => (
             <div className="tile tile--stat tile--hover s3" key={stat.label}>
               <span className="stat-value">{stat.value}</span>
               <span className="stat-label">{stat.label}</span>
             </div>
           ))}
-        </div>
+        </div>}
       </div>
     </div>
   )

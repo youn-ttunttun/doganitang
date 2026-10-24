@@ -84,7 +84,7 @@ export default function Proof() {
       {reviews.length > 0 && (
         <>
           {copy.reviewsTitle && <h3 className="tutors-title">{copy.reviewsTitle}</h3>}
-          <div className="bento">
+          <div className="bento swipe-cards">
             {reviews.map((review) => (
               <ReviewCard review={review} key={review.quote} />
             ))}

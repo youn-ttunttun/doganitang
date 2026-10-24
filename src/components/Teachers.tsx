@@ -15,7 +15,7 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
       title={copy.title || undefined}
       lead={copy.lead || undefined}
     >
-      <div className="bento">
+      <div className="bento swipe-cards">
         {leads.map((lead) => (
           <article className="tile tile--hover s4" key={lead.name}>
             <div className="lead-initial" aria-hidden="true">

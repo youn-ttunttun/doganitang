@@ -563,24 +563,73 @@ textarea {
 
 @media (max-width: 640px) {
   .section {
-    padding: 56px 0;
+    padding: 38px 0;
   }
 
   .section-head {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 
   .section-lead {
-    font-size: 14.5px;
+    font-size: 14px;
+    line-height: 1.65;
   }
 
   .tile {
-    padding: 20px 18px;
+    padding: 16px 15px;
   }
 
   .tutors-title {
-    margin-top: 32px;
+    margin-top: 24px;
+    font-size: 16px;
   }
+
+  /* 첫 화면이 한 번에 들어오도록 */
+  .hero-inner {
+    padding-top: 84px;
+    padding-bottom: 36px;
+  }
+
+  .hero-badges {
+    gap: 5px;
+    margin-bottom: 16px;
+  }
+
+  .badge {
+    padding: 4px 10px;
+    font-size: 11.5px;
+  }
+
+  .hero-sub {
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    margin-top: 20px;
+  }
+
+  .hero-cta-note {
+    margin-top: 10px;
+  }
+
+  .hero-stats {
+    margin-top: 28px;
+  }
+
+  .hero-hook {
+    margin-top: 12px;
+  }
+
+  .plan-features {
+    gap: 7px;
+  }
+
+  .faq-q {
+    padding: 13px 0;
+    font-size: 14.5px;
+  }
+
 }
 
 .section-head {
@@ -717,8 +766,24 @@ textarea {
 
 /* 좁은 화면에서 과정 카드가 하나씩 화면을 다 차지해 한참 내려야 했습니다.
    옆으로 넘겨 보도록 바꿉니다. 손가락을 떼면 카드에 딱 맞춰 멈춥니다. */
+/* 넓은 화면에서는 버튼 대신 폼을 바로 보여줍니다. */
+.apply-open {
+  display: none;
+}
+
 @media (max-width: 760px) {
-  .course-cards {
+  .apply-inline {
+    display: none;
+  }
+
+  .apply-open {
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .course-cards,
+  .swipe-cards {
     display: flex;
     gap: 12px;
     margin-inline: -20px;
@@ -729,11 +794,13 @@ textarea {
     scrollbar-width: none;
   }
 
-  .course-cards::-webkit-scrollbar {
+  .course-cards::-webkit-scrollbar,
+  .swipe-cards::-webkit-scrollbar {
     display: none;
   }
 
-  .course-cards > .tile {
+  .course-cards > .tile,
+  .swipe-cards > .tile {
     flex: 0 0 84%;
     scroll-snap-align: center;
   }
@@ -4146,4 +4213,125 @@ textarea {
   align-items: center;
   justify-content: center;
   gap: 8px;
+}
+
+
+/* ── 휴대폰 마무리 손질 ──────────────────────────────────────
+   아래 규칙들은 파일 앞쪽에 두면 뒤에 오는 같은 굵기의 규칙에
+   밀립니다. 그래서 맨 끝에 모아 둡니다. */
+
+@media (max-width: 620px) {
+  /* 첫 화면 지표는 더 작게. 네 칸이 2×2 로 자리를 많이 먹습니다. */
+  .hero-inner {
+    padding-top: 72px;
+  }
+
+  .tile--stat {
+    padding: 12px 10px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  /* 진행 과정도 옆으로 넘깁니다. 다섯이 세로로 쌓이면 1.3화면입니다. */
+  .flow {
+    display: flex;
+    gap: 12px;
+    margin-inline: -20px;
+    padding-inline: 20px;
+    padding-bottom: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .flow::-webkit-scrollbar {
+    display: none;
+  }
+
+  .flow-step {
+    flex: 0 0 72%;
+    scroll-snap-align: center;
+  }
+
+  /* 가로로 넘기므로 화살표도 옆을 봅니다. */
+  .flow-step:not(:last-child)::after {
+    top: 50%;
+    bottom: auto;
+    left: auto;
+    right: -22px;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  /* 비교표를 한 번 더 좁힙니다. */
+  .compare-point {
+    padding: 10px 14px 1px;
+  }
+
+  .compare-col {
+    padding: 3px 14px 9px;
+  }
+
+  /* 수강료 카드 */
+  .plan {
+    padding: 18px 16px;
+  }
+
+  .plan-price {
+    margin: 14px 0;
+    padding-bottom: 14px;
+  }
+
+  .plan-price strong {
+    font-size: 28px;
+  }
+
+  .plan-fallback {
+    padding: 16px;
+  }
+
+  .faq-q {
+    padding: 13px 0;
+    font-size: 14.5px;
+  }
+
+  /* 과정 카드 — 본문과 단원 칩을 조금씩 줄입니다. */
+  .course-body {
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .course-topics li {
+    padding: 4px 9px;
+    font-size: 11.5px;
+  }
+
+  .course-summary {
+    font-size: 14px;
+  }
+
+  /* 수강료 아래 '아직 결정하기 이르다면' 과 안내 줄 */
+  .plan-fallback {
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .plan-notes {
+    margin-top: 14px;
+    font-size: 12.5px;
+  }
+
+  .plan-tabs {
+    margin-bottom: 12px;
+  }
+
+  /* 비교표 위 설명 */
+  .section-lead {
+    margin-top: 6px;
+  }
 }

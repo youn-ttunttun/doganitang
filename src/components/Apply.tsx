@@ -317,7 +317,16 @@ export default function Apply() {
         title={applyCopy.title}
         lead={applyCopy.sub}
       >
-        {formEl}
+        {/* 좁은 화면에서는 폼이 세 화면을 넘어갑니다. 버튼만 두고 창으로 받습니다. */}
+        <div className="apply-inline">{formEl}</div>
+        <button
+          type="button"
+          className="btn btn-primary btn-lg apply-open"
+          onClick={() => setDialogOpen(true)}
+        >
+          <Send size={18} />
+          신청서 작성하기
+        </button>
       </Section>
 
       {dialogOpen &&

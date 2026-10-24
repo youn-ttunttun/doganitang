@@ -2,7 +2,8 @@ import { getClient, isBackendReady } from './supabase'
 
 export { isBackendReady }
 
-export type ApplicationKind = 'consult' | 'diagnostic' | 'detail'
+// 지금 받는 신청은 시범 수업 하나입니다. 나머지는 예전에 받은 신청서를 읽기 위해 남겨 둡니다.
+export type ApplicationKind = 'trial' | 'consult' | 'diagnostic' | 'detail'
 
 export type ApplicationInput = {
   kind: ApplicationKind
@@ -28,13 +29,14 @@ export type ApplicationInput = {
 }
 
 export const applicationKindLabel: Record<ApplicationKind, string> = {
+  trial: '시범 수업',
   consult: '수업 등록 상담',
   diagnostic: '진단 결과 상담',
   detail: '정밀 상담 (유료)',
 }
 
 export async function submitApplication(input: ApplicationInput): Promise<void> {
-  const { error } = await getClient().from('applications').insert({
+  const row = {
     kind: input.kind,
     name: input.name,
     contact: input.contact,
@@ -59,7 +61,14 @@ export async function submitApplication(input: ApplicationInput): Promise<void> 
     marketing_email_address: input.marketingEmail ? input.marketingEmailAddress.trim() : null,
     marketing_consent_version: input.marketingSms || input.marketingEmail ? '2026-10-24-v3' : null,
     status: 'new',
-  })
+  }
+  let { error } = await getClient().from('applications').insert(row)
+
+  // DB 에 'trial' 이 아직 허용되지 않았을 때(schema.sql 16번 실행 전) 신청서를
+  // 잃지 않도록 예전 값으로 한 번 더 넣습니다. 16번을 실행하면 이 경로는 안 탑니다.
+  if (error?.code === '23514' && row.kind === 'trial') {
+    ;({ error } = await getClient().from('applications').insert({ ...row, kind: 'consult' }))
+  }
 
   if (error) {
     // 개발자용 상세 로그. 사용자에게는 폼에서 안내 문구를 따로 보여줍니다.

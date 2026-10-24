@@ -46,7 +46,7 @@ export default function StickyCta() {
       </Link>
       <Link className="btn btn-ghost" to="/apply">
         <Send size={16} />
-        신청서 작성하기
+        시범 수업 신청
       </Link>
     </div>
   )

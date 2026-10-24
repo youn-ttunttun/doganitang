@@ -1179,6 +1179,39 @@ textarea {
   justify-content: center;
 }
 
+/* 신청서 맨 위 — 무엇을 신청하는지 한 상자로 밝힙니다. */
+.apply-trial {
+  padding: 14px 16px;
+  border: 1px solid var(--brand-on-dark);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--brand) 18%, transparent);
+  color: var(--text-on-dark);
+}
+
+.apply-trial-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.apply-trial-head strong {
+  font-size: 17px;
+}
+
+.apply-trial-head span {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-on-dark);
+}
+
+.apply-trial p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-on-dark-dim);
+}
+
 /* 고른 수업이 한눈에 보이게. */
 .apply-form .apply-plan select {
   border-color: var(--brand-on-dark);

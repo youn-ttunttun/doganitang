@@ -41,7 +41,7 @@ export default function Hero() {
             무료 진단 테스트
           </Link>
           <Link className="btn btn-ghost btn-lg" to="/apply">
-            수업 등록 상담
+            시범 수업 신청
             <ArrowRight size={18} />
           </Link>
         </div>

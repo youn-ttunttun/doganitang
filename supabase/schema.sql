@@ -534,3 +534,16 @@ alter table public.applications
 
 alter table public.applications
   add column if not exists plan text default '';
+
+
+-- ═════════════════════════════════════════════════════════════
+-- 16. 신청 종류에 '시범 수업' 추가
+--
+--   신청을 시범 수업(40분, 1만원) 하나로 통일했습니다. 예전 신청서를
+--   읽을 수 있게 기존 값(consult, diagnostic, detail)도 남겨 둡니다.
+--   여러 번 실행해도 안전합니다.
+-- ═════════════════════════════════════════════════════════════
+
+alter table public.applications drop constraint if exists applications_kind_check;
+alter table public.applications add constraint applications_kind_check
+  check (kind in ('trial', 'consult', 'diagnostic', 'detail'));

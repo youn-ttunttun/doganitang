@@ -10,7 +10,7 @@ export default function ApplyCta() {
     <Section id="apply" tone="dark" eyebrow={apply.eyebrow} title={apply.title} lead={apply.sub}>
       <Link className="btn btn-primary btn-lg apply-cta" to="/apply">
         <Send size={18} />
-        신청서 작성하기
+        시범 수업 신청하기
         <ArrowRight size={18} />
       </Link>
     </Section>

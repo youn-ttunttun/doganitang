@@ -7,7 +7,6 @@ import {
   isBackendReady,
   submitApplication,
   type ApplicationInput,
-  type ApplicationKind,
 } from '../lib/applications'
 import Section from './Section'
 
@@ -23,7 +22,7 @@ const RECENT_GRADES = [
 ]
 
 const EMPTY: ApplicationInput = {
-  kind: 'consult',
+  kind: 'trial',
   name: '',
   contact: '',
   guardianContact: '',
@@ -44,28 +43,21 @@ const EMPTY: ApplicationInput = {
 type Status = 'idle' | 'sending' | 'done' | 'error'
 
 export default function Apply() {
-  const { apply: applyCopy, site, consulting, pricing } = useContent()
+  const { apply: applyCopy, site, pricing } = useContent()
   const [form, setForm] = useState<ApplicationInput>(EMPTY)
   const [params] = useSearchParams()
 
   // 수강료 카드에서 넘어오면 주소에 고른 수업이 붙어 옵니다. (/apply?plan=주 2회)
   useEffect(() => {
     const picked = params.get('plan')
-    if (picked) setForm((prev) => ({ ...prev, plan: picked, kind: 'consult' }))
+    if (picked) setForm((prev) => ({ ...prev, plan: picked }))
   }, [params])
 
   // 진단 테스트를 풀고 넘어온 경우, 결과를 '현재 수학 상황'에 자동으로 채웁니다.
   useEffect(() => {
     try {
       const saved = sessionStorage.getItem('teamlesson:diagnostic')
-      const kind = sessionStorage.getItem('teamlesson:applyKind') as ApplicationKind | null
-      if (saved || kind) {
-        setForm((prev) => ({
-          ...prev,
-          kind: kind ?? 'diagnostic',
-          level: saved ?? prev.level,
-        }))
-      }
+      if (saved) setForm((prev) => ({ ...prev, level: saved }))
     } catch {
       // 저장소 접근이 막혀 있으면 그냥 빈 폼으로 둡니다.
     }
@@ -168,6 +160,16 @@ export default function Apply() {
 
   const formEl = (
     <form className="apply-form" onSubmit={handleSubmit}>
+      {/* 신청은 시범 수업 하나입니다. 전에는 '수업 등록 / 진단 결과 / 정밀' 셋 중
+          고르게 해서, 무엇을 신청하는지 오히려 헷갈렸습니다. */}
+      <div className="apply-trial">
+        <div className="apply-trial-head">
+          <strong>시범 수업 신청</strong>
+          <span>40분 · 10,000원</span>
+        </div>
+        <p>튜터와 같이 문제를 풀어 보고, 어디서부터 시작하면 좋을지 찾습니다.</p>
+      </div>
+
       {pricing.plans.length > 0 && (
         <label className="field apply-plan">
           <span className="field-label">희망 수업</span>
@@ -181,46 +183,6 @@ export default function Apply() {
           </select>
         </label>
       )}
-
-        <fieldset className="field field--kind">
-          <legend>무엇을 신청하시나요?</legend>
-          <div className="kind-options">
-            {(
-              [
-                {
-                  value: 'consult',
-                  label: '수업 등록 상담',
-                  desc: '무료 · 수업 일정과 시작점을 함께 정합니다',
-                },
-                {
-                  value: 'diagnostic',
-                  label: '진단 결과 상담',
-                  desc: '무료 · 진단 테스트를 푼 뒤 결과를 함께 봅니다',
-                },
-                {
-                  value: 'detail',
-                  label: '정밀 상담',
-                  desc: `${consulting.price || '유료'} · 화상으로 문항별로 짚어드립니다`,
-                },
-              ] as { value: ApplicationKind; label: string; desc: string }[]
-            ).map((option) => (
-              <label
-                key={option.value}
-                className={`kind-option ${form.kind === option.value ? 'is-active' : ''}`}
-              >
-                <input
-                  type="radio"
-                  name="kind"
-                  value={option.value}
-                  checked={form.kind === option.value}
-                  onChange={() => set('kind', option.value)}
-                />
-                <span className="kind-label">{option.label}</span>
-                <span className="kind-desc">{option.desc}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
 
         <label className="field"><span className="field-label">이름 <em>필수</em></span>
           <input type="text" value={form.name} onChange={(e) => set('name', e.target.value)} placeholder="학생 이름 혹은 별명을 적어주세요." maxLength={40}  required />
@@ -277,7 +239,7 @@ export default function Apply() {
           ) : (
             <>
               <Send size={18} />
-              신청서 보내기
+              시범 수업 신청하기
             </>
           )}
         </button>

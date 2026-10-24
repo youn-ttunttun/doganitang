@@ -49,7 +49,7 @@ function formatClock(ms: number): string {
 }
 
 export default function Diagnostic() {
-  const { verdicts, diagnosticInfo, consulting, site } = useContent()
+  const { verdicts, diagnosticInfo, site } = useContent()
   const [loaded, setLoaded] = useState<LoadedQuestions | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -394,67 +394,22 @@ export default function Diagnostic() {
                 </p>
               )}
 
-              {verdict.eligible && consulting.title && (
-                <div className="quiz-upsell">
-                  <span className="quiz-upsell-badge">{consulting.badge}</span>
-                  <h2>{consulting.title}</h2>
-                  <p>{consulting.desc}</p>
-
-                  {consulting.features.length > 0 && (
-                    <ul className="quiz-upsell-list">
-                      {consulting.features.map((feature) => (
-                        <li key={feature}>
-                          <Check size={15} aria-hidden="true" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  <p className="quiz-upsell-price">
-                    {consulting.price ? (
-                      <>
-                        <strong>{consulting.price}</strong>
-                        {consulting.unit && <span>{consulting.unit}</span>}
-                      </>
-                    ) : (
-                      <span>금액은 신청 후 안내드립니다</span>
-                    )}
-                  </p>
-
-                  <Link
-                    className="btn btn-primary btn-lg btn-block"
-                    to="/apply"
-                    onClick={() => {
-                      try {
-                        sessionStorage.setItem('teamlesson:applyKind', 'detail')
-                      } catch {
-                        // 저장이 막혀도 신청 폼에서 직접 고를 수 있습니다.
-                      }
-                    }}
-                  >
-                    {consulting.cta}
-                    <ArrowRight size={18} />
-                  </Link>
-
-                  {consulting.note && <p className="quiz-upsell-note">{consulting.note}</p>}
-                </div>
-              )}
+              {/* 다음 걸음은 시범 수업 하나입니다. 전에는 정밀 상담(유료)과 수업 등록
+                  상담을 따로 권해서 무엇을 눌러야 할지 헷갈렸습니다. */}
+              <div className="quiz-upsell">
+                <h2>시범 수업 신청</h2>
+                <p className="quiz-upsell-price">
+                  <strong>10,000원</strong>
+                  <span>40분</span>
+                </p>
+                <p>튜터와 같이 문제를 풀어 보고, 어디서부터 시작하면 좋을지 찾습니다.</p>
+                <Link className="btn btn-primary btn-lg btn-block" to="/apply">
+                  시범 수업 신청하기
+                  <ArrowRight size={18} />
+                </Link>
+              </div>
 
               <div className="quiz-cta-actions quiz-cta-actions--plain">
-                <Link
-                  className={`btn ${verdict.eligible ? 'btn-ghost' : 'btn-primary btn-lg'}`}
-                  to="/apply"
-                  onClick={() => {
-                    try {
-                      sessionStorage.setItem('teamlesson:applyKind', 'consult')
-                    } catch {
-                      // 무시해도 됩니다.
-                    }
-                  }}
-                >
-                  {verdict.eligible ? '수업 등록만 상담하기' : '대수·미적분1 수업 상담받기'}
-                </Link>
                 <button className="btn btn-ghost" onClick={restart}>
                   <RotateCcw size={16} />
                   다시 풀기

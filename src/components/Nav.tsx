@@ -47,13 +47,18 @@ export default function Nav() {
   // 메뉴가 열려 있는 동안에는 뒤 배경이 스크롤되지 않도록 잠급니다.
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    if (open) window.addEventListener('keydown', closeOnEscape)
     return () => {
       document.body.style.overflow = ''
+      window.removeEventListener('keydown', closeOnEscape)
     }
   }, [open])
 
   return (
-    <header className={`nav ${scrolled ? 'nav--solid' : ''}`}>
+    <header className={`nav ${pathname === '/' ? 'nav--landing' : ''} ${scrolled ? 'nav--solid' : ''} ${open ? 'nav--open' : ''}`}>
       <div className="container nav-inner">
         <Link
           className="nav-logo"
@@ -68,7 +73,7 @@ export default function Nav() {
           <span className="nav-logo-sub">{site.tagline}</span>
         </Link>
 
-        <nav className={`nav-links ${open ? 'is-open' : ''}`}>
+        <nav id="site-navigation" aria-label="주 메뉴" className={`nav-links ${open ? 'is-open' : ''}`}>
           {menu.map((item) => {
             const page = PAGES[item.id]
             if (page) {
@@ -115,6 +120,7 @@ export default function Nav() {
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? '메뉴 닫기' : '메뉴 열기'}
           aria-expanded={open}
+          aria-controls="site-navigation"
         >
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>

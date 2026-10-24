@@ -4,6 +4,8 @@ import { useContent } from '../lib/siteContent'
 
 export default function Hero() {
   const { hero, stats } = useContent()
+  const hasDisplayHeadline = Boolean(hero.headline.trim())
+  const headline = hasDisplayHeadline ? hero.headline : hero.hook.replace('학생들이 ', '학생들이\n')
 
   return (
     <div className="hero" id="top">
@@ -21,13 +23,13 @@ export default function Hero() {
 
         <p className="hero-lead">{hero.lead}</p>
 
-        <h1 className="hero-title">
-          {hero.headline.split('\n').map((line) => (
+        <h1 className={hasDisplayHeadline ? 'hero-title' : 'hero-message'}>
+          {headline.split('\n').map((line) => (
             <span key={line}>{line}</span>
           ))}
         </h1>
 
-        {hero.hook && <p className="hero-hook">{hero.hook}</p>}
+        {hasDisplayHeadline && hero.hook && <p className="hero-hook">{hero.hook}</p>}
 
         <p className="hero-sub">
           {hero.sub.split('\n').map((line) => (

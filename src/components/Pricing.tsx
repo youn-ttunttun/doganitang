@@ -9,11 +9,8 @@ import Section from './Section'
 export default function Pricing() {
   const { pricing } = useContent()
   // 좁은 화면에서는 한 번에 하나만 보여주고 탭으로 고릅니다.
-  // 처음에는 '가장 많이 선택합니다' 가 붙은 것을 띄웁니다.
-  const [active, setActive] = useState(() => {
-    const i = pricing.plans.findIndex((plan) => plan.highlight)
-    return i >= 0 ? i : 0
-  })
+  // 제일 가벼운 과정부터 보여줘야 값에 놀라 나가지 않습니다.
+  const [active, setActive] = useState(0)
 
   if (pricing.plans.length === 0) return null
 

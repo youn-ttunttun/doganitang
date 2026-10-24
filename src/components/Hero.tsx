@@ -7,7 +7,7 @@ export default function Hero() {
 
   return (
     <div className="hero" id="top">
-      <div className="hero-grid" aria-hidden="true" />
+      <picture className="hero-photo" aria-hidden="true"><source media="(max-width: 640px)" srcSet="/snu-gate-mobile.webp" /><img src="/snu-gate.webp" alt="" fetchPriority="high" width={1440} height={1080} /></picture><div className="hero-photo-shade" aria-hidden="true" />
       <div className="hero-glow" aria-hidden="true" />
 
       <div className="container hero-inner">

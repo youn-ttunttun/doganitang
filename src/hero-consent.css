@@ -1,0 +1,37 @@
+/* 사진 톤과 동의 안내도 기존 디자인 토큰·타이포그래피를 사용합니다. */
+.hero {
+  --text: #f3f7fc;
+  --text-dim: #dbe5f1;
+  --text-faint: #c0cede;
+  --surface: rgba(13, 28, 47, .76);
+  --border: rgba(225, 237, 255, .18);
+  background: #091524;
+  isolation: isolate;
+}
+.hero-photo, .hero-photo-shade { position: absolute; inset: 0; pointer-events: none; }
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 58% 43%; filter: saturate(.52) brightness(.75); opacity: .72; }
+.hero-photo-shade {
+  background: radial-gradient(ellipse at 12% 18%, rgba(61, 103, 153, .26), transparent 58%), radial-gradient(ellipse at 94% 20%, rgba(170, 124, 101, .15), transparent 52%), linear-gradient(110deg, rgba(5, 16, 31, .84), rgba(6, 18, 33, .45) 65%, rgba(8, 21, 37, .24)), linear-gradient(0deg, #091524, transparent 65%);
+}
+.hero .hero-title { background-image: linear-gradient(130deg, #f1f6ff, #b5cee9 58%, #bbd8d3); }
+.hero .badge { color: #e0ebfa; background: rgba(21, 43, 68, .66); border: 1px solid rgba(218, 234, 255, .2); }
+.hero .btn-ghost { color: #f3f7fc; background: rgba(8, 23, 41, .44); border-color: rgba(226, 239, 255, .38); }
+.hero .hero-inner { text-shadow: 0 2px 18px rgba(0, 0, 0, .2); }
+.hero .tile--stat { background: rgba(9, 24, 42, .76); border-color: rgba(217, 232, 249, .16); }
+.hero .stat-value { color: #d7e8ff; }
+.hero .stat-label { color: #d2ddec; }
+.apply-terms { padding: 14px; border: 1px solid var(--border-dark); border-radius: var(--radius); background: var(--surface-dark); }
+.apply-terms ul { padding-left: 17px; margin: 8px 0 12px; color: var(--text-on-dark-dim); font-size: 13px; line-height: 1.7; }
+.apply-terms strong { color: var(--text-on-dark); font-weight: 600; }
+.consent-details { color: var(--text-on-dark-dim); font-size: 13px; line-height: 1.6; }
+.consent-details summary { width: fit-content; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.consent-details p { margin-top: 8px; }
+@media (max-width: 640px) {
+  .hero-photo img { object-position: 62% 44%; opacity: .8; }
+  .hero-photo-shade { background: radial-gradient(ellipse at 15% 10%, rgba(70, 103, 156, .24), transparent 55%), radial-gradient(ellipse at 95% 35%, rgba(168, 122, 103, .12), transparent 52%), linear-gradient(180deg, rgba(5, 16, 31, .5), rgba(6, 18, 33, .68) 48%, #091524 100%); }
+  .hero .hero-inner { text-align: left; align-items: flex-start; }
+  .hero .hero-badges, .hero .hero-actions { justify-content: flex-start; }
+  .hero .hero-title { font-size: clamp(3rem, 12vw, 4.4rem); }
+  .hero .hero-sub { line-height: 1.65; }
+  .apply-terms { padding: 12px; }
+}

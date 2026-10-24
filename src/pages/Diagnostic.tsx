@@ -399,7 +399,7 @@ export default function Diagnostic() {
               <div className="quiz-upsell">
                 <h2>시범 수업 신청</h2>
                 <p className="quiz-upsell-price">
-                  <strong>10,000원</strong>
+                  <strong>무료</strong>
                   <span>40분</span>
                 </p>
                 <p>튜터와 같이 문제를 풀어 보고, 어디서부터 시작하면 좋을지 찾습니다.</p>

@@ -21,6 +21,30 @@ function merge<T>(base: T, override: unknown): T {
   return result as T
 }
 
+// ── 브라우저에 남겨 두는 마지막 문구 ─────────────────────────
+// 새로고침마다 코드의 기본 문구가 먼저 그려졌다가 DB 문구로 바뀌며
+// 옛 화면이 번쩍였습니다. 마지막으로 받은 DB 문구를 남겨 두고 그것부터 그립니다.
+
+const CACHE_KEY = 'teamlesson:content'
+
+function readCache(): unknown {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
+function writeCache(data: unknown) {
+  try {
+    if (data === null) localStorage.removeItem(CACHE_KEY)
+    else localStorage.setItem(CACHE_KEY, JSON.stringify(data))
+  } catch {
+    // 시크릿 모드 등에서 막히면 매번 DB 를 기다립니다.
+  }
+}
+
 export async function loadSiteContent(): Promise<SiteContent> {
   if (!isBackendReady) return defaultContent
 
@@ -35,6 +59,7 @@ export async function loadSiteContent(): Promise<SiteContent> {
     return defaultContent
   }
 
+  writeCache(data.data)
   return merge(defaultContent, data.data)
 }
 
@@ -44,12 +69,15 @@ export async function saveSiteContent(content: SiteContent): Promise<void> {
     .upsert({ id: ROW_ID, data: content, updated_at: new Date().toISOString() })
 
   if (error) throw new Error(error.message)
+  // 고친 직후 새로고침해도 옛 값이 번쩍이지 않게 남겨 둔 것도 바꿉니다.
+  writeCache(content)
 }
 
 /** 관리자 화면에서 '기본값으로 되돌리기' 용도 */
 export async function clearSiteContent(): Promise<void> {
   const { error } = await getClient().from('site_content').delete().eq('id', ROW_ID)
   if (error) throw new Error(error.message)
+  writeCache(null)
 }
 
 // ── 화면에 문구를 공급하는 통로 ──────────────────────────────
@@ -57,23 +85,42 @@ export async function clearSiteContent(): Promise<void> {
 const ContentContext = createContext<SiteContent>(defaultContent)
 
 /**
- * 처음에는 기본 문구로 즉시 그리고, DB에서 받아오면 조용히 갈아끼웁니다.
- * 로딩 화면을 두지 않아 첫 화면이 늦게 뜨는 일이 없습니다.
+ * 문구를 공급합니다.
+ *
+ * 전에는 코드의 기본 문구로 먼저 그린 뒤 DB 문구로 갈아끼워서, 새로고침할
+ * 때마다 옛 화면이 잠깐 보였습니다. 이제는
+ *  - 전에 받아 둔 DB 문구가 있으면 그것으로 바로 그리고 (번쩍임 없음)
+ *  - 처음 오는 사람은 DB 문구가 올 때까지 기다렸다 그립니다.
+ *  - DB 가 2초 안에 답하지 않으면 그때만 기본 문구로 그립니다.
  */
 export function ContentProvider({ children }: { children: ReactNode }) {
-  const [content, setContent] = useState<SiteContent>(defaultContent)
+  const cached = isBackendReady ? readCache() : null
+  const [content, setContent] = useState<SiteContent>(() =>
+    cached ? merge(defaultContent, cached) : defaultContent,
+  )
+  const [ready, setReady] = useState(!isBackendReady || cached !== null)
 
   useEffect(() => {
+    if (!isBackendReady) return
     let alive = true
+    const fallback = window.setTimeout(() => alive && setReady(true), 2000)
     loadSiteContent().then((loaded) => {
-      if (alive) setContent(loaded)
+      if (!alive) return
+      setContent(loaded)
+      setReady(true)
     })
     return () => {
       alive = false
+      window.clearTimeout(fallback)
     }
   }, [])
 
-  return createElement(ContentContext.Provider, { value: content }, children)
+  // 기다리는 동안은 빈 바탕만 둡니다. 틀린 문구를 보여주는 것보다 낫습니다.
+  return createElement(
+    ContentContext.Provider,
+    { value: content },
+    ready ? children : createElement('div', { style: { minHeight: '100vh' } }),
+  )
 }
 
 export function useContent(): SiteContent {

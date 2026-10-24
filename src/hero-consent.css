@@ -22,6 +22,7 @@
 .hero .stat-label { color: #d2ddec; }
 .hero-message { max-width: 850px; color: #f3f7fc; font-family: var(--font); font-size: clamp(30px, 4vw, 46px); font-weight: 700; letter-spacing: -.045em; line-height: 1.38; text-wrap: balance; }
 .hero-message span { display: block; }
+.hero-message { transform: translateY(12px); }
 .hero-message span:first-child { font-size: 1.2em; }
 .hero .hero-lead:empty, .hero .hero-sub:empty { display: none; }
 .nav--landing:not(.nav--solid), .nav--open { color: #f3f7fc; --text: #f3f7fc; --text-dim: #d6e2f1; --text-faint: #bed0e5; --border: rgba(226, 238, 255, .2); }

@@ -13,13 +13,6 @@ export default function Hero() {
     <div className="hero" id="top">
       <picture className="hero-photo" aria-hidden="true"><source media="(max-width: 640px)" srcSet="/snu-gate-brand-mobile-v2.webp" /><img src="/snu-gate-brand-v2.webp" alt="" fetchPriority="high" width={1104} height={1424} /></picture><div className="hero-photo-shade" aria-hidden="true" />
       <div className="hero-glow" aria-hidden="true" />
-      <svg width="0" height="0" aria-hidden="true" style={{ position: 'absolute' }}>
-        <defs><filter id="hero-sign-light" colorInterpolationFilters="sRGB">
-          <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2 2 2 0 -4.5" />
-          <feComposite in="SourceGraphic" operator="in" />
-        </filter></defs>
-      </svg>
-      <picture className="hero-photo hero-sign-highlight" aria-hidden="true"><source media="(max-width: 640px)" srcSet="/snu-gate-brand-mobile-v2.webp" /><img src="/snu-gate-brand-v2.webp" alt="" width={1104} height={1424} /></picture>
 
       <div className="container hero-inner">
         <div className="hero-badges">

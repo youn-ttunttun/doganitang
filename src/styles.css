@@ -1527,17 +1527,10 @@ textarea {
 
 /* ── 진행 과정 ───────────────────────────────────────────── */
 
-/* 넓은 화면: 화살표로 이은 도식 */
-.flow-diagram svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* 좁은 화면: 카드로 쌓기. 도식은 글씨가 읽을 수 없을 만큼 작아집니다. */
+/* 넓은 화면은 설명이 있는 카드, 좁은 화면은 세로 순서로 표시합니다. */
 .flow {
-  display: none;
-  grid-template-columns: 1fr;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 34px;
   margin: 0;
   padding: 0;
@@ -1586,6 +1579,7 @@ textarea {
 }
 
 .flow-desc {
+  white-space: pre-line;
   margin: 8px 0 0;
   font-size: 14px;
   line-height: 1.65;
@@ -1630,12 +1624,9 @@ textarea {
 }
 
 @media (max-width: 860px) {
-  .flow-diagram {
-    display: none;
-  }
-
   .flow {
     display: grid;
+    grid-template-columns: 1fr;
   }
 
   .flow-endings {
@@ -4212,7 +4203,7 @@ textarea {
   }
 
   /* 진행 과정 — 도식은 한눈에 보여야 하므로 옆으로 넘기지 않습니다.
-     번호를 세로선으로 이은 타임라인으로 다섯 단계를 한 화면에 담습니다. */
+     번호를 세로선으로 이은 타임라인으로 진행 단계를 한 화면에 담습니다. */
   .flow {
     display: grid;
     gap: 0;
@@ -4350,5 +4341,12 @@ textarea {
   .apply-form {
     padding: 16px;
     gap: 14px;
+  }
+}
+
+@media (min-width: 861px) {
+  .flow-step:not(:last-child)::after {
+    top: 50%; bottom: auto; left: auto; right: -23px;
+    transform: translateY(-50%) rotate(45deg);
   }
 }

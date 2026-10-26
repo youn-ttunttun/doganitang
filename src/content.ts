@@ -265,18 +265,16 @@ export const news: { date: string; title: string; body: string }[] = []
  */
 export const process = {
   eyebrow: 'How it works',
-  title: '신청하면 이렇게 진행됩니다',
+  title: '이렇게 진행됩니다',
   lead: '',
   steps: [
-    { title: '무료 진단 테스트', desc: '20분이면 지금 어디서 막혔는지 나옵니다.' },
-    { title: '결과 상담', desc: '결과를 함께 보고 어디서부터 시작할지 정합니다.' },
-    { title: '튜터 배정', desc: '일정과 지역, 수업 방식에 맞는 수학 1등급 튜터를 정합니다.' },
-    { title: '시범 수업', desc: '40분 · 무료. 튜터와 같이 문제를 풀어 보고 시작점을 찾습니다.' },
-    { title: '수업 등록', desc: '횟수와 과정을 정하고 시작합니다.' },
+    { title: '신청', desc: '웹사이트에서 신청서를 작성해주세요.' },
+    { title: '무료 시범 수업(40분)', desc: '배정된 튜터와 함께 문제를 풀어보고 약점을 진단합니다.\nTeamlesson의 비대면 수업 플랫폼으로 진행됩니다.' },
+    { title: '수업 등록 여부 결정', desc: '정규 수업이 성사된다면, 일정을 협의하고 시작합니다.' },
   ],
   // 비워두면 아래 갈래 표시가 나오지 않습니다.
   endings: [] as string[],
-  note: '진단 결과만 보고 시범 수업 없이 바로 등록하셔도 됩니다.',
+  note: '웹사이트의 진단 테스트를 응시한 결과만 보고 시범 수업 없이 바로 등록하셔도 됩니다.',
 }
 
 export const sections = {

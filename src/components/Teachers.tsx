@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useContent } from '../lib/siteContent'
@@ -7,6 +8,12 @@ import Section from './Section'
 export default function Teachers({ compact = false }: { compact?: boolean }) {
   const { leads, tutors, sections } = useContent()
   const copy = sections.teachers
+  const qualification = '전원 평가원 수학 1등급(상위 4% 이내)'
+  // DB에 남아 있는 이전 문장에도 적용하되, 관리자가 다른 내용으로 고친 문구는 유지합니다.
+  const description = copy.lead.replace(
+    /수업은 튜터가 1:1\s*로 진행합니다\./g,
+    `수업은 ${qualification}인 튜터가 1:1로 진행합니다.`,
+  )
   const teachingTutors = tutors.filter((tutor) => tutor.role.includes('튜터'))
   const productionTeam = tutors.filter((tutor) => !tutor.role.includes('튜터'))
   const tutorCards = (people: typeof tutors) => (
@@ -29,7 +36,12 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
       tone="dark"
       eyebrow={copy.eyebrow || undefined}
       title={copy.title || undefined}
-      lead={copy.lead || undefined}
+      lead={description ? description.split(qualification).map((part, index) => (
+        <Fragment key={index}>
+          {index > 0 && <strong className="teachers-qualification">{qualification}</strong>}
+          {part}
+        </Fragment>
+      )) : undefined}
     >
       {compact ? (
         <Link className="section-more section-more--on-dark" to="/teachers">

@@ -1104,6 +1104,11 @@ textarea {
   border-top: 1px solid var(--border-dark);
 }
 
+.teachers-qualification {
+  font-weight: 700;
+  color: var(--text-on-dark);
+}
+
 .teachers-group-title {
   margin-bottom: 20px;
   font-size: clamp(18px, 2.2vw, 22px);

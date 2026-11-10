@@ -447,6 +447,9 @@ export const contentSpec: SectionSpec[] = [
         { key: 'title', label: '제목', kind: 'text' },
         { key: 'lead', label: '설명', kind: 'multiline' },
         { key: 'tutorsTitle', label: '튜터 목록 제목', kind: 'text' },
+        { key: 'leadsTitle', label: '공동대표 목록 제목', kind: 'text' },
+        { key: 'productionTitle', label: '제작팀 목록 제목', kind: 'text' },
+        { key: 'detailsLabel', label: '선생님 상세 버튼 문구', kind: 'text' },
       ] },
       { key: 'proof', label: '성적·후기', kind: 'group', fields: [
         { key: 'eyebrow', label: '라벨', kind: 'text' },

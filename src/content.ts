@@ -294,6 +294,9 @@ export const sections = {
     title: '교재를 만드는 사람과, 가르치는 사람',
     lead: '공동대표가 교재와 커리큘럼을 만들고 튜터를 교육합니다.\n수업은 튜터가 1:1로 진행합니다.',
     tutorsTitle: '수업을 맡는 튜터진',
+    leadsTitle: '교재와 커리큘럼을 만드는 공동대표',
+    productionTitle: '함께 만드는 제작팀',
+    detailsLabel: '선생님 자세히 보기',
   },
   proof: {
     eyebrow: 'Records',

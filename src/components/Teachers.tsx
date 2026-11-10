@@ -22,7 +22,8 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
         <article className="tile tile--tutor tile--hover s4" key={tutor.name}>
           <div className="tutor-top">
             <h4 className="tutor-name">{tutor.name} T</h4>
-            <span className="tutor-role">{tutor.role}</span>
+            {/* 기존 DB 명단의 이전 역할에도 요청한 제작팀 표기를 적용합니다. */}
+            <span className="tutor-role">{tutor.name === '김정우' && tutor.role === '튜터' ? '튜터, 제작팀' : tutor.role}</span>
           </div>
           <p className="tutor-note">{tutor.note}</p>
         </article>

@@ -1,5 +1,5 @@
 export const storyManifesto = {
-  cta: '가장 낮은 가격에 중하위권을 위한 최적의 수업을 공급합니다.',
+  cta: '가장 낮은 가격에 <중하위권을 위한 최적의 수학 수업>을 드립니다.',
   invitation: '그럴 수 있었던 Teamlesson만의 이야기',
   title: 'Teamlesson이 수업을 만드는 이유',
   chapters: [

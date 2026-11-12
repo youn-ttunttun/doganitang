@@ -33,7 +33,7 @@ export default function StoryInvitation() {
   return <>
     <section className="story-invitation" aria-label="팀레슨의 수업 철학">
       <button ref={trigger} className="story-invitation-link" aria-haspopup="dialog" onClick={() => setOpen(true)}>
-        <span className="story-invitation-statement">{copy.cta}</span>
+        <span className="story-invitation-statement"><Highlight text={copy.cta} /></span>
         <span className="story-invitation-hint">{copy.invitation} <ArrowUpRight size={16} aria-hidden="true" /></span>
       </button>
     </section>
@@ -45,7 +45,7 @@ export default function StoryInvitation() {
           <div><span className="story-wordmark">TEAMLESSON</span><h2 id="story-dialog-title">{copy.title}</h2></div>
           <button className="story-close" onClick={close} aria-label="닫고 메인으로 돌아가기" autoFocus><X size={22} /></button>
         </header>
-        <div className="story-tools"><span>{String(copy.chapters.length).padStart(2, '0')}개의 이야기</span><button onClick={toggleAll}>모두 펼치기 / 접기</button></div>
+        <div className="story-tools"><span>{copy.chapters.length}개의 이야기</span><button onClick={toggleAll}>모두 펼치기 / 접기</button></div>
         <div className="story-chapters">
           {copy.chapters.map((chapter, index) => <details className="story-chapter" key={chapter.title}>
             <summary><span className="story-number">{String(index + 1).padStart(2, '0')}</span><h3><Highlight text={chapter.title} /></h3><ChevronDown size={20} aria-hidden="true" /></summary>

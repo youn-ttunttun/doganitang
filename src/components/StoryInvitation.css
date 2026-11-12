@@ -41,3 +41,18 @@
 .story-sheet-foot button { display:flex; align-items:center; gap:8px; background:var(--brand-soft); color:var(--text); border:1px solid var(--border); border-radius:30px; padding:12px 18px; font:inherit; font-size:14px; cursor:pointer; }
 @media(max-width:640px) { .story-invitation { padding:104px 24px 36px; background:radial-gradient(ellipse at 50% 50%,rgba(106,169,236,.09),transparent 72%),linear-gradient(180deg,#091524 0,var(--bg) 90px); } .story-invitation-hint { font-size:14px; } .story-invitation::after { margin-top:24px; } .story-dialog { width:100%; max-height:100dvh; height:100dvh; border-radius:0; border:0; } .story-sheet-head { padding:16px 20px; gap:12px; padding-top:max(16px,env(safe-area-inset-top)); } .story-tools { padding:10px 20px 4px; } .story-chapters { padding:0 20px; } .story-chapter summary { gap:10px; padding:20px 0; } .story-chapter h3 { font-size:16px; } .story-prose { font-size:14.5px; line-height:1.9; } .story-prose figure img { height:220px; } .story-prose .story-photos img { height:210px; } .story-photos { gap:8px; } .story-sheet-foot { padding:22px 20px max(24px,env(safe-area-inset-bottom)); } }
 @media(prefers-reduced-motion:reduce) { .story-invitation-hint,.story-chapter summary svg { transition:none; } }
+/* 밝은 화면에서는 사진의 남색을 푸른 회색을 거쳐 충분히 길게 풀어줍니다. */
+.story-invitation {
+  --story-light-fade: clamp(260px, 25vw, 340px);
+  --story-light-background: radial-gradient(ellipse at 50% 70%, rgba(106,169,236,.045), transparent 72%), linear-gradient(180deg, #091524 0px, #142a42 calc(var(--story-light-fade) * .14), #38516d calc(var(--story-light-fade) * .34), #7e94ad calc(var(--story-light-fade) * .57), #c4d1df calc(var(--story-light-fade) * .78), var(--bg) var(--story-light-fade));
+}
+:root[data-theme='light'] .story-invitation {
+  padding-top: calc(var(--story-light-fade) + 28px);
+  background: var(--story-light-background);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) .story-invitation {
+    padding-top: calc(var(--story-light-fade) + 28px);
+    background: var(--story-light-background);
+  }
+}

@@ -1,3 +1,4 @@
+import { storyManifesto } from './storyManifesto'
 import type { Verdict } from './diagnostic'
 
 // ─────────────────────────────────────────────────────────────
@@ -488,6 +489,7 @@ export const material = {
 // ─────────────────────────────────────────────────────────────
 
 export const defaultContent = {
+  storyManifesto,
   site,
   nav,
   hero,

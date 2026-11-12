@@ -1,5 +1,10 @@
 # Teamlesson
 
+첫 화면과 For Whom 사이의 수업 철학 안내는 `StoryInvitation`에서 표시합니다.
+본문 기본값은 `src/storyManifesto.ts`이며 `/app/content`의 ‘첫 화면 아래의 수업 철학’에서 편집할 수 있습니다.
+본문의 `<문구>`는 형광펜, 빈 줄은 문단, `- `로 시작하는 연속 줄은 비교 목록으로 표시합니다.
+읽기 창은 제목별로 여러 항목을 펼칠 수 있고, 닫기·Escape·하단 복귀 버튼으로 원래 위치로 돌아옵니다.
+
 노베이스를 위한 수능수학 — Teamlesson 공식 웹사이트.
 
 React + TypeScript + Vite로 만든 정적 사이트이며, 신청서 접수는 Supabase를 사용합니다.

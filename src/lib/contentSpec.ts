@@ -25,6 +25,19 @@ export type SectionSpec = {
 
 export const contentSpec: SectionSpec[] = [
   {
+    key: 'storyManifesto', label: '첫 화면 아래의 수업 철학',
+    fields: [
+      { key: 'cta', label: '메인 안내 문구', kind: 'text' },
+      { key: 'title', label: '읽기 창 제목', kind: 'text' },
+      { key: 'chapters', label: '이야기', kind: 'rows', titleKey: 'title', fields: [
+        { key: 'title', label: '제목', kind: 'text' },
+        { key: 'body', label: '본문', kind: 'multiline', hint: '<문구>는 노란 형광펜으로 표시됩니다. 문단은 빈 줄로 구분합니다.' },
+        { key: 'image', label: '사진', kind: 'image' },
+        { key: 'imageAlt', label: '사진 설명', kind: 'text' },
+      ] },
+    ],
+  },
+  {
     key: 'hero',
     label: '첫 화면',
     desc: '사이트를 열었을 때 제일 먼저 보이는 부분입니다.',

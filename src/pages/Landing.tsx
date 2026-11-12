@@ -16,6 +16,7 @@ import Process from '../components/Process'
 import Proof from '../components/Proof'
 import StickyCta from '../components/StickyCta'
 import Teachers from '../components/Teachers'
+import StoryInvitation from '../components/StoryInvitation'
 
 export default function Landing() {
   const { hash } = useLocation()
@@ -41,6 +42,7 @@ export default function Landing() {
         */}
         <Hero />
         <Marquee />
+        <StoryInvitation />
         <Audience />
         <Process />
         <Curriculum compact />

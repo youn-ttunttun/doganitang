@@ -4369,3 +4369,6 @@ textarea {
     transform: translateY(-50%) rotate(45deg);
   }
 }
+
+.teachers-mobile-student { display: none; }
+@media (max-width: 640px) { .teachers-mobile-student { display: inline; } }

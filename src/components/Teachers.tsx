@@ -40,7 +40,12 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
       lead={description ? description.split(qualification).map((part, index) => (
         <Fragment key={index}>
           {index > 0 && <strong className="teachers-qualification">{qualification}</strong>}
-          {part}
+          {part.split('튜터가 1:1로').map((segment, i) => (
+            <Fragment key={i}>
+              {i > 0 && <>튜터가 <span className="teachers-mobile-student">학생과 </span>1:1로</>}
+              {segment}
+            </Fragment>
+          ))}
         </Fragment>
       )) : undefined}
     >

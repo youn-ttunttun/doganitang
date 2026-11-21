@@ -15,6 +15,7 @@ const SectionPage = lazy(() => import('./pages/SectionPage'))
 const Diagnostic = lazy(() => import('./pages/Diagnostic'))
 const ApplyPage = lazy(() => import('./pages/ApplyPage'))
 const Login = lazy(() => import('./pages/app/Login'))
+const ResetPassword = lazy(() => import('./pages/app/ResetPassword'))
 const AppShell = lazy(() => import('./pages/app/AppShell'))
 const AdminContent = lazy(() => import('./pages/app/AdminContent'))
 const AdminQuestions = lazy(() => import('./pages/app/AdminQuestions'))
@@ -48,6 +49,7 @@ export default function App() {
 
             {/* 로그인 영역 — 홍보 요소가 없는 별도 레이아웃 */}
             <Route path="/app/login" element={<Login />} />
+            <Route path="/app/reset" element={<ResetPassword />} />
             <Route path="/app" element={<AppShell />}>
               <Route index element={<Navigate to="/app/content" replace />} />
               <Route path="content" element={<AdminContent />} />

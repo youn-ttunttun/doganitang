@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { ArrowRight, BookOpen, Images } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { ArrowRight, BookOpen, Images, Send } from 'lucide-react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { asset } from '../lib/asset'
 import { useContent } from '../lib/siteContent'
 import Lightbox, { type Shot } from './Lightbox'
@@ -11,6 +11,8 @@ const text = (value: unknown) => (typeof value === 'string' ? value.trim() : '')
 const list = <T,>(value: unknown): T[] => (Array.isArray(value) ? (value as T[]) : [])
 
 type Book = { title: string; subject: string; desc: string; cover?: string; toc?: string; gallery?: Shot[] }
+
+type Chapter = { title: string; desc?: string }
 
 /** 한 교재에서 미리보기로 넘겨볼 사진들. 표지 → 목차 → 나머지 순서입니다. */
 function shotsOf(book: Book): Shot[] {
@@ -32,6 +34,14 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
   const copy = sections.curriculum
   const [preview, setPreview] = useState<{ title: string; shots: Shot[] } | null>(null)
 
+  // 전용 페이지에서는 과정을 탭으로 골라 자세히 봅니다. 메인 카드의 '자세히' 에서
+  // 넘어오면 주소의 ?course= 로 그 과정이 바로 열립니다.
+  const [params, setParams] = useSearchParams()
+  const picked = curriculum.findIndex((course) => course.code === params.get('course'))
+  const active = picked >= 0 ? picked : 0
+  const pick = (index: number) =>
+    setParams({ course: curriculum[index].code }, { replace: true, preventScrollReset: true })
+
   const books = list<Book>(material.books)
 
   // 카드 개수에 맞춰 폭을 정해야 마지막 줄에 빈칸이 안 생깁니다.
@@ -49,17 +59,8 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
     (book) => !curriculum.some((course) => text(course.name) === text(book.subject)),
   )
 
-  // 표지는 과정 카드에 이미 나오므로 여기서는 목차와 미리보기 사진만 모읍니다.
-  const photos = [
-    ...books.flatMap((book) => [
-      ...(text(book.toc) ? [{ src: text(book.toc), alt: `${book.title} 목차` }] : []),
-      ...list<Shot>(book.gallery).map((shot) => ({
-        src: text(shot.src),
-        alt: text(shot.alt) || book.title,
-      })),
-    ]),
-    ...list<Shot>(material.images),
-  ].filter((image) => text(image.src) !== '')
+  // 교재별 사진은 과정 탭 안에 나오므로, 아래 모음에는 교재와 상관없는 사진만 둡니다.
+  const photos = list<Shot>(material.images).filter((image) => text(image.src) !== '')
 
   return (
     <Section
@@ -68,6 +69,7 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
       title={copy.title || undefined}
       lead={copy.lead || undefined}
     >
+      {compact && (
       <div className="bento course-cards">
         {curriculum.map((course, index) => {
           const courseBooks = booksOf(course.name)
@@ -135,10 +137,134 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
                   )}
                 </div>
               )}
+
+              <Link className="course-more" to={`/curriculum?course=${encodeURIComponent(course.code)}`}>
+                {course.code} 자세히
+                <ArrowRight size={14} aria-hidden="true" />
+              </Link>
             </article>
           )
         })}
       </div>
+      )}
+
+      {!compact && curriculum.length > 0 && (() => {
+        const course = curriculum[active]
+        const courseBooks = booksOf(course.name)
+        const chapters = list<Chapter>((course as { chapters?: unknown }).chapters).filter(
+          (chapter) => text(chapter.title) !== '',
+        )
+        const target = text((course as { target?: unknown }).target)
+        const duration = text((course as { duration?: unknown }).duration)
+
+        return (
+          <div className="course-detail">
+            <div className="course-tabs" role="tablist">
+              {curriculum.map((item, index) => (
+                <button
+                  key={item.code}
+                  type="button"
+                  role="tab"
+                  aria-selected={index === active}
+                  className={index === active ? 'is-active' : ''}
+                  onClick={() => pick(index)}
+                >
+                  <span>STEP {index + 1}</span>
+                  {item.code}
+                </button>
+              ))}
+            </div>
+
+            <article className="course-panel" role="tabpanel">
+              <header className="course-panel-head">
+                <h3 className="course-name">
+                  {course.code}
+                  <small>{course.name}</small>
+                </h3>
+                {duration && <span className="course-duration">{duration}</span>}
+              </header>
+
+              <p className="course-summary">{course.summary}</p>
+              <p className="course-body">{course.body}</p>
+
+              {target && (
+                <div className="course-target">
+                  <strong>이런 학생에게</strong>
+                  <p>{target}</p>
+                </div>
+              )}
+
+              <div className="course-panel-grid">
+                <section>
+                  <h4 className="course-panel-label">배우는 단원</h4>
+                  {chapters.length > 0 ? (
+                    <ol className="course-chapters">
+                      {chapters.map((chapter) => (
+                        <li key={chapter.title}>
+                          <strong>{chapter.title}</strong>
+                          {text(chapter.desc) && <span>{chapter.desc}</span>}
+                        </li>
+                      ))}
+                    </ol>
+                  ) : (
+                    <ol className="course-chapters">
+                      {course.topics.map((topic) => (
+                        <li key={topic}>
+                          <strong>{topic}</strong>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </section>
+
+                {courseBooks.length > 0 && (
+                  <section>
+                    <h4 className="course-panel-label">교재</h4>
+                    {courseBooks.map((book) => {
+                      const cover = text(book.cover)
+                      const shots = shotsOf(book)
+                      return (
+                        <div className="course-panel-book" key={book.title}>
+                          <div className="course-book">
+                            <div className={`book-cover book-cover--sm ${cover ? 'has-photo' : ''}`}>
+                              {cover ? (
+                                <img src={asset(cover)} alt={`${book.title} 표지`} loading="lazy" />
+                              ) : (
+                                <BookOpen size={14} aria-hidden="true" />
+                              )}
+                            </div>
+                            <p className="course-book-title">{book.title}</p>
+                          </div>
+                          {text(book.desc) && <p className="course-panel-book-desc">{book.desc}</p>}
+                          {shots.length > 0 && (
+                            <div className="course-panel-shots">
+                              {shots.map((shot, i) => (
+                                <button
+                                  key={shot.src}
+                                  type="button"
+                                  onClick={() => setPreview({ title: book.title, shots: [...shots.slice(i), ...shots.slice(0, i)] })}
+                                  aria-label={`${shot.alt} 크게 보기`}
+                                >
+                                  <img src={asset(shot.src)} alt={shot.alt} loading="lazy" />
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </section>
+                )}
+              </div>
+
+              <Link className="btn btn-primary course-panel-cta" to="/apply">
+                <Send size={16} />
+                시범 수업 신청
+              </Link>
+            </article>
+          </div>
+        )
+      })()}
 
       {compact && (
         <Link className="section-more" to="/curriculum">

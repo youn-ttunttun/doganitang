@@ -12,6 +12,7 @@ const list = <T,>(value: unknown): T[] => (Array.isArray(value) ? (value as T[])
 type Person = {
   name: string
   role: string
+  note: string
   motto: string
   /** 공동대표 카드에서만 씁니다. */
   school: string
@@ -26,6 +27,7 @@ const toPerson = (raw: unknown): Person | null => {
   return {
     name,
     role: text(row.role),
+    note: text(row.note),
     motto: text(row.motto),
     school: text(row.school),
     lines: list<unknown>(row.lines).map(text).filter(Boolean),
@@ -69,6 +71,7 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
               </span>
             )}
           </div>
+          {person.note && <p className="tutor-note">{person.note}</p>}
           {person.motto && <p className="tutor-note">{person.motto}</p>}
         </article>
       ))}

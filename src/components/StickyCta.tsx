@@ -27,7 +27,10 @@ export default function StickyCta() {
     observer?.observe(apply as Element)
 
     function update() {
-      setShown(window.scrollY > 1200 && !applyVisible)
+      // 메인은 첫 화면을 지난 뒤에, 다른 페이지는 조금만 내려도 띄웁니다.
+      // 메뉴로 연 페이지는 짧아서 1200px 을 못 내려가 버튼이 아예 안 떴습니다.
+      const threshold = window.location.pathname === '/' ? 1200 : 160
+      setShown(window.scrollY > threshold && !applyVisible)
     }
 
     update()

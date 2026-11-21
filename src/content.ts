@@ -16,8 +16,8 @@ export const site = {
   instagram: 'https://instagram.com/teamlesson_',
   instagramHandle: '@teamlesson_',
   email: 'soismoi12@snu.ac.kr',
-  // 기존 수강생 전용 사이트(공지·숙제·자료실·질문게시판). 새 수강생 페이지가 완성되면 교체합니다.
-  studentSiteUrl: 'https://teamlesson.github.io/Teamlesson/',
+  // 폐기한 수강생 사이트 주소는 비워 두며, 푸터에서도 링크를 표시하지 않습니다.
+  studentSiteUrl: '',
 }
 
 export const nav = [

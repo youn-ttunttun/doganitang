@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, ChevronDown, X } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useContent } from '../lib/siteContent'
 import { asset } from '../lib/asset'
 import './StoryInvitation.css'
@@ -9,11 +10,13 @@ function Highlight({ text }: { text: string }) {
     ? <mark key={i}>{part.slice(1, -1)}</mark> : <Fragment key={i}>{part}</Fragment>)}</>
 }
 
-export default function StoryInvitation() {
+/** standalone: 메뉴의 '수업 철학' 페이지. 들어오자마자 펼치고, 닫으면 메인으로 갑니다. */
+export default function StoryInvitation({ standalone = false }: { standalone?: boolean }) {
   const { storyManifesto: copy } = useContent()
+  const navigate = useNavigate()
   const dialog = useRef<HTMLDialogElement>(null)
   const trigger = useRef<HTMLButtonElement>(null)
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(standalone)
   useEffect(() => {
     if (!open) return
     const previous = document.body.style.overflow
@@ -38,7 +41,7 @@ export default function StoryInvitation() {
       </button>
     </section>
     <dialog ref={dialog} className="story-dialog" aria-labelledby="story-dialog-title"
-      onClose={() => { setOpen(false); trigger.current?.focus({ preventScroll: true }) }}
+      onClose={() => { setOpen(false); if (standalone) navigate('/'); else trigger.current?.focus({ preventScroll: true }) }}
       onClick={(event) => { if (event.target === event.currentTarget) close() }}>
       <div className="story-sheet">
         <header className="story-sheet-head">

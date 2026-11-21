@@ -21,12 +21,15 @@ export const site = {
 }
 
 export const nav = [
-  { id: 'material', label: '교재' },
+  { id: 'story', label: '수업 철학' },
+  { id: 'process', label: '수업 진행' },
   { id: 'curriculum', label: '커리큘럼' },
   { id: 'why', label: '왜 우리인가' },
-  { id: 'proof', label: '성적·후기' },
+  { id: 'proof', label: '수업 후기' },
   { id: 'teachers', label: '선생님' },
   { id: 'pricing', label: '수강료' },
+  { id: 'news', label: '공지/소식' },
+  { id: 'faq', label: 'FAQ' },
 ]
 
 export const hero = {
@@ -280,8 +283,8 @@ export const sections = {
     detailsLabel: '선생님 자세히 보기',
   },
   proof: {
-    eyebrow: 'Records',
-    title: '숫자로 남은 변화',
+    eyebrow: 'Reviews',
+    title: '학생들의 후기',
     lead: '수업을 들은 학생들의 실제 기록입니다.',
     reviewsTitle: '수강생·학부모 후기',
   },

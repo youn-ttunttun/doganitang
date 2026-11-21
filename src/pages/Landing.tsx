@@ -50,8 +50,8 @@ export default function Landing() {
         <Proof />
         <Teachers compact />
         <Pricing />
-        <Faq />
         <News />
+        <Faq />
         <ApplyCta />
       </main>
       <Footer />

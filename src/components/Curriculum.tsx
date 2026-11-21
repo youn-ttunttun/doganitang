@@ -81,7 +81,6 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
               className={`tile tile--hover ${courseSpan} ${index === 0 ? 'tile--feature' : ''}`}
               key={course.code}
             >
-              <span className="course-step">STEP {index + 1}</span>
               <h3 className="course-name">
                 {course.code}
                 <small>{course.name}</small>
@@ -169,7 +168,6 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
                   className={index === active ? 'is-active' : ''}
                   onClick={() => pick(index)}
                 >
-                  <span>STEP {index + 1}</span>
                   {item.code}
                 </button>
               ))}

@@ -25,6 +25,22 @@ export type SectionSpec = {
 
 export const contentSpec: SectionSpec[] = [
   {
+    key: 'storyManifesto', label: '첫 화면 아래의 수업 철학',
+    fields: [
+      { key: 'cta', label: '메인 안내 문구', kind: 'text' },
+      { key: 'invitation', label: '이야기 열기 문구', kind: 'text' },
+      { key: 'title', label: '읽기 창 제목', kind: 'text' },
+      { key: 'chapters', label: '이야기', kind: 'rows', titleKey: 'title', fields: [
+        { key: 'title', label: '제목', kind: 'text' },
+        { key: 'body', label: '본문', kind: 'multiline', hint: '<문구>는 노란 형광펜으로 표시됩니다. 문단은 빈 줄로 구분합니다.' },
+        { key: 'image', label: '사진', kind: 'image' },
+        { key: 'imageAlt', label: '사진 설명', kind: 'text' },
+        { key: 'secondImage', label: '함께 보여줄 두 번째 사진', kind: 'image' },
+        { key: 'secondImageAlt', label: '두 번째 사진 설명', kind: 'text' },
+      ] },
+    ],
+  },
+  {
     key: 'hero',
     label: '첫 화면',
     desc: '사이트를 열었을 때 제일 먼저 보이는 부분입니다.',
@@ -447,6 +463,9 @@ export const contentSpec: SectionSpec[] = [
         { key: 'title', label: '제목', kind: 'text' },
         { key: 'lead', label: '설명', kind: 'multiline' },
         { key: 'tutorsTitle', label: '튜터 목록 제목', kind: 'text' },
+        { key: 'leadsTitle', label: '공동대표 목록 제목', kind: 'text' },
+        { key: 'productionTitle', label: '제작팀 목록 제목', kind: 'text' },
+        { key: 'detailsLabel', label: '선생님 상세 버튼 문구', kind: 'text' },
       ] },
       { key: 'proof', label: '성적·후기', kind: 'group', fields: [
         { key: 'eyebrow', label: '라벨', kind: 'text' },
@@ -481,7 +500,7 @@ export const contentSpec: SectionSpec[] = [
             key: 'id',
             label: '이어지는 곳',
             kind: 'text',
-            hint: 'curriculum(커리큘럼·교재) / why / proof / teachers / pricing / news(공지)',
+            hint: 'curriculum(커리큘럼·교재) / why(왜 우리인가) / proof(성적·후기) / teachers / pricing / faq / news(공지). 누르면 각각의 페이지가 열립니다',
           },
         ],
       },

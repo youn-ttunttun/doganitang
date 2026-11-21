@@ -18,6 +18,7 @@ export type ApplicationInput = {
   birthYear: string
   gender: string
   recentExam: string
+  paymentTermsAgreed: boolean
   tuitionConfirmed: boolean
   marketingSms: boolean
   marketingEmail: boolean
@@ -52,6 +53,8 @@ export async function submitApplication(input: ApplicationInput): Promise<void> 
     gender: input.gender,
     recent_exam: input.recentExam,
     tuition_confirmed: input.tuitionConfirmed,
+    payment_terms_agreed: input.paymentTermsAgreed,
+    payment_terms_version: '2026-10-25-payment-v1',
     consent_version: '2026-10-24-v3',
     consent_at: new Date().toISOString(),
     form_version: 3,

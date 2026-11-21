@@ -5,7 +5,7 @@ type Props = {
   id?: string
   eyebrow?: string
   title?: ReactNode
-  lead?: string
+  lead?: ReactNode
   tone?: 'plain' | 'muted' | 'dark'
   children: ReactNode
 }

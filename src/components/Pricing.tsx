@@ -22,7 +22,7 @@ export default function Pricing() {
       tone="muted"
       eyebrow={pricing.eyebrow}
       title={pricing.title}
-      lead={pricing.lead || undefined}
+      lead={pricing.lead.replace(/1:1 화상 진행합니다\./g, '1:1 비대면 수업을 진행합니다.') || undefined}
     >
       {pricing.plans.length > 1 && (
         <div className="plan-tabs" role="tablist">

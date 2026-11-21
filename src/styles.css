@@ -308,6 +308,12 @@ textarea {
   transition: color 0.15s ease, background 0.15s ease;
 }
 
+/* 지금 보고 있는 페이지의 메뉴 */
+.nav-links a[aria-current='page'] {
+  color: var(--brand);
+  font-weight: 700;
+}
+
 .nav-links a:hover {
   color: var(--text);
   background: var(--bg-muted);
@@ -4252,6 +4258,236 @@ textarea {
   gap: 8px;
 }
 
+
+/* ── 옆에서 열리는 메뉴 (좁은 화면) ─────────────────────────── */
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(4, 8, 14, 0.55);
+  animation: drawer-fade 0.18s ease;
+}
+
+.drawer-panel {
+  display: flex;
+  flex-direction: column;
+  width: min(320px, 86vw);
+  height: 100%;
+  padding: 18px 20px 24px;
+  overflow-y: auto;
+  background: var(--brand-strong);
+  color: #fff;
+  box-shadow: 12px 0 32px rgba(0, 0, 0, 0.25);
+  animation: drawer-slide 0.22s ease;
+}
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.drawer-logo {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.drawer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.drawer-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-links a {
+  padding: 13px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 17px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.drawer-links a[aria-current='page'] {
+  color: #fff;
+  font-weight: 800;
+}
+
+.drawer-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.drawer-actions .btn {
+  justify-content: center;
+}
+
+.drawer-actions .btn-primary {
+  background: #fff;
+  color: var(--brand-strong);
+}
+
+.drawer-actions .btn-ghost {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.drawer-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@keyframes drawer-slide {
+  from {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes drawer-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer,
+  .drawer-panel {
+    animation: none;
+  }
+}
+
+/* 좁은 화면에서는 위에서 내려오던 작은 메뉴를 쓰지 않습니다. */
+@media (max-width: 768px) {
+  .nav-links,
+  .nav-links.is-open {
+    display: none;
+  }
+}
+
+/* ── 첫 화면 아래 최신 공지 한 줄 ───────────────────────────── */
+
+.notice-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 11px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.notice-bar:hover {
+  border-color: var(--brand);
+}
+
+.notice-bar > svg:first-child {
+  flex-shrink: 0;
+  color: var(--brand);
+}
+
+.notice-bar-label {
+  flex-shrink: 0;
+  font-weight: 800;
+  color: var(--brand);
+}
+
+.notice-bar-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notice-bar-date {
+  flex-shrink: 0;
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+@media (max-width: 620px) {
+  .notice-bar-date {
+    display: none;
+  }
+}
+
+/* ── 자주 묻는 질문 ─────────────────────────────────────────── */
+
+.faq-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+.faq-tools button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand);
+  cursor: pointer;
+}
+
+.faq-q .faq-mark {
+  flex-shrink: 0;
+  font-weight: 800;
+  color: var(--brand);
+}
+
+.faq-q > span:nth-child(2) {
+  flex: 1;
+  text-align: left;
+}
+
+.faq-a p {
+  margin: 0;
+  white-space: pre-line;
+}
+
+.faq-more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  padding: 16px 18px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-muted);
+}
+
+.faq-more > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 /* ── 휴대폰 마무리 손질 ──────────────────────────────────────
    아래 규칙들은 파일 앞쪽에 두면 뒤에 오는 같은 굵기의 규칙에

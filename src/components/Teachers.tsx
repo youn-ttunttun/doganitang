@@ -15,8 +15,6 @@ type Person = {
   role: string
   note: string
   photo: string
-  school: string
-  subjects: string[]
   lines: string[]
 }
 
@@ -30,8 +28,6 @@ const toPerson = (raw: unknown): Person | null => {
     role: text(row.role),
     note: text(row.note),
     photo: text(row.photo),
-    school: text(row.school),
-    subjects: list<unknown>(row.subjects).map(text).filter(Boolean),
     lines: list<unknown>(row.lines).map(text).filter(Boolean),
   }
 }
@@ -79,20 +75,12 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
               </span>
             )}
           </div>
-          {person.school && <p className="tutor-school">{person.school}</p>}
           {person.note && <p className="tutor-note">{person.note}</p>}
           {person.lines.map((line) => (
             <p className="tutor-note" key={line}>
               {line}
             </p>
           ))}
-          {person.subjects.length > 0 && (
-            <ul className="tutor-subjects">
-              {person.subjects.map((sub) => (
-                <li key={sub}>{sub}</li>
-              ))}
-            </ul>
-          )}
         </article>
       ))}
     </div>

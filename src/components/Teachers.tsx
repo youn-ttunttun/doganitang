@@ -65,9 +65,12 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
       {group.map((person) => (
         <article className="tile tile--tutor tile--hover s4" key={person.name}>
           <div className="tutor-top">
-            <span className={`tutor-avatar ${person.photo ? 'has-photo' : ''}`} aria-hidden="true">
-              {person.photo ? <img src={asset(person.photo)} alt="" loading="lazy" /> : person.name.slice(0, 1)}
-            </span>
+            {/* 사진을 넣은 사람만 사진이 나옵니다. 없으면 아무것도 그리지 않습니다. */}
+            {person.photo && (
+              <span className="tutor-avatar has-photo" aria-hidden="true">
+                <img src={asset(person.photo)} alt="" loading="lazy" />
+              </span>
+            )}
             <h4 className="tutor-name">{person.name} T</h4>
             {person.role && (
               <span className="tutor-role">
@@ -132,9 +135,6 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
               <div className="bento">
                 {leads.map((lead) => (
                   <article className="tile tile--hover s4" key={lead.name}>
-                    <div className="lead-initial" aria-hidden="true">
-                      {lead.name.slice(0, 1)}
-                    </div>
                     <h4 className="lead-name">
                       {lead.name} <span>T</span>
                     </h4>

@@ -2,6 +2,7 @@ import { Navigate, NavLink, Outlet } from 'react-router-dom'
 import { FileText, ListChecks, LogOut, Type } from 'lucide-react'
 import { site } from '../../content'
 import { signOut, useAuth } from '../../lib/auth'
+import { LMS_ORIGIN } from '../../lib/publicTutors'
 
 /**
  * 로그인 후 화면의 껍데기.
@@ -46,6 +47,7 @@ export default function AppShell() {
                   <FileText size={15} />
                   신청서
                 </NavLink>
+                <a href={`${LMS_ORIGIN}/admin/tutor-applications`} target="_blank" rel="noreferrer">튜터 신청·공개</a>
               </>
             )}
           </nav>

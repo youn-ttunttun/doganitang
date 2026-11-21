@@ -207,6 +207,7 @@ export const contentSpec: SectionSpec[] = [
   {
     key: 'tutors',
     label: '튜터',
+    desc: "맨 아래 '튜터 추가' 로 새 튜터를 넣습니다. 역할에 '튜터' 가 들어가면 튜터진에, 아니면 제작팀에 나옵니다.",
     fields: [
       {
         key: '',
@@ -215,8 +216,12 @@ export const contentSpec: SectionSpec[] = [
         titleKey: 'name',
         fields: [
           { key: 'name', label: '이름', kind: 'text' },
-          { key: 'role', label: '역할', kind: 'text', hint: '예) 튜터, 제작팀' },
-          { key: 'note', label: '이력', kind: 'text' },
+          { key: 'role', label: '역할', kind: 'text', hint: '예) 튜터 / 제작팀 / 튜터, 제작팀' },
+          { key: 'note', label: '대표 이력', kind: 'text', hint: '예) 2026 수능 미적분 1등급' },
+          { key: 'photo', label: '사진', kind: 'image', hint: '비우면 이름 첫 글자가 나옵니다' },
+          { key: 'school', label: '학교·학과', kind: 'text', hint: '비우면 안 나옵니다' },
+          { key: 'subjects', label: '담당 과목', kind: 'strings', hint: '예) Pre · 대수 · 미적분1' },
+          { key: 'lines', label: '이력 더', kind: 'strings', hint: '대표 이력 아래에 한 줄씩 붙습니다' },
         ],
       },
     ],

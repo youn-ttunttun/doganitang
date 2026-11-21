@@ -523,7 +523,7 @@ export const contentSpec: SectionSpec[] = [
             key: 'id',
             label: '이어지는 곳',
             kind: 'text',
-            hint: 'curriculum(커리큘럼·교재) / why / proof / teachers / pricing / news(공지)',
+            hint: 'curriculum(커리큘럼·교재) / why(왜 우리인가) / proof(성적·후기) / teachers / pricing / faq / news(공지). 누르면 각각의 페이지가 열립니다',
           },
         ],
       },

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Menu, Moon, Sun, X } from 'lucide-react'
+import { createPortal } from 'react-dom'
+import { Instagram, Menu, Moon, PencilRuler, Send, Sun, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useScrolled } from '../hooks'
 import { scrollToId } from '../lib/scroll'
@@ -11,10 +12,15 @@ const PAGES: Record<string, string> = {
   material: '/curriculum',
   curriculum: '/curriculum',
   teachers: '/teachers',
+  why: '/why',
+  proof: '/proof',
+  pricing: '/pricing',
+  faq: '/faq',
+  news: '/news',
 }
 
 export default function Nav() {
-  const { nav, resultCases, reviews, site, pricing, news } = useContent()
+  const { nav, resultCases, reviews, site, pricing, news, faqs } = useContent()
   const scrolled = useScrolled()
   const { theme, toggle } = useTheme()
   const { pathname } = useLocation()
@@ -38,11 +44,15 @@ export default function Nav() {
     return !duplicated
   })
 
-  // 공지를 올렸는데 메뉴에 없으면 넣어줍니다.
-  const menu =
-    news.length > 0 && !items.some((item) => item.id === 'news')
-      ? [...items, { id: 'news', label: '공지' }]
-      : items
+  // 메뉴에 빠져 있으면 넣어줍니다. 자주 묻는 질문은 공지 앞에 둡니다.
+  const menu = [...items]
+  if (faqs.length > 0 && !menu.some((item) => item.id === 'faq')) {
+    const at = menu.findIndex((item) => item.id === 'news')
+    menu.splice(at >= 0 ? at : menu.length, 0, { id: 'faq', label: 'FAQ' })
+  }
+  if (news.length > 0 && !menu.some((item) => item.id === 'news')) {
+    menu.push({ id: 'news', label: '공지' })
+  }
 
   // 메뉴가 열려 있는 동안에는 뒤 배경이 스크롤되지 않도록 잠급니다.
   useEffect(() => {
@@ -57,28 +67,16 @@ export default function Nav() {
     }
   }, [open])
 
-  return (
-    <header className={`nav ${pathname === '/' ? 'nav--landing' : ''} ${scrolled ? 'nav--solid' : ''} ${open ? 'nav--open' : ''}`}>
-      <div className="container nav-inner">
-        <Link
-          className="nav-logo"
-          to="/"
-          onClick={() => {
-            setOpen(false)
-            window.scrollTo(0, 0)
-          }}
-        >
-          {site.name}
-          <span className="nav-logo-dot">:</span>
-          <span className="nav-logo-sub">{site.tagline}</span>
-        </Link>
-
-        <nav id="site-navigation" aria-label="주 메뉴" className={`nav-links ${open ? 'is-open' : ''}`}>
-          {menu.map((item) => {
+  const links = menu.map((item) => {
             const page = PAGES[item.id]
             if (page) {
               return (
-                <Link key={item.id} to={page} onClick={() => setOpen(false)}>
+                <Link
+                  key={item.id}
+                  to={page}
+                  aria-current={pathname === page ? 'page' : undefined}
+                  onClick={() => setOpen(false)}
+                >
                   {item.label}
                 </Link>
               )
@@ -101,7 +99,26 @@ export default function Nav() {
                 {item.label}
               </a>
             )
-          })}
+          })
+
+  return (
+    <header className={`nav ${pathname === '/' ? 'nav--landing' : ''} ${scrolled ? 'nav--solid' : ''} ${open ? 'nav--open' : ''}`}>
+      <div className="container nav-inner">
+        <Link
+          className="nav-logo"
+          to="/"
+          onClick={() => {
+            setOpen(false)
+            window.scrollTo(0, 0)
+          }}
+        >
+          {site.name}
+          <span className="nav-logo-dot">:</span>
+          <span className="nav-logo-sub">{site.tagline}</span>
+        </Link>
+
+        <nav id="site-navigation" aria-label="주 메뉴" className={`nav-links ${open ? 'is-open' : ''}`}>
+          {links}
           <Link className="nav-cta" to="/diagnostic" onClick={() => setOpen(false)}>
             무료 진단
           </Link>
@@ -125,6 +142,46 @@ export default function Nav() {
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
+
+      {/* 좁은 화면의 메뉴. 위에서 내려오는 작은 창 대신 옆에서 통째로 열립니다.
+          머리말이 backdrop-filter 를 써서 그 안에 두면 화면 전체를 못 덮으므로
+          body 로 빼서 그립니다. */}
+      {open &&
+        createPortal(
+          <div className="drawer" onClick={() => setOpen(false)}>
+            <aside className="drawer-panel" aria-label="메뉴" onClick={(e) => e.stopPropagation()}>
+              <div className="drawer-head">
+                <Link className="drawer-logo" to="/" onClick={() => setOpen(false)}>
+                  {site.name}
+                </Link>
+                <button className="drawer-close" onClick={() => setOpen(false)} aria-label="메뉴 닫기">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <nav className="drawer-links">{links}</nav>
+
+              <div className="drawer-actions">
+                <Link className="btn btn-primary" to="/diagnostic" onClick={() => setOpen(false)}>
+                  <PencilRuler size={16} />
+                  무료 진단 테스트
+                </Link>
+                <Link className="btn btn-ghost" to="/apply" onClick={() => setOpen(false)}>
+                  <Send size={16} />
+                  시범 수업 신청
+                </Link>
+              </div>
+
+              {site.instagram && (
+                <a className="drawer-sub" href={site.instagram} target="_blank" rel="noreferrer">
+                  <Instagram size={15} />
+                  {site.instagramHandle || '인스타그램'}
+                </a>
+              )}
+            </aside>
+          </div>,
+          document.body,
+        )}
     </header>
   )
 }

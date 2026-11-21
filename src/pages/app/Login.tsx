@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { Navigate, Link } from 'react-router-dom'
 import { Loader2, LogIn } from 'lucide-react'
 import { site } from '../../content'
-import { signIn, signUp, useAuth } from '../../lib/auth'
+import { requestPasswordReset, signIn, signUp, useAuth } from '../../lib/auth'
 import { isBackendReady } from '../../lib/supabase'
 
 export default function Login() {
   const { loading, session } = useAuth()
-  const [mode, setMode] = useState<'in' | 'up'>('in')
+  const [mode, setMode] = useState<'in' | 'up' | 'reset'>('in')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -67,6 +67,9 @@ export default function Login() {
     try {
       if (mode === 'in') {
         await signIn(email.trim(), password)
+      } else if (mode === 'reset') {
+        await requestPasswordReset(email.trim())
+        setSent(true)
       } else {
         await signUp(email.trim(), password, name.trim())
         setSent(true)
@@ -84,11 +87,13 @@ export default function Login() {
         <Link className="app-brand" to="/">
           {site.name}
         </Link>
-        <h1>{mode === 'in' ? '로그인' : '계정 만들기'}</h1>
+        <h1>{mode === 'in' ? '로그인' : mode === 'reset' ? '비밀번호 재설정' : '계정 만들기'}</h1>
 
         {sent ? (
           <p className="app-note">
-            확인 메일을 보냈습니다. 메일의 링크를 눌러 인증한 뒤 로그인해주세요.
+            {mode === 'reset'
+              ? '재설정 메일을 보냈습니다. 메일의 링크를 누르면 새 비밀번호를 정하는 화면이 열립니다. 메일이 안 보이면 스팸함도 확인해주세요.'
+              : '확인 메일을 보냈습니다. 메일의 링크를 눌러 인증한 뒤 로그인해주세요.'}
           </p>
         ) : (
           <>
@@ -110,6 +115,7 @@ export default function Login() {
               />
             </label>
 
+            {mode !== 'reset' && (
             <label className="field">
               <span className="field-label">비밀번호</span>
               <input
@@ -121,14 +127,29 @@ export default function Login() {
                 required
               />
             </label>
+            )}
 
             {error && <p className="app-error">{error}</p>}
 
             <button className="btn btn-primary btn-block" disabled={busy}>
               {busy ? <Loader2 size={16} className="spin" /> : <LogIn size={16} />}
-              {mode === 'in' ? '로그인' : '가입하기'}
+              {mode === 'in' ? '로그인' : mode === 'reset' ? '재설정 메일 보내기' : '가입하기'}
             </button>
           </>
+        )}
+
+        {mode === 'in' && (
+          <button
+            type="button"
+            className="app-switch"
+            onClick={() => {
+              setMode('reset')
+              setSent(false)
+              setError('')
+            }}
+          >
+            비밀번호를 잊으셨나요?
+          </button>
         )}
 
         <button
@@ -140,7 +161,7 @@ export default function Login() {
             setError('')
           }}
         >
-          {mode === 'in' ? '계정이 없으신가요? 가입하기' : '이미 계정이 있으신가요? 로그인'}
+          {mode === 'in' ? '계정이 없으신가요? 가입하기' : '로그인 화면으로'}
         </button>
       </form>
     </div>

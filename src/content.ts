@@ -119,7 +119,6 @@ export const leads: Teacher[] = [
 ]
 
 export const tutors = [
-  { name: '김동영', role: '제작팀', note: '서울대학교 첨단융합학부 재학' },
   { name: '최준영', role: '튜터', note: '2025 6월·9월 미적분 1등급' },
   { name: '박도연', role: '튜터', note: '2026 수능 미적분 1등급' },
   { name: '김선범', role: '튜터', note: '2025 6월·9월 미적분 1등급' },
@@ -128,6 +127,11 @@ export const tutors = [
   { name: '조석희', role: '튜터', note: '2026 9월·수능 미적분 1등급' },
   { name: '서도연', role: '튜터', note: '2025 6월·9월 미적분 1등급' },
   { name: '홍정민', role: '튜터', note: '2026 6월·9월 확률과 통계 1등급' },
+]
+
+/** 제작팀은 튜터와 따로 추가합니다. 비우면 제작팀 칸이 나오지 않습니다. */
+export const production = [
+  { name: '김동영', role: '제작팀', note: '서울대학교 첨단융합학부 재학' },
 ]
 
 export const audienceSection = {
@@ -498,6 +502,7 @@ export const defaultContent = {
   curriculum,
   leads,
   tutors,
+  production,
   audienceSection,
   audience,
   faqs,

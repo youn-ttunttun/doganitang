@@ -207,7 +207,7 @@ export const contentSpec: SectionSpec[] = [
   {
     key: 'tutors',
     label: '튜터',
-    desc: "맨 아래 '튜터 추가' 로 새 튜터를 넣습니다. 역할에 '튜터' 가 들어가면 튜터진에, 아니면 제작팀에 나옵니다.",
+    desc: "맨 아래 '튜터 추가' 로 넣은 사람만 선생님 페이지 '튜터진' 칸에 나옵니다. 아무도 없으면 그 칸 자체가 사라집니다. 비운 항목은 화면에 나오지 않습니다.",
     fields: [
       {
         key: '',
@@ -215,12 +215,34 @@ export const contentSpec: SectionSpec[] = [
         kind: 'rows',
         titleKey: 'name',
         fields: [
-          { key: 'name', label: '이름', kind: 'text' },
-          { key: 'role', label: '역할', kind: 'text', hint: '예) 튜터 / 제작팀 / 튜터, 제작팀' },
-          { key: 'note', label: '대표 이력', kind: 'text', hint: '예) 2026 수능 미적분 1등급' },
+          { key: 'name', label: '이름', kind: 'text', hint: '이름이 비어 있으면 사이트에 나오지 않습니다' },
+          { key: 'role', label: '역할 표기', kind: 'text', hint: '이름 옆 작은 글씨. 비우면 안 나옵니다' },
+          { key: 'note', label: '대표 이력', kind: 'text', hint: '비우면 안 나옵니다' },
           { key: 'photo', label: '사진', kind: 'image', hint: '비우면 이름 첫 글자가 나옵니다' },
           { key: 'school', label: '학교·학과', kind: 'text', hint: '비우면 안 나옵니다' },
-          { key: 'subjects', label: '담당 과목', kind: 'strings', hint: '예) Pre · 대수 · 미적분1' },
+          { key: 'subjects', label: '담당 과목', kind: 'strings', hint: '비우면 안 나옵니다' },
+          { key: 'lines', label: '이력 더', kind: 'strings', hint: '대표 이력 아래에 한 줄씩 붙습니다' },
+        ],
+      },
+    ],
+  },
+  {
+    key: 'production',
+    label: '제작팀',
+    desc: "맨 아래 '제작팀 추가' 로 넣은 사람만 선생님 페이지 '제작팀' 칸에 나옵니다. 아무도 없으면 그 칸 자체가 사라집니다. 튜터이면서 제작팀이면 양쪽에 각각 추가하세요.",
+    fields: [
+      {
+        key: '',
+        label: '제작팀',
+        kind: 'rows',
+        titleKey: 'name',
+        fields: [
+          { key: 'name', label: '이름', kind: 'text', hint: '이름이 비어 있으면 사이트에 나오지 않습니다' },
+          { key: 'role', label: '역할 표기', kind: 'text', hint: '이름 옆 작은 글씨. 비우면 안 나옵니다' },
+          { key: 'note', label: '대표 이력', kind: 'text', hint: '비우면 안 나옵니다' },
+          { key: 'photo', label: '사진', kind: 'image', hint: '비우면 이름 첫 글자가 나옵니다' },
+          { key: 'school', label: '학교·학과', kind: 'text', hint: '비우면 안 나옵니다' },
+          { key: 'subjects', label: '담당 과목', kind: 'strings', hint: '비우면 안 나옵니다' },
           { key: 'lines', label: '이력 더', kind: 'strings', hint: '대표 이력 아래에 한 줄씩 붙습니다' },
         ],
       },

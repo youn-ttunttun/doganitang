@@ -892,22 +892,11 @@ textarea {
 
 /* 커리큘럼 타일 */
 
-.course-step {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--text-faint);
-}
-
-.tile--feature .course-step {
-  color: rgba(255, 255, 255, 0.75);
-}
-
 .course-name {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin: 6px 0 16px;
+  margin: 0 0 16px;
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -4085,12 +4074,6 @@ textarea {
   color: var(--text-dim);
   cursor: pointer;
   white-space: nowrap;
-}
-
-.course-tabs button span {
-  font-size: 10.5px;
-  letter-spacing: 0.06em;
-  opacity: 0.75;
 }
 
 .course-tabs button.is-active {

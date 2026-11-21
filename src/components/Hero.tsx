@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 import { useContent } from '../lib/siteContent'
 
 export default function Hero() {
-  const { hero, stats } = useContent()
-  const visibleStats = stats.filter(stat => stat.value.trim() && stat.label.trim())
+  const { hero } = useContent()
   const badges = hero.badges.filter(badge => badge.trim()).map(badge => badge.replace('서울대·연세대', '서울대').replace('서울대 연세대', '서울대'))
   const hasDisplayHeadline = Boolean(hero.headline.trim())
   const headline = hasDisplayHeadline ? hero.headline : hero.hook.replace('학생들이 ', '학생들이\n')
@@ -51,15 +50,6 @@ export default function Hero() {
         </div>
 
         {hero.ctaNote && <p className="hero-cta-note">{hero.ctaNote}</p>}
-
-        {visibleStats.length > 0 && <div className="bento hero-stats">
-          {visibleStats.map((stat) => (
-            <div className="tile tile--stat tile--hover s3" key={stat.label}>
-              <span className="stat-value">{stat.value}</span>
-              <span className="stat-label">{stat.label}</span>
-            </div>
-          ))}
-        </div>}
       </div>
     </div>
   )

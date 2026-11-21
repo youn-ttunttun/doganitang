@@ -20,14 +20,14 @@ const PAGES: Record<string, string> = {
 }
 
 export default function Nav() {
-  const { nav, resultCases, reviews, site, pricing, news, faqs } = useContent()
+  const { nav, reviews, site, pricing, news, faqs } = useContent()
   const scrolled = useScrolled()
   const { theme, toggle } = useTheme()
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
 
   // 아직 채우지 않은 섹션은 메뉴에서도 감춥니다.
-  const hasProof = resultCases.length > 0 || reviews.length > 0
+  const hasProof = reviews.length > 0
   const items = nav.filter((item) => {
     if (item.id === 'proof') return hasProof
     if (item.id === 'pricing') return pricing.plans.length > 0

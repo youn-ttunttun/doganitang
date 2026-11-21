@@ -1,7 +1,6 @@
 import { Fragment } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { asset } from '../lib/asset'
 import { useContent } from '../lib/siteContent'
 import Section from './Section'
 
@@ -13,8 +12,7 @@ const list = <T,>(value: unknown): T[] => (Array.isArray(value) ? (value as T[])
 type Person = {
   name: string
   role: string
-  note: string
-  photo: string
+  motto: string
   /** 공동대표 카드에서만 씁니다. */
   school: string
   lines: string[]
@@ -28,8 +26,7 @@ const toPerson = (raw: unknown): Person | null => {
   return {
     name,
     role: text(row.role),
-    note: text(row.note),
-    photo: text(row.photo),
+    motto: text(row.motto),
     school: text(row.school),
     lines: list<unknown>(row.lines).map(text).filter(Boolean),
   }
@@ -64,12 +61,6 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
       {group.map((person) => (
         <article className="tile tile--tutor tile--hover s4" key={person.name}>
           <div className="tutor-top">
-            {/* 사진을 넣은 사람만 사진이 나옵니다. 없으면 아무것도 그리지 않습니다. */}
-            {person.photo && (
-              <span className="tutor-avatar has-photo" aria-hidden="true">
-                <img src={asset(person.photo)} alt="" loading="lazy" />
-              </span>
-            )}
             <h4 className="tutor-name">{person.name} T</h4>
             {person.role && (
               <span className="tutor-role">
@@ -78,12 +69,7 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
               </span>
             )}
           </div>
-          {person.note && <p className="tutor-note">{person.note}</p>}
-          {person.lines.map((line) => (
-            <p className="tutor-note" key={line}>
-              {line}
-            </p>
-          ))}
+          {person.motto && <p className="tutor-note">{person.motto}</p>}
         </article>
       ))}
     </div>

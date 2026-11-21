@@ -40,29 +40,6 @@ export const hero = {
   ctaNote: '20분이면 끝납니다 · 가입도 연락처도 필요 없습니다',
 }
 
-// 홍보 페이지 상단 지표. 선생님 수는 아래 명단에서 자동으로 계산됩니다.
-export const stats = [
-  { value: '50+', label: '누적 지도 학생' },
-  { value: '2년', label: '노베이스 수업 운영' },
-  { value: '주 2회', label: '1:1 과외' },
-  { value: '12명', label: '개발진 · 튜터' },
-]
-
-export const principles = [
-  {
-    title: '개념의 빈틈부터 찾습니다',
-    body: '무작정 문제를 많이 풀리지 않습니다. 지금 무엇을 모르는지 먼저 확인하고, 중·고등수학의 흐름을 하나로 연결합니다.',
-  },
-  {
-    title: '풀이를 외우지 않습니다',
-    body: '공식이 왜 필요한지, 어떤 개념에서 나왔는지, 문제 속에서 어떻게 쓰이는지 스스로 쫓아갈 수 있도록 훈련합니다.',
-  },
-  {
-    title: '오래 버티는 기초를 만듭니다',
-    body: '빠르게 진도를 나가는 수업보다, 낯선 문제 앞에서도 흔들리지 않는 힘을 기르는 수업을 지향합니다.',
-  },
-]
-
 export const curriculum = [
   {
     code: 'Pre',
@@ -119,19 +96,19 @@ export const leads: Teacher[] = [
 ]
 
 export const tutors = [
-  { name: '최준영', role: '튜터', note: '2025 6월·9월 미적분 1등급' },
-  { name: '박도연', role: '튜터', note: '2026 수능 미적분 1등급' },
-  { name: '김선범', role: '튜터', note: '2025 6월·9월 미적분 1등급' },
-  { name: '김정우', role: '튜터, 제작팀', note: '2026 6월·9월·수능 미적분 1등급' },
-  { name: '정나은', role: '튜터', note: '2024 6월·9월·수능 기하 1등급' },
-  { name: '조석희', role: '튜터', note: '2026 9월·수능 미적분 1등급' },
-  { name: '서도연', role: '튜터', note: '2025 6월·9월 미적분 1등급' },
-  { name: '홍정민', role: '튜터', note: '2026 6월·9월 확률과 통계 1등급' },
+  { name: '최준영', role: '튜터' },
+  { name: '박도연', role: '튜터' },
+  { name: '김선범', role: '튜터' },
+  { name: '김정우', role: '튜터, 제작팀' },
+  { name: '정나은', role: '튜터' },
+  { name: '조석희', role: '튜터' },
+  { name: '서도연', role: '튜터' },
+  { name: '홍정민', role: '튜터' },
 ]
 
 /** 제작팀은 튜터와 따로 추가합니다. 비우면 제작팀 칸이 나오지 않습니다. */
 export const production = [
-  { name: '김동영', role: '제작팀', note: '서울대학교 첨단융합학부 재학' },
+  { name: '김동영', role: '제작팀' },
 ]
 
 export const audienceSection = {
@@ -287,7 +264,6 @@ export const sections = {
     eyebrow: 'Curriculum',
     title: '처음부터, 순서대로',
     lead: 'Pre과정에서 기초를 채우고 대수와 미적분1으로 넘어갑니다.\n어느 튜터에게 배우든 이 순서와 이 교재로 진행합니다.',
-    principlesTitle: '수업은 이렇게 진행합니다',
   },
   news: {
     eyebrow: 'News',
@@ -389,29 +365,6 @@ export const apply = {
 // ─────────────────────────────────────────────────────────────
 
 /**
- * 첫 화면 아래를 흐르는 성적 변화 배지.
- * 실제 기록만 적어주세요. 확인 안 된 숫자는 넣지 않습니다.
- * 예) { from: '5등급', to: '3등급', label: '고2 · 대수' }
- */
-export const scoreBadges: { from: string; to: string; label: string }[] = []
-
-/**
- * 성적 변화 상세 사례. 인증 이미지가 있으면 image에 파일명을 적습니다.
- * 이미지는 public/ 폴더에 넣고 파일명만 적으면 됩니다. 예) 'proof-1.webp'
- */
-export type ResultCase = {
-  who: string // 예) '고3 김OO'
-  course: string // 예) '대수 + 미적분1'
-  period: string // 예) '4개월'
-  before: string
-  after: string
-  note?: string
-  image?: string
-}
-
-export const resultCases: ResultCase[] = []
-
-/**
  * 수강생·학부모 후기. 카톡 캡처가 있으면 image에 파일명을 적습니다.
  * 캡처를 올릴 때는 이름·프로필 사진을 반드시 가려주세요.
  */
@@ -497,8 +450,6 @@ export const defaultContent = {
   site,
   nav,
   hero,
-  stats,
-  principles,
   curriculum,
   leads,
   tutors,
@@ -511,8 +462,6 @@ export const defaultContent = {
   diagnosticInfo,
   consulting,
   apply,
-  scoreBadges,
-  resultCases,
   reviews,
   positioning,
   material,

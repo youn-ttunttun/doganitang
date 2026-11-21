@@ -54,23 +54,6 @@ export const contentSpec: SectionSpec[] = [
     ],
   },
   {
-    key: 'stats',
-    label: '지표',
-    desc: '첫 화면 아래 네 칸. 확인된 숫자만 적어주세요.',
-    fields: [
-      {
-        key: '',
-        label: '지표',
-        kind: 'rows',
-        titleKey: 'label',
-        fields: [
-          { key: 'value', label: '숫자', kind: 'text' },
-          { key: 'label', label: '설명', kind: 'text' },
-        ],
-      },
-    ],
-  },
-  {
     key: 'audienceSection',
     label: '대상 — 제목',
     fields: [
@@ -172,23 +155,6 @@ export const contentSpec: SectionSpec[] = [
     ],
   },
   {
-    key: 'principles',
-    label: '수업 원칙',
-    desc: '커리큘럼 아래 "수업은 이렇게 진행합니다".',
-    fields: [
-      {
-        key: '',
-        label: '원칙',
-        kind: 'rows',
-        titleKey: 'title',
-        fields: [
-          { key: 'title', label: '제목', kind: 'text' },
-          { key: 'body', label: '설명', kind: 'multiline' },
-        ],
-      },
-    ],
-  },
-  {
     key: 'positioning',
     label: '왜 우리인가',
     desc: '일반 과외와 비교하는 표.',
@@ -240,9 +206,7 @@ export const contentSpec: SectionSpec[] = [
         fields: [
           { key: 'name', label: '이름', kind: 'text', hint: '이름이 비어 있으면 사이트에 나오지 않습니다' },
           { key: 'role', label: '역할 표기', kind: 'text', hint: '이름 옆 작은 글씨. 비우면 안 나옵니다' },
-          { key: 'note', label: '대표 이력', kind: 'text', hint: '비우면 안 나옵니다' },
-          { key: 'photo', label: '사진', kind: 'image', hint: '비우면 사진 자리 없이 나옵니다' },
-          { key: 'lines', label: '이력 더', kind: 'strings', hint: '대표 이력 아래에 한 줄씩 붙습니다' },
+          { key: 'motto', label: '한 줄 다짐', kind: 'text', hint: '비우면 안 나옵니다' },
         ],
       },
     ],
@@ -260,54 +224,7 @@ export const contentSpec: SectionSpec[] = [
         fields: [
           { key: 'name', label: '이름', kind: 'text', hint: '이름이 비어 있으면 사이트에 나오지 않습니다' },
           { key: 'role', label: '역할 표기', kind: 'text', hint: '이름 옆 작은 글씨. 비우면 안 나옵니다' },
-          { key: 'note', label: '대표 이력', kind: 'text', hint: '비우면 안 나옵니다' },
-          { key: 'photo', label: '사진', kind: 'image', hint: '비우면 사진 자리 없이 나옵니다' },
-          { key: 'lines', label: '이력 더', kind: 'strings', hint: '대표 이력 아래에 한 줄씩 붙습니다' },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'scoreBadges',
-    label: '성적 변화 띠',
-    desc: '첫 화면 아래를 흐르는 배지. 비워두면 이 영역이 나오지 않습니다. 확인된 기록만 적어주세요.',
-    fields: [
-      {
-        key: '',
-        label: '기록',
-        kind: 'rows',
-        titleKey: 'label',
-        fields: [
-          { key: 'from', label: '이전', kind: 'text', hint: '예) 5등급' },
-          { key: 'to', label: '이후', kind: 'text', hint: '예) 3등급' },
-          { key: 'label', label: '설명', kind: 'text', hint: '예) 고2 · 대수' },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'resultCases',
-    label: '성적 사례',
-    desc: '비워두면 이 섹션이 나오지 않습니다.',
-    fields: [
-      {
-        key: '',
-        label: '사례',
-        kind: 'rows',
-        titleKey: 'who',
-        fields: [
-          { key: 'who', label: '누구', kind: 'text', hint: '예) 고3 김OO' },
-          { key: 'course', label: '수강 과정', kind: 'text' },
-          { key: 'period', label: '기간', kind: 'text' },
-          { key: 'before', label: '이전', kind: 'text' },
-          { key: 'after', label: '이후', kind: 'text' },
-          { key: 'note', label: '메모', kind: 'multiline' },
-          {
-            key: 'image',
-            label: '성적표 캡처',
-            kind: 'image',
-            hint: '이름·학교가 보이면 가리고 올려주세요.',
-          },
+          { key: 'motto', label: '한 줄 다짐', kind: 'text', hint: '비우면 안 나옵니다' },
         ],
       },
     ],
@@ -502,7 +419,6 @@ export const contentSpec: SectionSpec[] = [
         { key: 'eyebrow', label: '라벨', kind: 'text' },
         { key: 'title', label: '제목', kind: 'text' },
         { key: 'lead', label: '설명', kind: 'multiline' },
-        { key: 'principlesTitle', label: '수업 원칙 제목', kind: 'text' },
       ] },
       { key: 'teachers', label: '선생님', kind: 'group', fields: [
         { key: 'eyebrow', label: '라벨', kind: 'text' },

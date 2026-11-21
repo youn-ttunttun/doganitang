@@ -9,7 +9,6 @@ import News from '../components/News'
 import Footer from '../components/Footer'
 import Hero from '../components/Hero'
 import NoticeBar from '../components/NoticeBar'
-import Marquee from '../components/Marquee'
 import Nav from '../components/Nav'
 import Positioning from '../components/Positioning'
 import Pricing from '../components/Pricing'
@@ -43,7 +42,6 @@ export default function Landing() {
         */}
         <Hero />
         <NoticeBar />
-        <Marquee />
         <StoryInvitation />
         <Audience />
         <Process />

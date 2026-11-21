@@ -21,9 +21,6 @@ export default function Footer() {
             <Mail size={16} />
             {site.email}
           </a>
-          <a href={site.studentSiteUrl} target="_blank" rel="noreferrer">
-            수강생 전용 페이지
-          </a>
         </div>
       </div>
 

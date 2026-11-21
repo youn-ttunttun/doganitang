@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useContent } from '../lib/siteContent'
+import { usePublicTutors } from '../lib/publicTutors'
 import Section from './Section'
 
 /** 예전에 저장한 튜터에는 새로 만든 칸이 없을 수 있습니다. */
@@ -10,6 +11,7 @@ const list = <T,>(value: unknown): T[] => (Array.isArray(value) ? (value as T[])
 
 /** 메인에서는 수업 구조만 설명하고, 상세에서는 실제 수업을 맡는 튜터를 먼저 소개합니다. */
 type Person = {
+  id?: string
   name: string
   role: string
   note: string
@@ -38,6 +40,7 @@ const people = (value: unknown) => list<unknown>(value).map(toPerson).filter((p)
 /** 메인에서는 수업 구조만 설명하고, 상세에서는 실제 수업을 맡는 튜터를 먼저 소개합니다. */
 export default function Teachers({ compact = false }: { compact?: boolean }) {
   const content = useContent()
+  const publicTutors = usePublicTutors(!compact)
   const { sections } = content
   const copy = sections.teachers
   const qualification = '전원 평가원 수학 1등급(상위 4% 이내)'
@@ -49,7 +52,10 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
   // 튜터와 제작팀은 관리자 화면에서 따로 추가합니다.
   // 예전에는 튜터 명단 하나에 역할로 나눴으므로, 역할에 '튜터'가 없는 예전 항목은 제작팀으로 옮겨 보여줍니다.
   const tutorRows = people(content.tutors)
-  const teachingTutors = tutorRows.filter((p) => !p.role || p.role.includes('튜터'))
+  const teachingTutors: Person[] = [
+    ...tutorRows.filter((p) => !p.role || p.role.includes('튜터')),
+    ...publicTutors.map((p) => ({ id: p.id, name: p.name, role: '튜터', note: p.grade_exams, motto: p.pledge, school: '', lines: [] })),
+  ]
   const productionRows = people((content as { production?: unknown }).production)
   const productionTeam = [
     ...productionRows,
@@ -61,7 +67,7 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
   const tutorCards = (group: Person[]) => (
     <div className="bento">
       {group.map((person) => (
-        <article className="tile tile--tutor tile--hover s4" key={person.name}>
+        <article className="tile tile--tutor tile--hover s4" key={person.id ?? person.name}>
           <div className="tutor-top">
             <h4 className="tutor-name">{person.name} T</h4>
             {person.role && (
@@ -71,8 +77,8 @@ export default function Teachers({ compact = false }: { compact?: boolean }) {
               </span>
             )}
           </div>
-          {person.note && <p className="tutor-note">{person.note}</p>}
-          {person.motto && <p className="tutor-note">{person.motto}</p>}
+          {person.note && <p className="tutor-note" style={person.id ? { whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' } : undefined}>{person.note}</p>}
+          {person.motto && <p className="tutor-note" style={person.id ? { whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' } : undefined}>{person.motto}</p>}
         </article>
       ))}
     </div>

@@ -11,6 +11,7 @@ import Landing from './pages/Landing'
  */
 const CurriculumPage = lazy(() => import('./pages/CurriculumPage'))
 const TeachersPage = lazy(() => import('./pages/TeachersPage'))
+const SectionPage = lazy(() => import('./pages/SectionPage'))
 const Diagnostic = lazy(() => import('./pages/Diagnostic'))
 const ApplyPage = lazy(() => import('./pages/ApplyPage'))
 const Login = lazy(() => import('./pages/app/Login'))
@@ -37,6 +38,11 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/curriculum" element={<CurriculumPage />} />
             <Route path="/teachers" element={<TeachersPage />} />
+            <Route path="/why" element={<SectionPage section="why" />} />
+            <Route path="/proof" element={<SectionPage section="proof" />} />
+            <Route path="/pricing" element={<SectionPage section="pricing" />} />
+            <Route path="/faq" element={<SectionPage section="faq" />} />
+            <Route path="/news" element={<SectionPage section="news" />} />
             <Route path="/diagnostic" element={<Diagnostic />} />
             <Route path="/apply" element={<ApplyPage />} />
 

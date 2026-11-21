@@ -206,9 +206,7 @@ export const contentSpec: SectionSpec[] = [
         fields: [
           { key: 'name', label: '이름', kind: 'text', hint: '이름이 비어 있으면 사이트에 나오지 않습니다' },
           { key: 'role', label: '역할 표기', kind: 'text', hint: '이름 옆 작은 글씨. 비우면 안 나옵니다' },
-          { key: 'note', label: '대표 이력', kind: 'text', hint: '비우면 안 나옵니다' },
-          { key: 'photo', label: '사진', kind: 'image', hint: '비우면 사진 자리 없이 나옵니다' },
-          { key: 'lines', label: '이력 더', kind: 'strings', hint: '대표 이력 아래에 한 줄씩 붙습니다' },
+          { key: 'motto', label: '한 줄 다짐', kind: 'text', hint: '비우면 안 나옵니다' },
         ],
       },
     ],
@@ -226,9 +224,7 @@ export const contentSpec: SectionSpec[] = [
         fields: [
           { key: 'name', label: '이름', kind: 'text', hint: '이름이 비어 있으면 사이트에 나오지 않습니다' },
           { key: 'role', label: '역할 표기', kind: 'text', hint: '이름 옆 작은 글씨. 비우면 안 나옵니다' },
-          { key: 'note', label: '대표 이력', kind: 'text', hint: '비우면 안 나옵니다' },
-          { key: 'photo', label: '사진', kind: 'image', hint: '비우면 사진 자리 없이 나옵니다' },
-          { key: 'lines', label: '이력 더', kind: 'strings', hint: '대표 이력 아래에 한 줄씩 붙습니다' },
+          { key: 'motto', label: '한 줄 다짐', kind: 'text', hint: '비우면 안 나옵니다' },
         ],
       },
     ],

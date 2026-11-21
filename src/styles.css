@@ -1091,27 +1091,6 @@ textarea {
 }
 
 /* 튜터 사진(없으면 이름 첫 글자), 학교, 담당 과목 */
-.tutor-avatar {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  overflow: hidden;
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--brand-on-dark) 22%, transparent);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--brand-on-dark);
-}
-
-.tutor-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .tutor-top .tutor-name {
   flex: 1;
 }

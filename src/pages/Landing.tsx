@@ -8,6 +8,7 @@ import Faq from '../components/Faq'
 import News from '../components/News'
 import Footer from '../components/Footer'
 import Hero from '../components/Hero'
+import NoticeBar from '../components/NoticeBar'
 import Marquee from '../components/Marquee'
 import Nav from '../components/Nav'
 import Positioning from '../components/Positioning'
@@ -41,6 +42,7 @@ export default function Landing() {
           '정말?' 하고 생긴 의심이 답을 못 만나고 식습니다.
         */}
         <Hero />
+        <NoticeBar />
         <Marquee />
         <StoryInvitation />
         <Audience />

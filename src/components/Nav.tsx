@@ -9,6 +9,8 @@ import { useTheme } from '../lib/theme'
 
 /** 메인에서 떼어내 따로 페이지가 된 항목들. 나머지는 메인 안의 위치로 갑니다. */
 const PAGES: Record<string, string> = {
+  story: '/story',
+  process: '/process',
   material: '/curriculum',
   curriculum: '/curriculum',
   teachers: '/teachers',
@@ -32,6 +34,7 @@ export default function Nav() {
     if (item.id === 'proof') return hasProof
     if (item.id === 'pricing') return pricing.plans.length > 0
     if (item.id === 'news') return news.length > 0
+    if (item.id === 'faq') return faqs.length > 0
 
     // '교재' 와 '커리큘럼' 처럼 두 항목이 같은 페이지로 가면 하나만 남깁니다.
     // 페이지 이름과 이어지는 곳이 같은 쪽(= 커리큘럼)을 남깁니다.
@@ -44,14 +47,13 @@ export default function Nav() {
     return !duplicated
   })
 
-  // 메뉴에 빠져 있으면 넣어줍니다. 자주 묻는 질문은 공지 앞에 둡니다.
+  // 메뉴에 빠져 있으면 넣어줍니다. 공지/소식 다음에 FAQ 순서입니다.
   const menu = [...items]
-  if (faqs.length > 0 && !menu.some((item) => item.id === 'faq')) {
-    const at = menu.findIndex((item) => item.id === 'news')
-    menu.splice(at >= 0 ? at : menu.length, 0, { id: 'faq', label: 'FAQ' })
-  }
   if (news.length > 0 && !menu.some((item) => item.id === 'news')) {
-    menu.push({ id: 'news', label: '공지' })
+    menu.push({ id: 'news', label: '공지/소식' })
+  }
+  if (faqs.length > 0 && !menu.some((item) => item.id === 'faq')) {
+    menu.push({ id: 'faq', label: 'FAQ' })
   }
 
   // 메뉴가 열려 있는 동안에는 뒤 배경이 스크롤되지 않도록 잠급니다.

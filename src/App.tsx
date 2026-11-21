@@ -39,6 +39,8 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/curriculum" element={<CurriculumPage />} />
             <Route path="/teachers" element={<TeachersPage />} />
+            <Route path="/story" element={<SectionPage section="story" />} />
+            <Route path="/process" element={<SectionPage section="process" />} />
             <Route path="/why" element={<SectionPage section="why" />} />
             <Route path="/proof" element={<SectionPage section="proof" />} />
             <Route path="/pricing" element={<SectionPage section="pricing" />} />

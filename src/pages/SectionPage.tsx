@@ -3,7 +3,9 @@ import Faq from '../components/Faq'
 import News from '../components/News'
 import Positioning from '../components/Positioning'
 import Pricing from '../components/Pricing'
+import Process from '../components/Process'
 import Proof from '../components/Proof'
+import StoryInvitation from '../components/StoryInvitation'
 import SubPage from './SubPage'
 
 /**
@@ -14,6 +16,8 @@ import SubPage from './SubPage'
  * 달랐습니다. 모두 페이지로 맞췄습니다. 메인 페이지에는 그대로 남아 있습니다.
  */
 const SECTIONS: Record<string, ReactNode> = {
+  story: <StoryInvitation standalone />,
+  process: <Process />,
   why: <Positioning />,
   proof: <Proof />,
   pricing: <Pricing />,

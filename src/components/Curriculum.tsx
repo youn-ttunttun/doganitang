@@ -30,7 +30,7 @@ function shotsOf(book: Book): Shot[] {
  * 과정 카드만 보여주고, 교재 이야기·사진·수업 원칙은 전용 페이지로 넘깁니다.
  */
 export default function Curriculum({ compact = false }: { compact?: boolean }) {
-  const { curriculum, principles, sections, material } = useContent()
+  const { curriculum, sections, material } = useContent()
   const copy = sections.curriculum
   const [preview, setPreview] = useState<{ title: string; shots: Shot[] } | null>(null)
 
@@ -329,20 +329,6 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
           ))}
         </div>
       )}
-
-      {/* 원칙을 전부 지우면 제목도 함께 사라집니다 */}
-      {!compact && principles.length > 0 && copy.principlesTitle && (
-        <h3 className="tutors-title tutors-title--light">{copy.principlesTitle}</h3>
-      )}
-      <div className="bento">
-        {!compact && principles.map((principle, index) => (
-          <article className="tile tile--hover s4" key={principle.title}>
-            <span className="tile-num">{String(index + 1).padStart(2, '0')}</span>
-            <h4 className="tile-title">{principle.title}</h4>
-            <p className="tile-body">{principle.body}</p>
-          </article>
-        ))}
-      </div>
 
       {preview && (
         <Lightbox title={preview.title} shots={preview.shots} onClose={() => setPreview(null)} />

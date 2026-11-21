@@ -509,11 +509,6 @@ textarea {
   margin-top: 36px;
 }
 
-.hero-stats {
-  width: 100%;
-  margin-top: 72px;
-}
-
 @media (max-width: 640px) {
   .hero {
     padding: 124px 0 64px;
@@ -617,10 +612,6 @@ textarea {
 
   .hero-cta-note {
     margin-top: 10px;
-  }
-
-  .hero-stats {
-    margin-top: 28px;
   }
 
   .hero-hook {
@@ -816,11 +807,6 @@ textarea {
     gap: 10px;
   }
 
-  /* 지표 타일은 모바일에서도 2×2로 유지합니다 */
-  .hero-stats .s3 {
-    grid-column: span 6;
-  }
-
   .s3, .s4, .s5, .s6, .s7, .s8 {
     grid-column: span 12;
   }
@@ -855,39 +841,6 @@ textarea {
 
 .tile-body + .tile-body {
   margin-top: 14px;
-}
-
-.tile-num {
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--brand);
-  font-variant-numeric: tabular-nums;
-}
-
-/* 지표 타일 */
-
-.tile--stat {
-  gap: 2px;
-  justify-content: center;
-  align-items: center;
-  padding: 22px 16px;
-  text-align: center;
-}
-
-.tile--stat .stat-value {
-  font-size: clamp(1.6rem, 3.2vw, 2.1rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.035em;
-  color: var(--text);
-  font-variant-numeric: tabular-nums;
-}
-
-.tile--stat .stat-label {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--text-faint);
 }
 
 /* 소개 — 스토리 타일 */
@@ -1042,7 +995,6 @@ textarea {
 }
 
 /* 선생님 타일 */
-
 
 .lead-name {
   font-size: 21px;
@@ -1676,75 +1628,6 @@ textarea {
   }
 }
 
-/* ── 성적 변화 마퀴 ──────────────────────────────────────── */
-
-.marquee {
-  overflow: hidden;
-  padding: 18px 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-muted);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-
-.marquee-track {
-  display: flex;
-  gap: 10px;
-  width: max-content;
-  animation: marquee 42s linear infinite;
-}
-
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
-
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-    flex-wrap: wrap;
-    width: auto;
-  }
-}
-
-.marquee-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  background: var(--surface);
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.marquee-item b {
-  font-weight: 600;
-  color: var(--text-dim);
-}
-
-.marquee-item b.to {
-  color: var(--brand);
-}
-
-.marquee-item i {
-  font-style: normal;
-  color: var(--text-faint);
-}
-
-.marquee-item em {
-  font-style: normal;
-  font-size: 12px;
-  color: var(--text-faint);
-}
-
 /* ── 비교표 ──────────────────────────────────────────────── */
 
 .compare {
@@ -2014,51 +1897,6 @@ textarea {
   }
 }
 
-/* ── 성적 사례 · 후기 ────────────────────────────────────── */
-
-.result-head {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-faint);
-}
-
-.result-head svg {
-  color: var(--accent);
-}
-
-.result-change {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin: 14px 0 6px;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.result-before {
-  color: var(--text-faint);
-}
-
-.result-change i {
-  font-style: normal;
-  font-size: 16px;
-  color: var(--text-faint);
-}
-
-.result-after {
-  color: var(--brand);
-}
-
-.result-who {
-  font-size: 13px;
-  color: var(--text-faint);
-}
-
-.result-image,
 .review-image {
   width: 100%;
   margin-top: 16px;
@@ -3566,7 +3404,6 @@ textarea {
   color: var(--text);
 }
 
-
 /* ── 사이트 문구 편집 화면 ───────────────────────────────── */
 
 .content-editor {
@@ -4221,7 +4058,6 @@ textarea {
   gap: 8px;
 }
 
-
 /* ── 커리큘럼 상세 (과정별 탭) ─────────────────────────────── */
 
 /* 메인 카드 아래의 '자세히' */
@@ -4684,18 +4520,6 @@ textarea {
   /* 첫 화면 지표는 더 작게. 네 칸이 2×2 로 자리를 많이 먹습니다. */
   .hero-inner {
     padding-top: 72px;
-  }
-
-  .tile--stat {
-    padding: 12px 10px;
-  }
-
-  .stat-value {
-    font-size: 24px;
-  }
-
-  .stat-label {
-    font-size: 11px;
   }
 
   /* 진행 과정 — 도식은 한눈에 보여야 하므로 옆으로 넘기지 않습니다.

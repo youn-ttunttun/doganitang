@@ -1043,19 +1043,6 @@ textarea {
 
 /* 선생님 타일 */
 
-.lead-initial {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 46px;
-  margin-bottom: 18px;
-  border-radius: var(--radius);
-  background: linear-gradient(150deg, var(--brand), var(--accent));
-  font-size: 20px;
-  font-weight: 700;
-  color: #fff;
-}
 
 .lead-name {
   font-size: 21px;

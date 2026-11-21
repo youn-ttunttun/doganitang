@@ -15,6 +15,8 @@ type Person = {
   role: string
   note: string
   photo: string
+  /** 공동대표 카드에서만 씁니다. */
+  school: string
   lines: string[]
 }
 
@@ -28,6 +30,7 @@ const toPerson = (raw: unknown): Person | null => {
     role: text(row.role),
     note: text(row.note),
     photo: text(row.photo),
+    school: text(row.school),
     lines: list<unknown>(row.lines).map(text).filter(Boolean),
   }
 }

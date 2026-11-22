@@ -367,6 +367,11 @@ textarea {
     display: inline-flex;
   }
 
+  /* 열린 메뉴 안의 닫기 버튼만 보이도록 머리말 버튼은 자리를 유지해 숨깁니다. */
+  .nav-toggle[aria-expanded='true'] {
+    visibility: hidden;
+  }
+
   .nav-links {
     position: fixed;
     inset: 68px 0 auto;

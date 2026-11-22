@@ -270,41 +270,31 @@ textarea {
 
 .nav-logo {
   display: flex;
+  flex-shrink: 0;
   align-items: baseline;
   gap: 6px;
   font-weight: 700;
   font-size: 17px;
   letter-spacing: -0.02em;
-}
-
-.nav-logo-dot {
-  color: var(--brand);
-}
-
-.nav-logo-sub {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-faint);
-}
-
-@media (max-width: 860px) {
-  .nav-logo-sub {
-    display: none;
-  }
+  white-space: nowrap;
 }
 
 .nav-links {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
+  margin-left: auto;
 }
 
 .nav-links a {
-  padding: 8px 14px;
+  flex-shrink: 0;
+  padding: 8px 10px;
   border-radius: var(--radius-full);
   font-size: 14px;
   font-weight: 500;
   color: var(--text-dim);
+  white-space: nowrap;
   transition: color 0.15s ease, background 0.15s ease;
 }
 
@@ -338,7 +328,7 @@ textarea {
   flex-shrink: 0;
   width: 38px;
   height: 38px;
-  margin-left: 10px;
+  margin-left: 0;
   background: transparent;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -352,6 +342,7 @@ textarea {
 
 .nav-toggle {
   display: none;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -362,7 +353,12 @@ textarea {
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
+/* 태블릿과 작은 노트북에서는 메뉴를 억지로 한 줄에 넣지 않습니다. */
+@media (max-width: 1200px) {
+  .nav-theme {
+    margin-left: auto;
+  }
+
   .nav-toggle {
     display: inline-flex;
   }
@@ -4366,7 +4362,7 @@ textarea {
 }
 
 /* 좁은 화면에서는 위에서 내려오던 작은 메뉴를 쓰지 않습니다. */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .nav-links,
   .nav-links.is-open {
     display: none;

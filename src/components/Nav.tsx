@@ -58,14 +58,24 @@ export default function Nav() {
 
   // 메뉴가 열려 있는 동안에는 뒤 배경이 스크롤되지 않도록 잠급니다.
   useEffect(() => {
+    const compactNavigation = window.matchMedia('(max-width: 1200px)')
+    // 창을 넓히거나 기기를 돌려 가로 메뉴로 바뀌면 열린 패널도 닫습니다.
+    const closeOnDesktop = () => {
+      if (!compactNavigation.matches) setOpen(false)
+    }
     document.body.style.overflow = open ? 'hidden' : ''
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setOpen(false)
     }
-    if (open) window.addEventListener('keydown', closeOnEscape)
+    if (open) {
+      window.addEventListener('keydown', closeOnEscape)
+      compactNavigation.addEventListener('change', closeOnDesktop)
+      closeOnDesktop()
+    }
     return () => {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', closeOnEscape)
+      compactNavigation.removeEventListener('change', closeOnDesktop)
     }
   }, [open])
 
@@ -115,8 +125,6 @@ export default function Nav() {
           }}
         >
           {site.name}
-          <span className="nav-logo-dot">:</span>
-          <span className="nav-logo-sub">{site.tagline}</span>
         </Link>
 
         <nav id="site-navigation" aria-label="주 메뉴" className={`nav-links ${open ? 'is-open' : ''}`}>

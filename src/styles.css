@@ -4636,3 +4636,86 @@ textarea {
 
 .teachers-mobile-student { display: none; }
 @media (max-width: 640px) { .teachers-mobile-student { display: inline; } }
+
+/* 메인의 일반 안내는 휴대폰에서 카드보다 글의 순서가 먼저 보이게 합니다. */
+@media (max-width: 768px) {
+  .landing-main .audience-grid {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .landing-main .audience-item {
+    display: block;
+    padding: 16px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .landing-main .audience-item + .audience-item {
+    border-top: 1px solid var(--border);
+  }
+
+  .landing-main .audience-item > svg,
+  .landing-main .audience-cta > svg,
+  .landing-main .faq-overview-link > svg,
+  .landing-main .notice-bar > svg {
+    display: none;
+  }
+
+  .landing-main .audience-cta,
+  .landing-main .faq-overview-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    max-width: 100%;
+    margin-top: 14px;
+    padding: 8px 0;
+    gap: 0;
+    color: var(--text-dim);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.65;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .landing-main .audience-cta:hover,
+  .landing-main .faq-overview-link:hover {
+    gap: 0;
+    color: var(--text);
+  }
+
+  .landing-main .notice-bar {
+    min-height: 44px;
+    padding: 10px 0;
+    gap: 8px;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-dim);
+  }
+
+  .landing-main .notice-bar:hover {
+    border-color: var(--border);
+    color: var(--text);
+  }
+
+  .landing-main .notice-bar-label {
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .landing-main .notice-bar-title {
+    color: var(--text);
+    font-weight: 400;
+  }
+}

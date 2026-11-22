@@ -13,7 +13,7 @@ export default function NoticeBar() {
   if (!latest) return null
 
   return (
-    <div className="container">
+    <div className="container" id="news">
       <Link className="notice-bar" to="/news">
         <Megaphone size={16} aria-hidden="true" />
         <span className="notice-bar-label">공지</span>

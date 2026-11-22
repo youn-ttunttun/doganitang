@@ -5,7 +5,6 @@ import ApplyCta from '../components/ApplyCta'
 import Audience from '../components/Audience'
 import Curriculum from '../components/Curriculum'
 import Faq from '../components/Faq'
-import News from '../components/News'
 import Footer from '../components/Footer'
 import Hero from '../components/Hero'
 import NoticeBar from '../components/NoticeBar'
@@ -32,7 +31,7 @@ export default function Landing() {
   return (
     <>
       <Nav />
-      <main>
+      <main className="landing-main">
         {/*
           내 얘기다 → 그래서 뭘 만들었나 → 어떻게 진행되나 → 뭐가 다른가
           → 정말 그런가(증거) → 누가 하나 → 얼마인가 → 남은 의문 → 신청
@@ -50,8 +49,7 @@ export default function Landing() {
         <Proof />
         <Teachers compact />
         <Pricing />
-        <News />
-        <Faq />
+        <Faq compact />
         <ApplyCta />
       </main>
       <Footer />

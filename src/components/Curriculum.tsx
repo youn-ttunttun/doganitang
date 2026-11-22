@@ -266,7 +266,7 @@ export default function Curriculum({ compact = false }: { compact?: boolean }) {
 
       {compact && (
         <Link className="section-more" to="/curriculum">
-          교재와 수업 방식까지 자세히 보기
+          교재 및 커리큘럼 자세히 보기
           <ArrowRight size={16} aria-hidden="true" />
         </Link>
       )}
